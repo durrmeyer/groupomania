@@ -1,10 +1,10 @@
 <template>
     <div>
-      Admin works
+    Moderateur works
     </div>
 </template>
 <script>
 export default {
-    name: 'Home'
+    name: 'Moderator'
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div>
-      Admin works
+   Post works
     </div>
 </template>
 <script>
