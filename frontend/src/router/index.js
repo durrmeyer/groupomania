@@ -1,8 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import Admin from '../views/Admin'
-import Moderateur from '../views/Moderator'
-import Post from '../views/Post'
+import Posts from '../views/Posts.vue'
+import Login from '../components/Connection/Login'
+import Register from '../components/Connection/Register'
+import Admin from '../components/Dashboard/Admin'
+
+
 
 
 const routes = [
@@ -12,19 +15,25 @@ const routes = [
     component: Home
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
     path: '/admin',
     name: 'Admin',
     component: Admin
   },
+  
   {
-    path: '/Moderateur',
-    name: 'Moderator',
-    component: Moderateur
-  },
-  {
-    path: '/Post',
-    name: 'Post',
-    component: Post
+    path: '/Posts',
+    name: 'Posts',
+    component: Posts
   },
  /* {
    /* path: '/about',

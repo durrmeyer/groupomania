@@ -1,6 +1,6 @@
 <template>
 <div class="card">
-    <img src="//" class="card-img-top" alt="Photo profil" />
+
     <div class="card-body">
         <h5 class="card-title">Réseau social de l'entreprise</h5>
 
