@@ -1,22 +1,13 @@
+//const {Sequelize} = require('sequelize');
+
 const express = require('express');
+const db = require('./models')//utilisations des modèles pour la BDD
 const cors = require('cors')
 
 
 
 
 
-const path = require('path');
-
-//onst uri = process.env.ATLAS_URI;
-
-
-/*mongoose
-	.connect(uri, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true
-	//})
-	.then(() => console.log('Connexion à MongoDB réussie !'))
-	.catch(() => console.log('Connexion à MongoDB échouée !'));*/
 
 const app = express();
 
@@ -34,10 +25,23 @@ app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 	next();
 });
+const database = async function () {
+
+	try {
+		await db.sequelize.authenticate();
+		console.log('Connexion à la base de donnée réussie !')
+	} catch (error) {
+
+		console.log('Connexion à la base de donnée échouée !', error);
+	}
+};
+database();
+
+
 
 app.use(express.json());
 
 
-app.use('/images', express.static(path.join(__dirname, 'images')));
+
 
 module.exports = app;

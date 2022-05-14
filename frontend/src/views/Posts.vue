@@ -49,39 +49,7 @@
     <!-- End Blog Section -->
 
 
-  //////////////////////////////////////////////////////////////////////////////////////
-  <div class="container">
-    <div v-if="User">
-      <p>bonjour</p>
-    </div>
-    <div>
-      <form @submit.prevent="submit">
-        <div>
-          <label for="title">Titre:</label>
-          <input type="text" name="title" v-model="title" />
-        </div>
-        <div>
-          <textarea
-            name="write_up"
-            v-model="write_up"
-            placeholder="Desciption..."
-          ></textarea>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-    <div class="posts" v-if="Posts">
-      <ul>
-        <li v-for="post in Posts" :key="post.id">
-          <div id="post-div">
-            <p></p>
-            <p></p>
-            <p>Written By:</p>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
+
 </template>
 <script>
 import CSS from '../assets/layouts/Post.vue'
