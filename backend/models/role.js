@@ -1,15 +1,24 @@
-const { DataTypes } = require('sequelize')
-const DB = require('../config//db.config')
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Role extends Model {
 
+    static associate(models) {
 
-    const Role = DB.define('Roles', {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        
-      },
+    }
+  }
+  Role.init({
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true
     },
-      {
-        paranoid: true
-      });
-module.exports = Role
+    name: { type: DataTypes.STRING },
+  }, {
+    sequelize,
+    modelName: 'Role',
+  });
+  return Role;
+};

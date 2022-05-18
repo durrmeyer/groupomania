@@ -2,16 +2,22 @@
 
 const express = require('express');
 const db = require('./models')//utilisations des modèles pour la BDD
+const mysql = require('mysql2');
 const cors = require('cors')
+
+
+const path = require("path");
+
+
 const app = express();
-
-
 app.use(cors());
 
 
 // ---------------------------------------Import des routes -----------------------//
-const usersRoutes = require("./routes/users.js");
-const postsRoutes = require("./routes/posts.js");
+/** importer de la route user **/
+const userRoutes = require('./routes/users');
+//const postsRoutes = require("./routes/post.js");
+
 
 
 
@@ -38,18 +44,19 @@ const database = async function () {
 	}
 };
 
-  });
 database();
 
-db.sequelize.sync({ force: false})
+db.sequelize.sync({ force: true })
 .then(() => console.log("Base de données à jours !"))
 .catch((error) => console.log(" il y a eu un petit soucis!", error));
 
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-//---------------------déclaration des routes----------------------------//
-app.use("/api/users/", usersRoutes);
-app.use("/api/posts/", postsRoutes);
+//---------------------déclaration des routes----------------------------------//
+app.get('/', (req,res) => res.send('ok tout va bien'))
+app.use('/users', userRoutes);
+//app.use("/api/posts/", postsRoutes);
 
 
 module.exports = app;

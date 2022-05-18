@@ -1,24 +1,21 @@
+
 'use strict';
-
-const config = require("../config/config.js");
-const config = require("../config/db.config")
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
-  host: config.HOST,
+/*** Définir les variables d'environnement pour masquer les informations de connexion à la base de données  ***/
+require("dotenv").config();
+//const fs = require('fs');
+//const path = require('path');
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
   dialect: 'mysql',
-  operatorsAliases: 0,
-  pool: {
-    max: config.pool.max,
-    min: config.pool.min,
-    acquire: config.pool.acquire,
-    idle: config.pool.idle,
-  },
 });
-
 const db = {};
-
-db.Sequelize = Sequelize;
 db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+db.User = require('../models/users')(sequelize, Sequelize);
+sequelize.authenticate()
+  .then(() => console.log('Connexion à mysql réussie !'))
+  .catch(error => console.log('Connexion échouée:' + error))
 
 
 module.exports = db;

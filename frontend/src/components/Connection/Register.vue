@@ -69,8 +69,8 @@ export default {
   components: {
     Connection,
   },
-    data() {
-        return {
+  data() {
+    return {
             firstname:'',
             lastname:'',
             email:'',
@@ -78,14 +78,19 @@ export default {
         }
     },
     methods: {
-    ...mapActions(["Register"]),
-    async register() {
-      const User = new FormData();
-      User.append("firstname", this.firstname);
-       User.append("lastname", this.lastname);
-      User.append("email", this.email);
-      User.append("password", this.password);
-      try {
+    register() {
+      console.log("stop formulaire");
+      console.log(this.user);
+     accountService
+        .register(this.user)
+        .then(res => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    },
+  },
+  async created() {
+    try {
         await this.Register();
         this.$router.push("/Posts");
       } catch (error) {
