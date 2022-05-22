@@ -73,7 +73,7 @@ exports.login = async (req, res) => {
 			if (!user) {
 				return res.status(401).json({ message: 'aucun compte ne correspond à votre adresse mail !' });
 			}
-		});
+		
 		// bcrypt compare les Hashs
 		bcrypt
 			.compare(req.body.password, req.body.password)
@@ -82,7 +82,16 @@ exports.login = async (req, res) => {
 					return res.status(401).json({ message: 'Mot de passe incorrect !' });
 				}
 				res.status(200).json({
-					userId: User.id,
+					user: {
+						id: req.body.id,
+						firstName: req.body.firstName,
+						lastName: req.body.lastName,
+						email: req.body.email,
+						password: req.body.password,
+						isAdmin: req.body.isAdmin,
+						
+					},
+					userId: user.id,
 					isAdmin: User.isAdmin,
 					token: jwt.sign(
 						{
@@ -94,7 +103,7 @@ exports.login = async (req, res) => {
 					)
 				});
 			})
-
+		});
 
 	} catch (error) {
 		res.status(400).json({ error: error.message })

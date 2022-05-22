@@ -2,6 +2,9 @@
 body {
   margin-top: 20px;
 }
+.form-control{
+      padding: 1.275rem 0.75rem;
+}
 .btn {
   background-color: #b39f9f;
   border: 2px solid #b39f9f;
@@ -11,8 +14,8 @@ body {
 }
 .login-card-img {
   
-  width: 400px;
-  height: 360px;
+  width: 60%;
+  height: 250px;
 }
 .login-card-footer-text {
   font-size: 12px;
@@ -76,7 +79,6 @@ body {
 .card h2 a {
   color: #d0d0d0;
 
-  transition: 0.3s ease all;
 }
 
 .card:hover h2 a {

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Admin from '../components/Dashboard/Admin'
 import Posts from '../views/Posts.vue'
 import Login from '../components/Connection/Login'
 import Register from '../components/Connection/Register'
@@ -11,8 +11,8 @@ import Admin from '../components/Dashboard/Admin'
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Admin',
+    component: Admin
   },
   {
     path: '/login',
@@ -31,7 +31,7 @@ const routes = [
   },
   
   {
-    path: '/posts',
+    path: '/Posts',
     name: 'Posts',
     component: Posts
   },
@@ -47,6 +47,7 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
 
 
 export default router
