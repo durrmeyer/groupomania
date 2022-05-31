@@ -13,13 +13,10 @@ router.post('/login', userCtrl.login);
 router.post('/register', userCtrl.register);
 
 
+/******créer les routes users******/
 /** route pour utilisateurs **/
-/*router.get('', (req, res) => {
-    User.findAll()
-    .then(users => res.json({data: users}))
-});
 router.get('/:id');
 router.put('');
-router.delete('./:id'),*/
+router.delete('./:id'),
 module.exports = router;
 

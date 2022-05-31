@@ -1,7 +1,8 @@
 
 const bcrypt = require("bcrypt"); // Bcrypt permet de crypter le password et de le comparer
 const jwt = require("jsonwebtoken"); // Jwt necessaire pour la création d'un token
-const db = require('../models');// Récupération des modèles Sequelize
+const db = require('../server/models');// Récupération des modèles Sequelize
+
 const User = db.User;
 require("dotenv").config();
 
@@ -53,17 +54,7 @@ catch(error){
 }
 
 };
-	/*try{ 
 	
-			
-	} else {
-		// si le mot de passe est trop court
-		//res.status(401).json({ message: 'mot de passe trop court, il vous faut 8 lettres minimum !' });
-	}*/
-
-
-
-
 /********************Connection  utilisateur******************* */
 exports.login = async (req, res) => {
 	try {
@@ -76,22 +67,13 @@ exports.login = async (req, res) => {
 		
 		// bcrypt compare les Hashs
 		bcrypt
-			.compare(req.body.password, req.body.password)
+			.compare(req.body.password, user.password)
 			.then((valid) => {
 				if (!valid) {
 					return res.status(401).json({ message: 'Mot de passe incorrect !' });
 				}
 				res.status(200).json({
-					user: {
-						id: req.body.id,
-						firstName: req.body.firstName,
-						lastName: req.body.lastName,
-						email: req.body.email,
-						password: req.body.password,
-						isAdmin: req.body.isAdmin,
-						
-					},
-					userId: user.id,
+					userId: User.id,
 					isAdmin: User.isAdmin,
 					token: jwt.sign(
 						{

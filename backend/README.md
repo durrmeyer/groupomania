@@ -7,6 +7,7 @@ npx sequelize-cli model:generate --name User --attributes firstName:string,lastN
 
 
 Running Migrations:
+ npx sequelize-cli migration:create --name comments  
 npx sequelize-cli db:migrate
 
 Creating the first Seed
