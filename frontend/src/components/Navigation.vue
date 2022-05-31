@@ -1,35 +1,28 @@
 <template>
-   <nav class="navbar navbar-expand navbar-dark bg-dark">
+  <div id="app">
+    <header class="p-3 bg-dark text-white">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
+        </a>
 
-    <div class="navbar-nav mr-auto">
-        <li class="nav-item">
-            <router-link to="/" class="nav-link">
-                Accueil
-            </router-link>
-        </li>
-        <li class="nav-item">
-            <router-link to="/Login" class="nav-link">
-               Login
-            </router-link>
-        </li>
-        <li class="nav-item">
-            <router-link  to="/Posts" class="nav-link">Posts</router-link>
-        </li>
-<li class="nav-item">
-            <router-link to="/Register" class="nav-link">
-          Inscription
-            </router-link>
-        </li>
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
+          <li><a href="/Posts" class="nav-link px-2 text-white">Posts</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Profil</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Admin</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Moderateur</a></li>
+        </ul>
 
-        <li class="nav-item">
-            <router-link to="/admin" class="nav-link">Admin</router-link>
-        </li>
-        <li  class="nav-item">
-            <router-link to="/moderator" class="nav-link">Moderateur </router-link>
-        </li>
         
+
+      
+      </div>
     </div>
-    
-   
-</nav>
+  </header>
+  </div>
 </template>
+<script>
+
+</script>

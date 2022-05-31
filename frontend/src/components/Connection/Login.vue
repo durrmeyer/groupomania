@@ -11,26 +11,26 @@
           </div>
           <div class="col-md-7">
             <div class="card-body">
-              <p class="login-card-description">Se connecter</p>
-              <form @submit.prevent="login()" methods="post">
+              <p class="login-card-description">Se connecter </p>
+              <form @submit.prevent="login">
                 <div class="form-group">
                   <label for="email" class="form-label">Email</label>
                   <input
-                    id="email"
-                    type="email"
-                    v-model="user.email"
+                    type="text"
                     class="form-control"
                     placeholder="name@example.com"
+                    v-model="user.email"
+                    autocomplete="current-email"
                   />
                 </div>
                 <div class="form-group mb-4">
-                  <label for="Password" class="form-label">Password</label>
+                  <label for="password" class="form-label">Password</label>
                   <input
-                    id="password"
                     type="password"
-                    v-model="user.password"
                     class="form-control"
                     placeholder="**********"
+                    v-model="user.password"
+                    autocomplete="current-password"
                   />
                 </div>
                 <button class="btn" type="submit">Envoyer</button>
@@ -48,30 +48,28 @@
 </template>
 <script>
 import PageLogin from "../../assets/layouts/pageLogin.vue";
-import { Form, Field } from "vee-validate";
-import { accountService } from "../../_services/accountService";
+
+import userService from "../../_services/userService";
+
 export default {
   name: "Login",
   components: {
     PageLogin,
-    Form,
-    Field,
   },
   data() {
     return {
       user: { email: "", password: "" },
     };
   },
-
+  
   methods: {
-    login() {
-      accountService
+    login(user) {
+      userService
         .login(this.user)
         .then((res) => {
           console.log(res.data);
-          accountService.saveToken(res.data.token);
-
-          this.$router.push("/posts");
+        
+          this.$router.push("/Posts");
         })
         .catch((err) => console.log(err, "erreur de connexion"));
     },

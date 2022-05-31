@@ -14,50 +14,51 @@
               <p class="login-card-description">Page d'inscription</p>
               <form @submit.prevent="register">
                 <div class="form-group">
-                  <label for="firstname" class="form-label">Prénom</label>
+                  <label>Prénom</label>
                   <input
-                    type="firstname"
+                    type="text"
                     class="form-control"
                     placeholder="Prénom"
-                    id="firstname"
                     v-model="user.firstName"
+                    autocomplete="current-firstName"
                   />
                 </div>
+
                 <div class="form-group">
-                  <label for="lastname" class="form-label">Nom</label>
+                  <label for="lastName" class="form-label">Nom</label>
                   <input
-                    type="lastname"
+                    type="text"
                     class="form-control"
                     placeholder="Nom"
-                    id="lastname"
                     v-model="user.lastName"
+                    autocomplete="current-lastname"
                   />
                 </div>
                 <div class="form-group">
                   <label for="email" class="form-label">Email</label>
                   <input
-                    type="email"
+                    type="text"
                     class="form-control"
                     placeholder="name@example.com"
-                    id="email"
                     v-model="user.email"
+                    autocomplete="current-email"
                   />
                 </div>
                 <div class="form-group mb-4">
                   <label for="password" class="form-label">Password</label>
                   <input
                     type="password"
-                    id="password"
                     class="form-control"
                     placeholder="**********"
                     v-model="user.password"
+                    autocomplete="current-password"
                   />
                 </div>
                 <button class="btn" type="submit">Envoyer</button>
               </form>
               <p class="login-card-footer-text">
                 Vous avez un compte?
-                <a href="/Login" class="text-reset"> Connection</a>
+                <a href="/Login" class="login"> Connection</a>
               </p>
             </div>
           </div>
@@ -70,24 +71,24 @@
 
 
 <script>
-import pageLogin from "../../assets/layouts/pageLogin.vue";
-import { accountService } from '../../_services';
+import PageLogin from "../../assets/layouts/pageLogin.vue";
+import userService from "../../_services/userService";
 export default {
   name: "Register",
   components: {
-    pageLogin,
+    PageLogin,
   },
   data() {
     return {
       user: { firstName: "", lastName: "", email: "", password: "" },
     };
   },
-  
+
   methods: {
-    register(){
-      accountService
+    register(user) {
+      userService
         .register(this.user)
-        .then(res => {
+        .then((res) => {
           this.$router.push("/posts");
           console.log(res);
         })

@@ -1,3 +1,4 @@
+
 <template>
   <div class="container">
     <header class="jumbotron">
@@ -6,16 +7,16 @@
   </div>
 </template>
 <script>
-import AdminService from "../../_services/authService";
+import UserService from "../../_services/userService";
 export default {
-  name: "Admin",
+  name: "User",
   data() {
     return {
       content: "",
     };
   },
   mounted() {
-    AdminService.getAdminBoard().then(
+    UserService.getUserBoard().then(
       (response) => {
         this.content = response.data;
       },
