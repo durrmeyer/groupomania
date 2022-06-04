@@ -11,7 +11,7 @@
           </div>
           <div class="col-md-7">
             <div class="card-body">
-              <p class="login-card-description">Se connecter </p>
+              <p class="login-card-description">Se connecter</p>
               <form @submit.prevent="login">
                 <div class="form-group">
                   <label for="email" class="form-label">Email</label>
@@ -48,7 +48,6 @@
 </template>
 <script>
 import PageLogin from "../../assets/layouts/pageLogin.vue";
-
 import userService from "../../_services/userService";
 
 export default {
@@ -61,15 +60,24 @@ export default {
       user: { email: "", password: "" },
     };
   },
-  
+  /*computed: {
+    loggedIn() {
+      return this.$store.state.loggedIn;
+    },
+  },
+  created() {
+    if (this.loggedIn) {
+      this.$router.push("/profil");
+    }
+  },*/
   methods: {
-    login(user) {
+    login() {
       userService
         .login(this.user)
         .then((res) => {
-          console.log(res.data);
-        
-          this.$router.push("/Posts");
+          //console.log(res.data.token, 'hrcgiehrgpùzier');
+          userService.saveToken(res.data.token);
+          this.$router.push("/admin");
         })
         .catch((err) => console.log(err, "erreur de connexion"));
     },

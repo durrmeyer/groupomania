@@ -3,12 +3,19 @@ import Home from "../views/Home.vue";
 import Login from "../components/Connection/Login";
 import Register from "../components/Connection/Register";
 
-// lazy-loaded
-const Profile = () => import("../components/Profil")
 
-const BoardAdmin = () => import("../components/Dashboard/Admin")
-const BoardModerator = () => import("../components/Dashboard/Moderator")
-const BoardUser = () => import("../components/Dashboard/User")
+//import PostId from "../components/Dashboard/Posts/"
+////import Add from "../components/Dashboard/Posts/postAdd";
+//import List from "../components/Dashboard/users/List";
+
+// lazy-loaded
+const Profile = () => import("../components/Profil");
+
+
+import * as Admin from "@/views/admin"
+import { authGuard } from "@/_helpers/auth-guard";
+
+
 const routes = [
 
 
@@ -31,48 +38,38 @@ const routes = [
   {
     path: "/profile",
     name: "profile",
-    // lazy-loaded
     component: Profile,
   },
+
   {
     path: "/admin",
     name: "admin",
-    // lazy-loaded
-    component: BoardAdmin,
+
+    component: Admin.AdminLayout,
+    children: [
+      { path: "dashboard", name: "dashboard", component: Admin.Dashboard, meta: { requiresAuth: true } },
+      //{ path: "users", component: Admin.Users },
+      { path: "users/add", component: Admin.UserAdd },
+      { path: "users/edit/:id", component: Admin.UserEdit, props: true, },
+    ]
   },
-  {
-    path: "/mod",
-    name: "moderator",
-    // lazy-loaded
-    component: BoardModerator,
-  },
-  {
-    path: "/user",
-    name: "user",
-    // lazy-loaded
-    component: BoardUser,
-  },
+
   /*************posts route*****************/
-  {
-    path: "/Posts",
-    name: "posts",
-    component: () => import("../components/posts/List.vue")
-  },
-  {
-    path: "/Post",
-    name: "postId",
-    component: () => import("../components/posts/Post")
-  },
-  {
-    path: "/Ajouter",
-    name: "add",
-    component: () => import("../components/posts/Add.vue")
-  }
+
+
 ];
 
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
+})
+
+/*router.beforeEach((to, from, next) => {
+  console.log(to)
+  if (to.matched[0].name == "admin") {
+    authGuard()
+  }
+ next()
+})*/
 export default router;

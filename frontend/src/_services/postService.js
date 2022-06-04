@@ -1,40 +1,35 @@
 import Axios from "../_services/axios";
 
 export default {
-  getAll(params) {
-    return Axios.get("/posts", { params })
+  getAll() {
+    return Axios.get("/Posts/posts");
   },
-  getPosts() {
-    return Axios.get("/");
-  },
-  get() {
-    return Axios.get("/posts");
-  },
+
   getPostById(id) {
-    return Axios.get("posts/" + id);
+    return Axios.get(`/Posts/${id}`);
   },
   createPost(data) {
-    return Axios.post("create/", data);
+    return Axios.post("/Posts", data);
   },
   updatePost(id, data) {
-    return Axios.put("posts/" + id, data);
+    return Axios.put(`/Posts/${id}`, data);
   },
 
   deletePost(id) {
-    return Axios.delete("posts/" + id);
+    return Axios.delete(`/Posts/${id}`);
   },
   deleteAllPost() {
-    return Axios.delete(`/posts`);
+    return Axios.delete("/Posts/");
   },
   likePost(id) {
-    return Axios().post("posts/" + id) + "/like";
+    return Axios().post(`/post/${id}`) + "/like";
   },
 
   commentPost(id, data) {
-    return Axios().post("posts/" + id + "/comments", data);
+    return Axios().post("posts/ ${id}" + "/comments", data);
   },
 
   deleteComment(id) {
-    return Axios().delete("posts/comments/" + id);
+    return Axios().delete("posts/comments/");
   },
 };

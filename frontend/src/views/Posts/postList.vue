@@ -1,8 +1,8 @@
-<template>
+<!--<template>
   <div class="list row">
     
     <div class="col-md-6">
-      <h4>Posts Listes</h4>
+      <h4>Liste des posts</h4>
       <ul class="list-group">
         <li class="list-group-item"
           :class="{ active: index == currentIndex }"
@@ -26,33 +26,34 @@
         <div>
           <label><strong>Description:</strong></label> {{ currentPost.description }}
         </div>
-       <!-- <div>
+       <div>
           <label><strong>Status:</strong></label> {{ currentPost.published ? "Published" : "Pending" }}
-        </div> -->
-        <router-link :to="'posts/' + currentPost.id" class="badge badge-warning">Modifier</router-link>
+        </div> 
+        <router-link :to="'/Add'" class="btn-warning">Modifier</router-link>
       </div>
       <div v-else>
         <br />
-        <p>Please click on a Post...</p>
+        <p>///////////////////////////////////:</p>
       </div>
     </div>
   </div>
 </template>
 <script>
-import postService from "../../_services/postService";
+import postService from "../../../_services/postService";
 export default {
-  name: "postsList",
+  name: "List",
   data() {
     return {
       posts: [],
+      
       currentPost: null,
       currentIndex: -1,
-      title: ""
+     
     };
   },
   methods: {
     retrievePosts() {
-      postService.getPosts()
+      postService.getAll()
         .then(response => {
           this.posts = response.data;
           console.log(response.data);
@@ -104,4 +105,4 @@ export default {
   max-width: 750px;
   margin: auto;
 }
-</style>
+</style>-->

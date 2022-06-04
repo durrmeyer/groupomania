@@ -11,8 +11,13 @@
           <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
           <li><a href="/Posts" class="nav-link px-2 text-white">Posts</a></li>
           <li><a href="#" class="nav-link px-2 text-white">Profil</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Admin</a></li>
+          <li><a href="/admin/dashboard" class="nav-link px-2 text-white">Admin</a></li>
           <li><a href="#" class="nav-link px-2 text-white">Moderateur</a></li>
+        </ul>
+
+        <ul>
+<li><a href="/login" class="nav-link px-2 text-white">Se connecter</a></li>
+<li><a href="register" class="nav-link px-2 text-white">S'inscrire</a></li>
         </ul>
 
         

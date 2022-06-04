@@ -1,11 +1,11 @@
 
 
-import Axios from "../../../_services/axios"
 import AuthService from "@/_services/authService";
-
+const user = JSON.parse(localStorage.getItem('user'));
 
 export default {
-    /******************  login, register et déconnection************************** */
+    
+    /******************  login, register et déconnexion************************** */
     login({ commit }, user) {
         return AuthService.login(user).then(
             user => {
@@ -26,6 +26,7 @@ export default {
             response => {
                 commit('registerSuccess');
                 return Promise.resolve(response.data);
+                
             },
             error => {
                 commit('registerFailure');

@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <div v-if="currentPost" class="edit-form">
     <h4>Post</h4>
     <form>
@@ -25,7 +25,7 @@
     >
       UnPublish
     </button>
-    <button v-else class="badge badge-primary mr-2"
+    <button v-else class="btn primary mr-2"
       @click="updatePublished(true)"
     >
       Publish
@@ -48,7 +48,7 @@
   </div>
 </template>
 <script>
-import postService from "../../_services/postService";
+import postService from "../../../../_services/postService";
 export default {
   name: "post",
   data() {
@@ -89,14 +89,14 @@ export default {
       postService.updatePost(this.currentPost.id, this.currentPost)
         .then(response => {
           console.log(response.data);
-          this.message = 'The tutorial was updated successfully!';
+          this.message = 'le post a été modifié avec succès !';
         })
         .catch(e => {
           console.log(e);
         });
     },
     deletePost() {
-      postService.deletePost(this.currentTutorial.id)
+      postService.deletePost(this.currentPost.id)
         .then(response => {
           console.log(response.data);
           this.$router.push({ name: "posts" });
@@ -108,7 +108,7 @@ export default {
   },
   mounted() {
     this.message = '';
-   // this.getPosts(this.$route.params.id);
+    this.getPosts(this.$route.params.id);
   }
 };
 </script>
@@ -117,4 +117,4 @@ export default {
   max-width: 300px;
   margin: auto;
 }
-</style>
+</style>-->

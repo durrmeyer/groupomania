@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <div class="submit-form">
     <div v-if="!submitted">
       <div class="form-group">
@@ -25,15 +25,15 @@
       <button @click="savePost" class="btn btn-success">Envoyer</button>
     </div>
     <div v-else>
-      <h4>You submitted successfully!</h4>
+      <h4>Envoi effectué!</h4>
       <button class="btn btn-success" @click="newPost">Modifier</button>
     </div>
   </div>
 </template>
 <script>
-import postService from "../../_services/postService";
+import postService from "../../../../_services/postService";
 export default {
-  name: "add-",
+  name: "add",
   data() {
     return {
       post: {
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     savePost() {
-      var data = {
+        var data = {
         title: this.post.title,
         description: this.post.description
       };
@@ -74,4 +74,4 @@ export default {
   max-width: 300px;
   margin: auto;
 }
-</style>
+</style>-->
