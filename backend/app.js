@@ -46,17 +46,17 @@ const database = async function () {
 
 database();
 
-db.sequelize.sync({ force: true })
-.then(() => console.log("Base de données à jours !"))
-.catch((error) => console.log(" il y a eu un petit soucis!", error));
-
+db.sequelize.sync({ force: false })
+	.then(() => console.log("Base de données à jours !"))
+	.catch((error) => console.log(" il y a eu un petit soucis!", error));
+	
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.json());
 //---------------------déclaration des routes----------------------------------//
-app.get('/', (req,res) => res.send('ok tout va bien'))
-app.use('/users', userRoutes);
-app.use('/posts', postsRoutes);
+app.get('/', (req, res) => res.send('ok tout va bien'))
+app.use('/api/users', userRoutes);
+app.use('/api/posts', postsRoutes);
 
 
 module.exports = app;

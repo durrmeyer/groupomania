@@ -1,25 +1,27 @@
 const express = require('express');
 const router = express.Router();
 
-const postCtrl = require('../controllers/post') ;
+const postCtrl = require('../controllers/post');
 
 
 
 /***************récupération du routeur express***************** */
 
 // Créer un nouveau post
-router.post("/", postCtrl.create);
+router.post("/", postCtrl.createPost);
 
 // trouver tous les posts
-router.get("/posts", postCtrl.findAll);
+router.get("/", postCtrl.getAllPost);
 
 // trouver le post avec l'id
-router.get("/posts/:id", postCtrl.findByPk);
+router.get("/:id", postCtrl.getOnePost);
 
 // modifier le post avec l'id
-router.put("/posts/:id", postCtrl.update);
+router.put("/:id", postCtrl.updatePost);
 
 // Supprimer le post avec l'id
-router.delete("/posts/:id", postCtrl.delete);
+router.delete("/:id", postCtrl.deletePost);
+// Supprimer tous les post avec l'id
+//router.delete("/", postCtrl.deleteAll);
 
 module.exports = router;

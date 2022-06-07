@@ -26,7 +26,8 @@ if (req.body.password.length > 8) {
 							firstName: req.body.firstName,
 							lastName: req.body.lastName,
 							email: req.body.email,
-							password: hash
+							password: hash,
+							idRole: 1
 						});
 						user
 							.save()
@@ -72,13 +73,14 @@ exports.login = async (req, res) => {
 				if (!valid) {
 					return res.status(401).json({ message: 'Mot de passe incorrect !' });
 				}
+			
 				res.status(200).json({
-					userId: User.id,
-					isAdmin: User.isAdmin,
+					userId: user.id,
+					idRole: user.idRole,
 					token: jwt.sign(
 						{
-							userId: User.id,
-							isAdmin: User.isAdmin,
+							userId: user.id,
+							idRole: user.idRole,
 						},
 						'KEY_SECRET',
 						{ expiresIn: '12h' }
@@ -91,3 +93,28 @@ exports.login = async (req, res) => {
 		res.status(400).json({ error: error.message })
 	}
 };
+exports.User = async (req, res) => {
+	// on trouve l'utilisateur et on renvoie l'objet user
+	try {
+	  const user = await db.User.findOne({
+		where: { id: req.params.id },
+	  });
+	  res.status(200).send(user);
+	} catch (error) {
+	  return res.status(500).send({ error: "Erreur serveur" });
+	}
+  };
+
+  
+  exports.getAllUsers = async (req, res) => {
+	
+	try {
+	  const users = await db.User.findAll({
+		attributes: ["firstName","lastName", "email","password","idRole"],
+		
+	  });
+	  res.status(200).send(users);
+	} catch (error) {
+	  return res.status(500).send({ error: "Erreur serveur" });
+	}
+  };

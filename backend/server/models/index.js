@@ -35,8 +35,10 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.User = require('./user')(sequelize, Sequelize);
 db.Post = require('./post')(sequelize, Sequelize);
-db.Comment = require('./comment')(sequelize, Sequelize);
+
 //db.Post.hasMany(db.Comment);
+db.role = require("./role")(sequelize, Sequelize);
+
 
 sequelize.authenticate()
   .then(() => console.log('Connexion à mysql réussie !'))

@@ -4,27 +4,21 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
-    // static associate(models) {
-    // define association here
-    //models.Article.belongsTo(models.User, {
-    //  foreignKey: {
-    //  allowNull: false
-    //  }, onDelete:'CASCADE', 
-    //  }),
-    //  models.Post.hasMany(models.Comment )
-    // models.Post.hasMany(models.Like)
 
-    // }
   }
   Post.init({
+    firstName: DataTypes.STRING,//userId
     title: DataTypes.STRING,
     description: DataTypes.STRING,
-    published: DataTypes.BOOLEAN,
-    comment_id: DataTypes.STRING,
-    //link: DataTypes.STRING,
-  }, {
-    sequelize,
-    modelName: 'Post',
-  });
+    imageUrl: DataTypes.STRING,
+    likes: DataTypes.INTEGER,
+    dislikes: DataTypes.INTEGER,
+    usersLiked: DataTypes.STRING,
+    usersDisliked: DataTypes.STRING
+  },
+    {
+      sequelize,
+      modelName: 'Post',
+    });
   return Post;
 };
