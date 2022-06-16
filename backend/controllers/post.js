@@ -59,7 +59,7 @@ exports.updatePost = (req, res) => {
 
 // ---------------------------------------base de donnée--------------------------------------------//
 // -----------------------trouver tous les posts--------------------------//
-exports.getAllPost = (req, res) => {
+exports.getAllPosts = (req, res) => {
   Post.findAll()
     .then((posts) => res.status(200).json(posts))
     .catch((error) => res.status(400).json({ message: error }));

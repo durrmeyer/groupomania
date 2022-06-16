@@ -6,8 +6,8 @@ body {
       padding: 1.275rem 0.75rem;
 }
 .btn {
-  background-color: #b39f9f;
-  border: 2px solid #b39f9f;
+  background-color: #FFD7D7;
+  border: 5px solid #FFD7D7;
   margin-bottom: 30px;
   margin-top: 25px;
   font-size: 18px;
@@ -27,7 +27,7 @@ body {
   min-width: 0;
   margin: 20px 10px;
   width: 100%;
-  background: #112342;
+  background: #4E5166;
   color: white;
   border: none;
   border-radius: 5px;

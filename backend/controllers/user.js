@@ -107,14 +107,21 @@ exports.User = async (req, res) => {
 
   
   exports.getAllUsers = async (req, res) => {
-	
-	try {
-	  const users = await db.User.findAll({
-		attributes: ["firstName","lastName", "email","password","idRole"],
-		
+	User.findAll()
+    .then((users) => res.status(200).json(users))
+    .catch((error) => res.status(400).json({ message: error }));
+
 	  });
 	  res.status(200).send(users);
 	} catch (error) {
 	  return res.status(500).send({ error: "Erreur serveur" });
-	}
+	}*/
+  };
+  exports.getUserById = (req, res) => {
+	// On l'identifie par l'ID
+	User.findOne({
+	  where: { id: req.params.id }
+	})
+	  .then((user) => res.status(200).json(user))
+	  .catch((error) => res.status(404).json({ error, message: 'user non trouvé' }));
   };

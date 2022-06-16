@@ -1,10 +1,19 @@
 <template>
-    <div>
-        pages Add
+<div>
+
+   <div>
+<router-view />
+   </div>
+
     </div>
+
 </template>
 <script>
+
+
 export default {
-    name:'UserAdd',
+    name: "Admin",
+
+
 }
 </script>

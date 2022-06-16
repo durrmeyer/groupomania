@@ -1,41 +1,70 @@
-
-
 import Axios from "../_services/axios";
 
 
 export default {
 
-  
+  /***************************************enregistrement et connexion *************************/
   register(data) {
-    console.log(data, 'fhvgoùmejhùTRJH E');
-    return Axios.post("users/register", data );
+    console.log(data)
+    return Axios.post('/users/register', data);
   },
-  login(data) {
-   
-    return Axios.post("users/login", data);
-  
+  login(user) {
+    return Axios.post("/users/login", user);
   },
-  logout(){
+  logout() {
     localStorage.removeItem('token')
   },
-  saveToken(token){
+
+
+  saveToken(token) {
     localStorage.setItem('token', token)
   },
-  isLogged(){
-    let token = localStorage.getItem('token')
-    return !!token
+  isAdmin(idRole) {
+    if (idRole === 2) {
+      localStorage.setItem('isAdmin', true)
+    } else {
+      localStorage.setItem('isAdmin', false)
+    }
   },
-  deleteUser(id) {
-    return Axios().delete("users/" + id);
+  saveUserId(userId) {
+    localStorage.setItem('userId', userId)
+  },
+  saveUser(user) {
+    console.log('user', saveUser)
+    localStorage.getItem('user', user)
   },
 
+  /********************************************************************************************/
+
+
+  /******************************USERS*************************************/
+
+  getAllUsers() {
+    return Axios.get('users')
+  },
   getUserById(id) {
-    return Axios.get("users/:id");
+    return Axios.get("users/" + id);
   },
- 
-  updateUser(id, data) {
-    return Axios.put("users/:id" + data);
+  updateUser(user) {
+    return Axios.put("/users/" + user.id, user);
   },
- 
-  
+  createUser(user) {
+    return Axios.put('/users', user)
+  },
+  logout() {
+    localStorage.removeItem('token')
+  },
+  deleteUser(id) {
+    return Axios.delete("users/" + id);
+  },
+  /********************************************************************/
+  isLogged() {
+    token = localStorage.getItem('token')
+    return !!token
+  },
+  /***transformer une variable en Boolean, le rendu !!token***/
+
+
+
+
 };

@@ -1,30 +1,27 @@
 <template>
-<div class="app">
-   <Navigation/>
-<div class="container">
-
-    <div class="row">
+  <div class="app">
+    <Navigation />
+    <div class="container">
+      <div class="row">
         <div class="col-md-12">
-            <div>
-              <router-view />
-
-            </div>
+          <div>
+            <router-view :user="userid"/>
+          </div>
         </div>
-
+      </div>
     </div>
-</div>
-</div>
- 
+  </div>
 </template>
 
 <script>
-import Navigation from './components/Navigation.vue'
+import Navigation from "./components/Navigation.vue";
+import userService from "./_services/userService";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    Navigation
+    Navigation,
   },
-}
+};
 </script>
 
 <style lang="scss">

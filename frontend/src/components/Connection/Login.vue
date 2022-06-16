@@ -4,10 +4,7 @@
       <div class="card login-card">
         <div class="row no-gutters">
           <div class="col-md-5">
-            <img
-              src="../../assets/images/logoblanc.png"
-              class="login-card-img"
-            />
+            <img src="../../assets/images/1.png" class="login-card-img" />
           </div>
           <div class="col-md-7">
             <div class="card-body">
@@ -33,7 +30,7 @@
                     autocomplete="current-password"
                   />
                 </div>
-                <button class="btn" type="submit">Envoyer</button>
+                <button class="btn" type="submit">Connexion</button>
               </form>
               <p class="login-card-footer-text">
                 Vous n'avez pas encore de compte?
@@ -58,26 +55,20 @@ export default {
   data() {
     return {
       user: { email: "", password: "" },
+      errors: [],
     };
   },
-  /*computed: {
-    loggedIn() {
-      return this.$store.state.loggedIn;
-    },
-  },
-  created() {
-    if (this.loggedIn) {
-      this.$router.push("/profil");
-    }
-  },*/
+
   methods: {
     login() {
       userService
         .login(this.user)
         .then((res) => {
-          //console.log(res.data.token, 'hrcgiehrgpùzier');
+          console.log(res.data);
           userService.saveToken(res.data.token);
-          this.$router.push("/admin");
+          userService.isAdmin(res.data.idRole);
+          userService.saveUserId(res.data.userId);
+          this.$router.push("/admin/users");
         })
         .catch((err) => console.log(err, "erreur de connexion"));
     },

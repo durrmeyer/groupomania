@@ -1,19 +1,41 @@
 <style lang="css">
  /*-- Blog Section CSS --*/
-#blog {
+ .img-fluid {
+    max-width: 20%;
+    height: auto;
+ }
+ .section_post{
+    margin-top: 70px;
+   margin-left: 15px;
+    display: flex;
+    
+    height: 60px;
+ }
+ .card_author{
+    display: flex;
+    align-items: baseline;
+ }
+.card {
     width: 100%;
     float: left;
     padding: 50px 0px;
+    background-color: white;
+    border: 4px solid #FFD7D7;;
+     color: #4E5166;
 }
-.blog-post h2 {
-    font-size: 20px;
+.card-text h2 {
+    font-size: 25px;
     margin: 10px 0px;
+ 
 }
-.blog-post h2 a {
-    color: #333;
+.card-text h3{
+    font-size: 18px;
+    margin: 10px 0px;
+   
 }
+
 .blog-post p {
-    color: #505050;
+    color: whitesmoke;
 }
 #blog .section-title {
     padding: 20px 0px 5px;

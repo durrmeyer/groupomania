@@ -1,5 +1,4 @@
 import axios from '../_services/axios';
-
 class AuthService {
   async login(user) {
     const response = await axios
@@ -8,7 +7,7 @@ class AuthService {
               password: user.password
           })
           .then(response => {
-            if (response.data.accessToken) {
+            if (response.data.token) {
               localStorage.setItem('user', JSON.stringify(response.data));
             }
             return response.data;

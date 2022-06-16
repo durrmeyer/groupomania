@@ -1,33 +1,137 @@
 <template>
-  <div id="app">
-    <header class="p-3 bg-dark text-white">
-    <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-        </a>
+  <nav class="navbar navbar-light bg-light expand-lg">
+    <a class="navbar-brand" href="#" alt="logo du site" title="logo du site"
+      ><img
+        src="../assets/images/1.png"
+        width="130"
+        height="60"
+        alt="logo Groupomania"
+        title="logo groupomania"
+        id="logo"
+    /></a>
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
-          <li><a href="/Posts" class="nav-link px-2 text-white">Posts</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Profil</a></li>
-          <li><a href="/admin/dashboard" class="nav-link px-2 text-white">Admin</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Moderateur</a></li>
-        </ul>
-
-        <ul>
-<li><a href="/login" class="nav-link px-2 text-white">Se connecter</a></li>
-<li><a href="register" class="nav-link px-2 text-white">S'inscrire</a></li>
-        </ul>
-
+    <div>
+      <ul class="nav">
+        <li class="nav-item">
+          <router-link
+           
+            aria-label="connexion"
+            alt="connexion"
+            title="connexion"
+            type="button"
+            class="nav-link"
+            to="/login"
+            >connexion</router-link
+          >
+        </li>
+        <li class="nav-item">
+          <router-link
+           
+            aria-label="inscription"
+            alt="inscription"
+            title="inscription"
+            type="button"
+            class="nav-link"
+            to="/register"
+            >inscription</router-link
+          >
+        </li>
         
-
-      
-      </div>
+      </ul>
+      <ul class="nav" >
+        <li class="nav-item active">
+          <router-link
+        
+            to="/posts"
+            aria-label="page des publications"
+            alt="publication"
+            title="publication"
+            type="button"
+            class="nav-link"
+            ><i class="fas fa-home"></i
+          ></router-link>
+        </li>
+      </ul>
+      <ul>
+        <li class="nav-item">
+          <router-link
+         
+            aria-label="profil"
+            alt="accès profil"
+            title="accès profil"
+            type="button"
+            class="nav-link"
+            to="/profil"
+          >
+            <i class="fas fa-user"></i
+          ></router-link>
+        </li>
+        <router-link
+          v-if="isAdmin == 'true'"
+          class="nav-link"
+          aria-label="Administrateur"
+          alt="gestion du site"
+          title="gestion du site"
+          type="button"
+          to="/administrateur"
+        >
+          <li class="nav-item" type="button" arial-label="voir son compte">
+            <i class="fas fa-cogs"></i>
+          </li>
+        </router-link>
+        <li class="nav-item">
+          <button
+         
+            type="button"
+            aria-label="Se déconnecter"
+            alt="se déconnecter"
+            title="Se déconnecter"
+            class="btn btn-danger"
+            id="btn-logout"
+            @click="logout"
+          >
+            <i class="fas fa-power-off"></i>
+          </button>
+        </li>
+      </ul>
     </div>
-  </header>
-  </div>
+  </nav>
 </template>
-<script>
 
+<script>
+import userService from '../_services/userService';
+export default {
+  name: "NavApp",
+  data() {
+    return {
+      user: null
+     
+    };
+  },
+ 
+  methods: {
+    isLogged(user){
+      return user.user !== null
+    },
+    logout() {
+      localStorage.clear();
+      this.$router.push("/login");
+    },
+  },
+};
 </script>
+<style>
+#nav {
+  padding: 30px;
+}
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+a:hover {
+  cursor: pointer;
+}
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
+</style>

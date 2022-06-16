@@ -3,17 +3,20 @@ import Home from "../views/Home.vue";
 import Login from "../components/Connection/Login";
 import Register from "../components/Connection/Register";
 
-
-//import PostId from "../components/Dashboard/Posts/"
-////import Add from "../components/Dashboard/Posts/postAdd";
-//import List from "../components/Dashboard/users/List";
-
-// lazy-loaded
-const Profile = () => import("../components/Profil");
+import Admin from "../views/admin/Admin";
+import UsersIndex from "../views/admin/UserIndex";
+import UserEdit from "../views/admin/UserEdit";
+import UserAdd from "../views/admin/UserAdd";
 
 
-import * as Admin from "@/views/admin"
-import { authGuard } from "@/_helpers/auth-guard";
+import Posts from "../views/Posts"
+import PostIndex from "../components/post/PostIndex";
+import PostEdit from "../components/post/PostEdit"
+import PostAdd from "../components/post/PostAdd";
+
+import Profil from "../views/Profil"
+import { authGuard } from "@/_services/authAdmin";
+
 
 
 const routes = [
@@ -23,6 +26,7 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  
   },
   {
     path: "/login",
@@ -34,25 +38,73 @@ const routes = [
     name: "register",
     component: Register,
   },
-
   {
-    path: "/profile",
-    name: "profile",
-    component: Profile,
+    path: "/profil",
+    name: "profil",
+    component: Profil,
+  
+    props: true,
+
   },
 
+  {
+    path: "/posts",
+    name: "posts",
+    component: Posts,
+  
+    props: true,
+
+  },
+  {
+    path: "/posts/index",
+    name: "PostIndex",
+    component: PostIndex,
+    props: true,
+  },
+  {
+    path: "/postadd",
+    name: "PostAdd",
+    component: PostAdd,
+
+  },
+  {
+    path: "/edit/:id?",
+    name: "postEdit",
+    component: PostEdit,
+    props: true,
+  },
   {
     path: "/admin",
     name: "admin",
+    component: Admin,
+  
 
-    component: Admin.AdminLayout,
     children: [
-      { path: "dashboard", name: "dashboard", component: Admin.Dashboard, meta: { requiresAuth: true } },
-      //{ path: "users", component: Admin.Users },
-      { path: "users/add", component: Admin.UserAdd },
-      { path: "users/edit/:id", component: Admin.UserEdit, props: true, },
+      {
+        path: "users",
+        name: "users",
+        component: UsersIndex,
+      },
+
+      {
+        path: "userEdit/:id",
+        name: "UserEdit",
+        component: UserEdit,
+        props: true
+      },
+      {
+        path: "useradd",
+        name: "UserAdd",
+        component: UserAdd,
+
+      },
     ]
   },
+
+
+
+
+
 
   /*************posts route*****************/
 
@@ -67,9 +119,10 @@ const router = createRouter({
 
 /*router.beforeEach((to, from, next) => {
   console.log(to)
-  if (to.matched[0].name == "admin") {
-    authGuard()
-  }
- next()
+
+  if (to.meta.requiresAuth)
+    console.log('tokenAdmin')
+  authGuard()
+  next()
 })*/
 export default router;

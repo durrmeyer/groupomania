@@ -4,75 +4,81 @@
       <div class="card login-card">
         <div class="row no-gutters">
           <div class="col-md-5">
-            <img
-              src="../../assets/images/logoblanc.png"
-              class="login-card-img"
-            />
+            <img src="../../assets/images/1.png" class="login-card-img" />
           </div>
           <div class="col-md-7">
             <div class="card-body">
               <p class="login-card-description">Page d'inscription</p>
-               <form @submit.prevent="register">
+              <Form @submit="register">
                 <div class="form-group">
-                  <label>Prénom</label>
-                  <input
+                  <label class="form-label form-label-top" for="firstName"
+                    >Prénom
+                    <span class="form-required">*</span>
+                  </label>
+                  <Field
+                    name="firstName"
                     type="text"
                     class="form-control"
                     placeholder="Prénom"
                     v-model="user.firstName"
+                    :rules="isRequired"
                     autocomplete="current-firstName"
                   />
-                  <small v-if="v$.firstName.$error">{{
-                    v$.firstName.$errors[0].$message
-                  }}</small>
+                  <ErrorMessage class="form-required" name="firstName" />
                 </div>
-
                 <div class="form-group">
-                  <label for="lastName" class="form-label">Nom</label>
-                  <input
+                  <label class="form-label form-label-top" for="lastName"
+                    >Nom
+                    <span class="form-required">*</span>
+                  </label>
+                  <Field
+                    name="lastName"
                     type="text"
                     class="form-control"
                     placeholder="Nom"
                     v-model="user.lastName"
+                    :rules="isRequired"
                     autocomplete="current-lastname"
                   />
-                  <small v-if="v$.lastName.$error">{{
-                    v$.lastName.$errors[0].$message
-                  }}</small>
+                  <ErrorMessage class="form-required" name="lastName" />
                 </div>
                 <div class="form-group">
-                  <label for="email" class="form-label">Email</label>
-                  <input
+                  <label class="form-label form-label-top" for="email"
+                    >Email <span class="form-required">*</span></label
+                  >
+                  <Field
+                    name="email"
                     type="text"
                     class="form-control"
                     placeholder="name@example.com"
                     v-model="user.email"
+                    :rules="validateEmail"
                     autocomplete="current-email"
                   />
-                  <small v-if="v$.email.$error">{{
-                    v$.email.$errors[0].$message
-                  }}</small>
+                  <ErrorMessage class="form-required" name="email" />
                 </div>
                 <div class="form-group mb-4">
-                  <label for="password" class="form-label">Password</label>
-                  <input
+                  <label class="form-label form-label-top" for="password"
+                    >Password <span class="form-required">*</span></label
+                  >
+                  <Field
+                    name="password"
                     type="password"
                     class="form-control"
                     placeholder="**********"
                     v-model="user.password"
+                    required
                     autocomplete="current-password"
                   />
-                  <small v-if="v$.password.$error">{{
-                    v$.password.$errors[0].$message
-                  }}</small>
+                  <ErrorMessage class="form-required" name="password" />
                 </div>
                 <button class="btn" type="submit">Envoyer</button>
-              </form>
-              <p class="login-card-footer-text">
-                Vous avez un compte?
-                <a href="/Login" class="login"> Connection</a>
-              </p>
+              </Form>
             </div>
+            <p class="login-card-footer-text">
+              Vous avez un compte?
+              <a href="/Login" class="login"> Connection</a>
+            </p>
           </div>
         </div>
       </div>
@@ -82,68 +88,65 @@
 
 
 
+
 <script>
 import PageLogin from "../../assets/layouts/pageLogin.vue";
 import userService from "../../_services/userService";
-import useVuelidate from "@vuelidate/core";
-import {
-  required,
-  email,
-  minLength,
-  maxLength,
-  helpers,
-} from "@vuelidate/validators";
-
-const regexEmail = helpers.regex(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
-const regexPassword = helpers.regex(
-  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
-);
-
+import { Form, Field, ErrorMessage } from "vee-validate";
 export default {
   name: "Register",
   components: {
     PageLogin,
+    Form,
+    Field,
+    ErrorMessage,
   },
+
   data() {
     return {
-     user: {firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      },
-      v$: useVuelidate(),
+      user: { firstName: "", lastName: "", email: "", password: "" },
     };
-  },
-  validations: {
-    firstName: { required },
-    lastName: { required },
-    email: { required, email, regexEmail },
-    password: {
-      required,
-      minLength: minLength(8),
-     regexPassword,
-    },
   },
 
   methods: {
+    isRequired(value) {
+      if (value && value.trim()) {
+        return true;
+      }
+      return "Champ requis";
+    },
+    validateEmail(value) {
+      if (!value) {
+        return "email requis";
+      }
+      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      if (!regex.test(value)) {
+        return "votre email n'est pas valide";
+      }
+
+      return true;
+    },
+    validatePassword(value) {
+      if (!value) {
+        return "password requis";
+      }
+      const regexPassword =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/i;
+      if (!regexPassword.test(value)) {
+        return "votre mot de passe n'est pas valide";
+      }
+      return true;
+    },
     register() {
-      this.v$.$touch()
-      console.log('youpi', this.v$);
-      
-       if (this.v$.$errors.length === 0) {}
-        console.log(this.user.firstName, 'vide');
-       userService
-      
-          .register(this.user)
-          .then((res) => {
-             
-            this.$router.push("/posts");
-            console.log(res);
-             console.log("tout est affiché");
-          })
-          .catch((err) => console.log(err, "inscription impossible"));
-      
-      
+      userService
+        .register(this.user)
+        .then((res) => {
+          console.log(res);
+        
+          userService.saveToken(res.data.token);
+          this.$router.push("/");
+        })
+        .catch((err) => console.log(err, "erreur de connexion"));
     },
   },
 };

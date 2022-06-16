@@ -11,7 +11,7 @@ const postCtrl = require('../controllers/post');
 router.post("/", postCtrl.createPost);
 
 // trouver tous les posts
-router.get("/", postCtrl.getAllPost);
+router.get("/", postCtrl.getAllPosts);
 
 // trouver le post avec l'id
 router.get("/:id", postCtrl.getOnePost);

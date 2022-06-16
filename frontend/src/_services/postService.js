@@ -1,26 +1,24 @@
 import Axios from "../_services/axios";
 
 export default {
-  getAll() {
-    return Axios.get("/Posts/posts");
+  getAllPosts() {
+    return Axios.get("/posts");
   },
 
   getPostById(id) {
-    return Axios.get(`/Posts/${id}`);
+    return Axios.get("/posts/" + id);
   },
-  createPost(data) {
-    return Axios.post("/Posts", data);
+  createPost() {
+    return Axios.post("/posts");
   },
-  updatePost(id, data) {
-    return Axios.put(`/Posts/${id}`, data);
+  updatePost(post) {
+    return Axios.put("/posts/" + post.id, post);
   },
 
   deletePost(id) {
-    return Axios.delete(`/Posts/${id}`);
+    return Axios.delete(`posts/` + id);
   },
-  deleteAllPost() {
-    return Axios.delete("/Posts/");
-  },
+  
   likePost(id) {
     return Axios().post(`/post/${id}`) + "/like";
   },
