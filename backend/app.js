@@ -16,7 +16,7 @@ app.use(cors());
 // ---------------------------------------Import des routes -----------------------//
 /** importer de la route user **/
 const userRoutes = require('./routes/users');
-const postsRoutes = require("./routes/posts");
+const postRoutes = require('./routes/posts');
 
 
 
@@ -49,14 +49,14 @@ database();
 db.sequelize.sync({ force: false })
 	.then(() => console.log("Base de données à jours !"))
 	.catch((error) => console.log(" il y a eu un petit soucis!", error));
-	
+
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.json());
 //---------------------déclaration des routes----------------------------------//
 app.get('/', (req, res) => res.send('ok tout va bien'))
 app.use('/api/users', userRoutes);
-app.use('/api/posts', postsRoutes);
+app.use('/api/posts', postRoutes);
 
 
 module.exports = app;

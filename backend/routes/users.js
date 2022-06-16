@@ -16,9 +16,8 @@ router.post('/register', userCtrl.register);
 /******créer les routes users******/
 /** route pour utilisateurs **/
 router.get("/", userCtrl.getAllUsers);
-
-//router.put("/:id", userCtrl.updateUser);
-router.get("/:id", userCtrl.User);
-//router.delete("/:id", userCtrl.deleteUser);
+router.put("/:id", userCtrl.updateUser);
+router.get('/:id', userCtrl.User);
+router.delete("/:id", userCtrl.deleteUser);
 module.exports = router;
 

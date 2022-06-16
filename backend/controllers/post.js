@@ -1,8 +1,7 @@
 const db = require("../server/models");
 //Récupération du module 'file system' de Node permettant de gérer ici les téléchargements et modifications d'images
 const fs = require('fs'); //package qui permet de modifier ou supprimer des fichiers
-const { post } = require("../routes/posts");
-//const userId = require("../middleware/auth");
+const authUser = require("../middleware/authUser");
 const User = db.User;
 const Post = db.Post;
 
@@ -10,31 +9,40 @@ const Post = db.Post;
 //---------------------------------création d'un post----------------------------//
 
 exports.createPost = (req, res) => {
-
-  User.findOne({
-    post: ["id", "firstName", "imageUrl"],
-    where: { id: User },
-  })
-    //---------------------------------insertion d'une image------------------------//
-    .then(() => {
-      let imageUrl;
-      if (req.file) {
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-      }
-      else {
-        imageUrl = null
-      }
+  if (!req.body.post) {
+      res.status(400).send({
+          message: "impossible de publier un message vide !"
+      });
+      return
+  }
+  if (req.file) {
       Post.create({
-        //id: req.body.userId,
-        firstName: req.body.firstName,
-        title: req.body.title,
-        description: req.body.description,
-        likes: req.body.likes,
-        imageUrl: imageUrl,
-
-      })
-    })
-};
+              userId: authUser(req),
+              post: req.body.post,
+              imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+          })
+          .then(() => res.status(201).json({
+              message: 'post créé !'
+          }))
+          .catch((error) => res.status(400).json({
+              error,
+              message: 'Vous ne pouvez pas publier un post'
+          }))
+  } else {
+      Post.create({
+              userId: authUser(req),
+              post: req.body.post,
+              imageUrl: null,
+          })
+          .then(() => res.status(201).json({
+              message: 'post créé !'
+          }))
+          .catch((error) => res.status(400).json({
+              error,
+              message: 'Vous ne pouvez pas publier un post'
+          }))
+  }
+}
 // -----------------------modification du post-----------------------//
 exports.updatePost = (req, res) => {
   Post.findOne({ where: { id: req.params.id } });
@@ -53,7 +61,7 @@ exports.updatePost = (req, res) => {
       id: req.params.id
     }
   })
-    .then(() => res.status(200).json({ message: 'Objet modifié !' }))
+    .then(() => res.status(200).json({ message: 'Post crée !' }))
     .catch((error) => res.status(400).json({ message: error }));
 };
 
