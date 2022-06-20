@@ -1,6 +1,6 @@
 <template>
   <div class="card" style="width: 30rem">
-    <form @submit.prevent="addPost()" enctype="multipart/form-data">
+    <form @submit.prevent="addPost" enctype="multipart/form-data">
       <div class="container col-md-12">
         <div class="mb-5">
           <label for="file" class="form-label">Image</label>
@@ -10,7 +10,7 @@
             accept="image/*"
             ref="file"
             name="image"
-            @change="imageUpload"
+            @change="imageUpload()"
           />
         </div>
       </div>
@@ -24,7 +24,7 @@
             class="form-control form-control-sm"
             rows="5"
             cols="20"
-            id="post_title"
+            id="title"
             v-model="title"
             required
           />
@@ -38,10 +38,10 @@
             rows="5"
             cols="20"
             type="text"
-            id="content"
-            name="content"
+            id="description"
+            name="description"
             placeholder="Votre post ici !"
-            v-model="content"
+            v-model="description"
             required
           />
         </div>
@@ -52,37 +52,43 @@
 </template>
 <script>
 import postService from "../../_services/postService";
+
 export default {
   name: "PostAdd",
 
   data() {
     return {
       file: "",
-      // post: {
-      //user_id: "",
-      // title: "",
+      userId: "",
+      imageUrl: "",
+      title: "",
+      description: "",
 
-      // content: "",
-      // },
+      token: localStorage.getItem("token"),
+      userId: localStorage.getItem("userId"),
     };
   },
-
   methods: {
-    imageUpload() {
-      this.file = this.$refs.file.files[0];
-      ///this.image = URL.createObjectURL(this.file);
-      // console.log(this.imageUrl)
+    imageUpload(data) {
+      this.image = this.$refs.file.files[0];
+      this.imageUrl = URL.createObjectURL(this.image);
+      console.log(this.image);
     },
 
     addPost() {
       const formData = new FormData();
-      formData.append("file", this.file);
-      console.log("test", formData.get("file"));
 
+      formData.append("image", this.image);
+      formData.append("userId", parseInt(localStorage.getItem("userId")));
+      formData.append("title", this.title);
+      formData.append("description", this.description);
+      console.log("test", formData.get("file"));
       postService
         .createPost(formData)
-        
-        
+        .then(() => {
+          this.$router.push("/posts");
+        })
+        .catch((err) => console.log(err));
     },
   },
 };

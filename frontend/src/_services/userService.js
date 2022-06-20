@@ -33,6 +33,9 @@ export default {
     console.log('user', saveUser)
     localStorage.getItem('user', user)
   },
+  getUserId() {
+    return localStorage.getItem('userId')
+  },
 
   /********************************************************************************************/
 
@@ -48,9 +51,7 @@ export default {
   updateUser(user) {
     return Axios.put("/users/" + user.id, user);
   },
-  createUser(user) {
-    return Axios.put('/users', user)
-  },
+
   logout() {
     localStorage.removeItem('token')
   },

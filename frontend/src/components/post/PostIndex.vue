@@ -57,7 +57,7 @@ export default {
       postService.deletePost(this.posts[index].id)
       .then(res => console.log(res))
       .catch(err =>console.log(err))
-      //this.users.splice(index, 1)
+      this.users.splice(index, 1)
     }
   },
   mounted() {

@@ -15,7 +15,8 @@ import PostEdit from "../components/post/PostEdit"
 import PostAdd from "../components/post/PostAdd";
 
 import Profil from "../views/Profil"
-import { authGuard } from "@/_services/authAdmin";
+//import { authGuard } from "@/_services/authAdmin";
+
 
 
 
@@ -26,7 +27,7 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-  
+
   },
   {
     path: "/login",
@@ -42,8 +43,7 @@ const routes = [
     path: "/profil",
     name: "profil",
     component: Profil,
-  
-    props: true,
+ 
 
   },
 
@@ -51,7 +51,7 @@ const routes = [
     path: "/posts",
     name: "posts",
     component: Posts,
-  
+
     props: true,
 
   },
@@ -62,10 +62,10 @@ const routes = [
     props: true,
   },
   {
-    path: "/postadd",
+    path: "/posts/add",
     name: "PostAdd",
     component: PostAdd,
-
+    props: true,
   },
   {
     path: "/edit/:id?",
@@ -76,8 +76,9 @@ const routes = [
   {
     path: "/admin",
     name: "admin",
+   // beforeEnter: authGuard,
     component: Admin,
-  
+
 
     children: [
       {
@@ -117,12 +118,5 @@ const router = createRouter({
   routes,
 })
 
-/*router.beforeEach((to, from, next) => {
-  console.log(to)
 
-  if (to.meta.requiresAuth)
-    console.log('tokenAdmin')
-  authGuard()
-  next()
-})*/
 export default router;

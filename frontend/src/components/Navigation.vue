@@ -2,6 +2,7 @@
   <nav class="navbar navbar-light bg-light expand-lg">
     <a class="navbar-brand" href="#" alt="logo du site" title="logo du site"
       ><img
+        to="/home"
         src="../assets/images/1.png"
         width="130"
         height="60"
@@ -14,7 +15,6 @@
       <ul class="nav">
         <li class="nav-item">
           <router-link
-           
             aria-label="connexion"
             alt="connexion"
             title="connexion"
@@ -26,7 +26,6 @@
         </li>
         <li class="nav-item">
           <router-link
-           
             aria-label="inscription"
             alt="inscription"
             title="inscription"
@@ -36,12 +35,11 @@
             >inscription</router-link
           >
         </li>
-        
       </ul>
-      <ul class="nav" >
+
+      <ul class="nav">
         <li class="nav-item active">
           <router-link
-        
             to="/posts"
             aria-label="page des publications"
             alt="publication"
@@ -55,7 +53,6 @@
       <ul>
         <li class="nav-item">
           <router-link
-         
             aria-label="profil"
             alt="accès profil"
             title="accès profil"
@@ -73,22 +70,21 @@
           alt="gestion du site"
           title="gestion du site"
           type="button"
-          to="/administrateur"
+          to="/admin/users"
         >
           <li class="nav-item" type="button" arial-label="voir son compte">
             <i class="fas fa-cogs"></i>
           </li>
         </router-link>
-        <li class="nav-item">
+        <li>
           <button
-         
             type="button"
             aria-label="Se déconnecter"
             alt="se déconnecter"
             title="Se déconnecter"
             class="btn btn-danger"
             id="btn-logout"
-            @click="logout"
+            v-on:click="logout"
           >
             <i class="fas fa-power-off"></i>
           </button>
@@ -99,23 +95,21 @@
 </template>
 
 <script>
-import userService from '../_services/userService';
+import userService from "../_services/userService";
 export default {
   name: "NavApp",
   data() {
     return {
-      user: null
-     
+      user: null,
+      isAdmin: localStorage.getItem("isAdmin"),
     };
   },
- 
+
   methods: {
-    isLogged(user){
-      return user.user !== null
-    },
     logout() {
-      localStorage.clear();
-      this.$router.push("/login");
+      console.log('logout')
+     localStorage.clear();
+    this.$router.push({name: "login"});
     },
   },
 };

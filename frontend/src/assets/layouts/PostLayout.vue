@@ -33,6 +33,10 @@
     margin: 10px 0px;
    
 }
+.img{
+  width: 50%;
+  height: 300px;
+}
 
 .blog-post p {
     color: whitesmoke;
@@ -58,5 +62,5 @@
     max-height: 210px;
     overflow: hidden;
 }
-/*-- End Blog Section CSS --*/   
+ 
 </style>

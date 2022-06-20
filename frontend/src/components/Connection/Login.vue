@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       user: { email: "", password: "" },
-      errors: [],
+     
     };
   },
 
@@ -68,7 +68,7 @@ export default {
           userService.saveToken(res.data.token);
           userService.isAdmin(res.data.idRole);
           userService.saveUserId(res.data.userId);
-          this.$router.push("/admin/users");
+          this.$router.push("/posts");
         })
         .catch((err) => console.log(err, "erreur de connexion"));
     },

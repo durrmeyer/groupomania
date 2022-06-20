@@ -144,7 +144,7 @@ export default {
           console.log(res);
         
           userService.saveToken(res.data.token);
-          this.$router.push("/");
+          this.$router.push("/login");
         })
         .catch((err) => console.log(err, "erreur de connexion"));
     },
