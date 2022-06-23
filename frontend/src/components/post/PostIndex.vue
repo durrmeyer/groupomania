@@ -1,5 +1,15 @@
 <template>
   <div>
+    <router-link
+            
+            to="/posts"
+            > page des posts</router-link
+          >||
+          <router-link
+            
+            to="/admin/users"
+            >liste des utilisateurs</router-link
+          >
     <div class="title">
       <h2>liste des posts, il y en a {{ comptage }}</h2>
     </div>
@@ -38,7 +48,7 @@
 </template>
 <script>
 import postService from "../../_services/postService";
-import userService from "../../_services/userService"
+
 export default {
   name: "PostIndex",
   data() {

@@ -1,48 +1,54 @@
 const db = require("../server/models");
 //Récupération du module 'file system' de Node permettant de gérer ici les téléchargements et modifications d'images
 const fs = require('fs'); //package qui permet de modifier ou supprimer des fichiers
-const authUser = require("../middleware/authUser");
-const User = db.User;
+
+
 const Post = db.Post;
 
 
 //---------------------------------création d'un post----------------------------//
 
 exports.createPost = (req, res) => {
-  if (!req.body.post) {
-      res.status(400).send({
-          message: "impossible de publier un message vide !"
-      });
-      return
-  }
+
   if (req.file) {
-      Post.create({
-              userId: authUser(req),
-              post: req.body.post,
-              imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-          })
-          .then(() => res.status(201).json({
-              message: 'post créé !'
-          }))
-          .catch((error) => res.status(400).json({
-              error,
-              message: 'Vous ne pouvez pas publier un post'
-          }))
-  } else {
-      Post.create({
-              userId: authUser(req),
-              post: req.body.post,
-              imageUrl: null,
-          })
-          .then(() => res.status(201).json({
-              message: 'post créé !'
-          }))
-          .catch((error) => res.status(400).json({
-              error,
-              message: 'Vous ne pouvez pas publier un post'
-          }))
+    Post.create({
+      userId: req.body.userId,
+      title: req.body.title,
+      description: req.body.description,
+      imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+      likes: 0
+    })
+      .then(() => res.status(201).json({
+        message: 'post créé !'
+      }))
+      .catch((error) => res.status(400).json({
+        error,
+        message: 'Vous ne pouvez pas publier un post'
+      }))
   }
 }
+
+/*Post.create({
+ 
+  userId: req.body.userId,
+  title: req.body.title,
+  description: req.body.description,
+  imageUrl: (req.file) ? `${req.protocol}://${req.get("host")}/images/${req.files[index].filename}` : null,
+  likes:0,
+ 
+
+})
+  .then(() => res.status(201).json({
+    message: 'post créé !'
+  }))
+  .catch((error) => res.status(400).json({
+    error,
+    message: 'Vous ne pouvez pas publier un post'
+  }))
+},*/
+
+
+
 // -----------------------modification du post-----------------------//
 exports.updatePost = (req, res) => {
   Post.findOne({ where: { id: req.params.id } });

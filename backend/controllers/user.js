@@ -19,16 +19,15 @@ exports.register = (req, res) => {
 							.hash(req.body.password, 10)
 							.then((hash) => {
 								// crée une instance du model User, y insert les données et les sauvegardes dans la base de données.
-								const user = new User({
+								db.User.create({
 									id: req.body.id,
 									firstName: req.body.firstName,
 									lastName: req.body.lastName,
 									email: req.body.email,
 									password: hash,
 									idRole: 1
-								});
-								user
-									.save()
+								})
+							
 									.then(() => {
 										// message retourné en cas de réussite
 										res.status(201).json({ message: 'Utilisateur créé !' });
@@ -47,7 +46,8 @@ exports.register = (req, res) => {
 				})
 
 		}
-	}// message d'erreur si la présence de l'utilisateur dans la BDD n'a pu être vérifié
+	}
+	// message d'erreur si la présence de l'utilisateur dans la BDD n'a pu être vérifié
 	catch (error) {
 		res.status(500).json({ error: 'erreur' });
 	}
@@ -103,7 +103,26 @@ exports.User = async (req, res) => {
 	}
 };
 
+/*exports.createUser = (req, res) => {
 
+	if (req.file) {
+		User.create({
+			userId: req.body.userId,
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
+			email: req.body.email,
+			imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+
+		})
+			.then(() => res.status(201).json({
+				message: 'user créé !'
+			}))
+			.catch((error) => res.status(400).json({
+				error,
+				message: 'Vous ne pouvez pas publier un user'
+			}))
+	}
+}*/
 exports.getAllUsers = async (req, res) => {
 	User.findAll()
 		.then((users) => res.status(200).json(users))
@@ -120,29 +139,26 @@ exports.getUserById = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-	User.findOne({ where: { id: req.params.id } });
-	const userObjet = req.file ? {
-		...(req.body.user),
+	const userObject = req.file ? {
+		...req.body.user,
 		imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-	}
-		: {
-			...req.body
-		}; //fichier n'existe pas
-
-	User.update({
-		...userObjet
-	}, {
+	} : {
+		...req.body
+	};
+	User.findOne({
 		where: {
 			id: req.params.id
 		}
 	})
-		.then(() => res.status(200).json({ message: 'User modifié !' }))
-		.catch((error) => res.status(400).json({ message: error }));
+		
+		
 };
+
+/****************************suppression de l'utilisateur***************************************/
 exports.deleteUser = (req, res) => {
 	//récupération dans la base de donnée
 
-	//l'id du post doit être le même que le paramètre de requête
+	//l'id du user doit être le même que le paramètre de requête
 	User.findOne({ where: { id: req.params.id } })
 
 		//supprime l'ancienne image du server  
@@ -157,7 +173,7 @@ exports.deleteUser = (req, res) => {
 						}
 					})
 						.then(() => res.status(200).json({
-							message: 'le post est bien supprimé !'
+							message: 'le user est bien supprimé !'
 						}))
 						.catch(error => res.status(400).json({
 							error

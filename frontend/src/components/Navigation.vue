@@ -12,7 +12,7 @@
     /></a>
 
     <div>
-      <ul class="nav">
+      <ul class="nav" v-if="!user">
         <li class="nav-item">
           <router-link
             aria-label="connexion"
@@ -40,6 +40,7 @@
       <ul class="nav">
         <li class="nav-item active">
           <router-link
+            v-if="user"
             to="/posts"
             aria-label="page des publications"
             alt="publication"
@@ -53,6 +54,7 @@
       <ul>
         <li class="nav-item">
           <router-link
+            v-if="user == 'true'"
             aria-label="profil"
             alt="accès profil"
             title="accès profil"
@@ -78,6 +80,7 @@
         </router-link>
         <li>
           <button
+            v-if="user"
             type="button"
             aria-label="Se déconnecter"
             alt="se déconnecter"
@@ -104,14 +107,13 @@ export default {
       isAdmin: localStorage.getItem("isAdmin"),
     };
   },
-
-  methods: {
+  
     logout() {
-      console.log('logout')
-     localStorage.clear();
-    this.$router.push({name: "login"});
+      console.log("logout");
+      localStorage.clear();
+      this.$router.push({ name: "login" });
     },
-  },
+  
 };
 </script>
 <style>

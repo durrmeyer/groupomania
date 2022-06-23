@@ -6,7 +6,6 @@ import Register from "../components/Connection/Register";
 import Admin from "../views/admin/Admin";
 import UsersIndex from "../views/admin/UserIndex";
 import UserEdit from "../views/admin/UserEdit";
-import UserAdd from "../views/admin/UserAdd";
 
 
 import Posts from "../views/Posts"
@@ -14,7 +13,7 @@ import PostIndex from "../components/post/PostIndex";
 import PostEdit from "../components/post/PostEdit"
 import PostAdd from "../components/post/PostAdd";
 
-import Profil from "../views/Profil"
+import Profil from "../components/ProfilUser";
 //import { authGuard } from "@/_services/authAdmin";
 
 
@@ -43,7 +42,7 @@ const routes = [
     path: "/profil",
     name: "profil",
     component: Profil,
- 
+    props: true,
 
   },
 
@@ -93,12 +92,8 @@ const routes = [
         component: UserEdit,
         props: true
       },
-      {
-        path: "useradd",
-        name: "UserAdd",
-        component: UserAdd,
-
-      },
+      
+      
     ]
   },
 

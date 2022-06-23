@@ -21,6 +21,6 @@ router.get("/:id", postCtrl.getOnePost);
 router.put("/:id", multer, postCtrl.updatePost);
 
 // Supprimer le post avec l'id
-router.delete("/:id", postCtrl.deletePost);
+router.delete("/:id", multer, postCtrl.deletePost);
 
 module.exports = router;

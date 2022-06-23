@@ -46,7 +46,7 @@ const database = async function () {
 
 database();
 
-db.sequelize.sync({ force: false })
+db.sequelize.sync({ force: false})
 	.then(() => console.log("Base de données à jours !"))
 	.catch((error) => console.log(" il y a eu un petit soucis!", error));
 

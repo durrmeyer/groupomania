@@ -15,7 +15,7 @@ export default {
     localStorage.removeItem('token')
   },
 
-
+  /*************************************localStorage*******************************************************/
   saveToken(token) {
     localStorage.setItem('token', token)
   },
@@ -25,6 +25,9 @@ export default {
     } else {
       localStorage.setItem('isAdmin', false)
     }
+  },
+  logout() {
+    localStorage.removeItem('token')
   },
   saveUserId(userId) {
     localStorage.setItem('userId', userId)
@@ -36,8 +39,13 @@ export default {
   getUserId() {
     return localStorage.getItem('userId')
   },
+  isLogged() {
+    token = localStorage.getItem('token')
+    return !!token
+  },
+  /***transformer une variable en Boolean, le rendu !!token***/
 
-  /********************************************************************************************/
+
 
 
   /******************************USERS*************************************/
@@ -49,21 +57,19 @@ export default {
     return Axios.get("users/" + id);
   },
   updateUser(user) {
-    return Axios.put("/users/" + user.id, user);
+    return Axios.put('/users/' + user.id);
   },
-
-  logout() {
-    localStorage.removeItem('token')
+  getUser() {
+    return Axios.put('/users',)
   },
+  
+    
+  
   deleteUser(id) {
     return Axios.delete("users/" + id);
   },
   /********************************************************************/
-  isLogged() {
-    token = localStorage.getItem('token')
-    return !!token
-  },
-  /***transformer une variable en Boolean, le rendu !!token***/
+  
 
 
 

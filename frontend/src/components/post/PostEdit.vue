@@ -4,10 +4,7 @@
     {{ id }}
     <form @submit.prevent="ajout()">
       <input type="text" id="user_id" v-model="post.user_id" hidden />
-      <div class="formGroup">
-        <label for="post_imageUrl">image</label>
-        <input type="text" id="post_imageUrl" v-model="post.imageUrl" />
-      </div>
+      
       <div class="formGroup">
         <label for="user_firstName">Prénom</label>
         <input type="text" id="post_fistName" v-model="post.firstName" />
@@ -28,7 +25,7 @@
       <div class="formGroup">
         <button type="submit" class="button">Modifier</button>
      
-        <!--<a href="@/posts" class="button">Annuler</a>-->
+        <a href="@/posts" class="button">Annuler</a>
       </div>
     </form>
   </div>
@@ -41,7 +38,7 @@ export default {
   data() {
     return {
       post: {
-        user_id: "",
+        userId: "",
         firstName: "",
         lastName: "",
         title: "",
@@ -60,8 +57,7 @@ export default {
   },
   methods: {
     ajout() {
-    
-       postService.updatePost(this.post)
+         postService.updatePost(this.post)
         .then(res => this.$router.push({name:"PostIndex"}))
         .catch(err => console.log (err))
         location.reload();

@@ -15,9 +15,17 @@ router.post('/register', userCtrl.register);
 
 /******créer les routes users******/
 /** route pour utilisateurs **/
+
+//-----récupérer tous les utilisateurs -----------//
 router.get("/", userCtrl.getAllUsers);
+
+//-----modification de l'utilisateur-----------//
 router.put("/:id", userCtrl.updateUser);
+
+//-----récupérer un utilisateur-----------//
 router.get('/:id', userCtrl.User);
+
+//-----supprimer un utilisateur-----------//
 router.delete("/:id", userCtrl.deleteUser);
 module.exports = router;
 

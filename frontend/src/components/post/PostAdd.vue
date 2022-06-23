@@ -69,7 +69,7 @@ export default {
     };
   },
   methods: {
-    imageUpload(data) {
+    imageUpload() {
       this.image = this.$refs.file.files[0];
       this.imageUrl = URL.createObjectURL(this.image);
       console.log(this.image);
@@ -77,12 +77,12 @@ export default {
 
     addPost() {
       const formData = new FormData();
-
-      formData.append("image", this.image);
       formData.append("userId", parseInt(localStorage.getItem("userId")));
+      formData.append("image", this.image);
+
       formData.append("title", this.title);
       formData.append("description", this.description);
-      console.log("test", formData.get("file"));
+     
       postService
         .createPost(formData)
         .then(() => {

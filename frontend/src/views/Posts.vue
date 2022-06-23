@@ -6,15 +6,16 @@
       <div class="section_post">
         <button @click="PostAdd">Ajouter un nouveau post</button>
       </div>
-      <div class="card-container">
+      <div class="card-container">*
         <div v-for="post in posts" class="card" :key="post.id">
-         
+     <button class="btn btn-danger btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Delete" data-v-6837beee=""><i class="fa fa-trash" data-v-6837beee=""></i></button>
           <div class="card_author">
+            
             <div class="d-flex mr-3">
               <a href=""
                 ><img
                   class="img-fluid rounded-circle"
-                  src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/5.jpg"
+                  src="../assets/images/avatar.png"
                   alt="User"
                 />
                 <span>{{ post.firstName }} {{ post.lastName }}</span></a
@@ -23,7 +24,7 @@
          
             <p>posté le : {{ post.updatedAt }}</p>
           </div>
-            
+              
           <div class="img-container">
             <img v-bind:src="post.imageUrl" alt="image du post" class="img" />
           </div>
@@ -78,3 +79,12 @@ export default {
   },
 };
 </script>
+<style scoped>
+.btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 45px;
+  width: 40px;
+}
+</style>

@@ -14,7 +14,7 @@ export default {
   updatePost(post) {
     return Axios.put("/posts/" + post.id, post);
   },
-
+  
   deletePost(id) {
     return Axios.delete(`posts/` + id);
   },
