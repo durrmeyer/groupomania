@@ -12,15 +12,13 @@
     /></a>
 
     <div>
-      <ul class="nav" v-if="!user">
+      <ul class="nav" >
         <li class="nav-item">
           <router-link
             aria-label="connexion"
             alt="connexion"
-            title="connexion"
-            type="button"
             class="nav-link"
-            to="/login"
+            to="/"
             >connexion</router-link
           >
         </li>
@@ -28,8 +26,6 @@
           <router-link
             aria-label="inscription"
             alt="inscription"
-            title="inscription"
-            type="button"
             class="nav-link"
             to="/register"
             >inscription</router-link
@@ -38,9 +34,25 @@
       </ul>
 
       <ul class="nav">
+        <li>
+          <router-link
+            aria-label="deconnection"
+            alt="deconnection"
+            class="nav-link"
+            to="/"
+          >
+            <i class="fas fa-power-off"></i>
+          </router-link>
+        </li>
+      
+      
+        
+      </ul>
+
+      <ul class="nav">
         <li class="nav-item active">
           <router-link
-            v-if="user"
+         
             to="/posts"
             aria-label="page des publications"
             alt="publication"
@@ -54,7 +66,7 @@
       <ul>
         <li class="nav-item">
           <router-link
-            v-if="user == 'true'"
+          
             aria-label="profil"
             alt="accès profil"
             title="accès profil"
@@ -78,42 +90,27 @@
             <i class="fas fa-cogs"></i>
           </li>
         </router-link>
-        <li>
-          <button
-            v-if="user"
-            type="button"
-            aria-label="Se déconnecter"
-            alt="se déconnecter"
-            title="Se déconnecter"
-            class="btn btn-danger"
-            id="btn-logout"
-            v-on:click="logout"
-          >
-            <i class="fas fa-power-off"></i>
-          </button>
-        </li>
       </ul>
     </div>
   </nav>
 </template>
 
 <script>
-import userService from "../_services/userService";
 export default {
   name: "NavApp",
   data() {
     return {
-      user: null,
-      isAdmin: localStorage.getItem("isAdmin"),
+      
     };
   },
-  
+   
+  methods: {
     logout() {
       console.log("logout");
       localStorage.clear();
-      this.$router.push({ name: "login" });
+      this.$router.push({ name: "Home" });
     },
-  
+  },
 };
 </script>
 <style>

@@ -1,5 +1,22 @@
 <template>
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Réseau social de l'entreprise</h5>
+
+      <div class="card-description">
+     
+        <p class="card-text">
+          Bienvenue sur le nouveau réseau social de Groupomania.<br />
+          Vous pouvez échanger entre collègues et suivre toutes les actualités
+          de notre entreprise.
+          <br />
+          Et tout cela dans le respect et la bienveillance!<br />
+        </p>
+    
+      </div>
+    </div>
   <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+    
     <div class="container">
       <div class="card login-card">
         <div class="row no-gutters">
@@ -42,11 +59,13 @@
       </div>
     </div>
   </main>
+  </div>
+
 </template>
 <script>
 import PageLogin from "../../assets/layouts/pageLogin.vue";
+import accountService from "../../_services/accountService";
 import userService from "../../_services/userService";
-
 export default {
   name: "Login",
   components: {
@@ -61,13 +80,14 @@ export default {
 
   methods: {
     login() {
-      userService
+      console.log(this.user)
+     accountService
         .login(this.user)
         .then((res) => {
           console.log(res.data);
-          userService.saveToken(res.data.token);
-          userService.isAdmin(res.data.idRole);
-          userService.saveUserId(res.data.userId);
+          accountService.saveToken(res.data.token);
+        accountService.isAdmin(res.data.idRole);
+          userService.saveUserId(res.data.user);
           this.$router.push("/posts");
         })
         .catch((err) => console.log(err, "erreur de connexion"));

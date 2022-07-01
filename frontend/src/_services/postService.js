@@ -8,8 +8,8 @@ export default {
   getPostById(id) {
     return Axios.get("/posts/" + id);
   },
-  createPost(formData) {
-    return Axios.post("/posts", formData);
+  createPost() {
+    return Axios.post("/posts",);
   },
   updatePost(post) {
     return Axios.put("/posts/" + post.id, post);

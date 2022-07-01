@@ -59,7 +59,6 @@ export default {
   data() {
     return {
       file: "",
-      userId: "",
       imageUrl: "",
       title: "",
       description: "",

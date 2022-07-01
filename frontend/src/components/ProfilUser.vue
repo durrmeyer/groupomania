@@ -9,15 +9,15 @@
           <div class="col-12">
             <div class="card bg-light my-3 class=center-block">
               <div class="card-header">
-                <div v-bind="user"  class="row justify-content-around">
+                <div v-bind="user" class="row justify-content-around">
                   <div class="card-header-info">Vos informations</div>
                   <p class="text">
                     Prénom:
-                    <span class="text_color"> {{ firstName }} </span>
+                    <span class="text_color"> {{ user.firstName }} </span>
                   </p>
                   <p class="text">
                     Nom:
-                    <span class="text_color">{{userId.lastName}}</span>
+                    <span class="text_color">{{ lastName }}</span>
                   </p>
                   <p class="text">
                     Email:
@@ -25,67 +25,12 @@
                   </p>
                 </div>
               </div>
-
-              <div>
-                <form
-                  id="form"
-                  enctype="multipart/form-data"
-                  @submit.prevent="imageUpload()"
-                >
-                  <div class="card-body text-center" v-bind="user">
-                    <div v-if="imageUrl == null" class="dropdown text-center">
-                      <img
-                        src="../assets/images/avatar.png"
-                        alt="photo de profil"
-                        class="avatar"
-                      />
-                    </div>
-                    <div v-else class="dropdown text-center">
-                      <img
-                        :src="imageUrl"
-                        alt="photo de profil"
-                        class="avatar"
-                        id="avatar"
-                      />
-                    </div>
-                  </div>
-                <div
-                    class="card-body d-flex flex-column justify-content-between"
-                  >
-                    <label class="text-center label" for="image"
-                      ><strong>Choisir ma photo de profil</strong></label
-                    >
-                    <input
-                      type="file"
-                      class="form-control"
-                      name="image"
-                      id="image"
-                      accept="image/*"
-                      ref="file"
-                      @change="file()"
-                    />
-                    <div class="card-body mx-auto">
-                      <button
-                        type="submit"
-                        class="form-control btn btn-primary"
-                        name="pictueUpdate"
-                        id=""
-                        @click.prevent="update"
-                      >
-                        Confirmer
-                      </button>
-                    </div>
-                  </div>
-                </form>
-                <div>
-                  <button
-                    class="form-control btn btn-danger"
-                    v-bind="user"
-                    @click.prevent="deleteMyAccount(user.id)"
-                  >
-                    Supprimer
-                  </button>
-                </div>
+              <div class="img-container">
+                <img
+                  v-bind:src="imageUrl"
+                  alt="image du post"
+                  class="img"
+                />
               </div>
             </div>
           </div>
@@ -102,68 +47,55 @@ export default {
 
   data(user) {
     return {
-      user: {
-        id: localStorage.getItem("userId"),
-        file: null,
+     user: {
+        userId: "",
         firstName: "",
         lastName: "",
         email: "",
+        file: "",
       },
       imageUrl: "",
-      token: localStorage.getItem("token"),
-      userId: localStorage.getItem("userId"),
     };
   },
   mounted() {
+    //récupération à l'affichage de l'utilisateur
     userService
-      .getUserById()
+      .getUserById(this.user.id)
       .then((res) => {
-        this.users = res.data;
+        console.log(res, "1ere étape");
+        this.user = res.data.user;
+     
       })
       .catch((err) => console.log(err));
   },
 
- created() {
-    userService.getUserId('userId')
-    console.log("a is: " + this.userId);
-    userService.getUserById(+this.userId).then((res) => {
-      
-      this.image = res.data.image;
-    });
-  },
-  
-   methods: {
+  methods: {
     file() {
       this.image = this.$refs.file.files[0];
       this.imageUrl = URL.createObjectURL(this.image);
     },
-    imageUpload() {
+    /*imageUpload() {
       const formData = new FormData();
       formData.append("userId", parseInt(localStorage.getItem("userId")));
-      formData.append("image", this.image);
-        formData.append("firstName", this.firstName);
-         formData.append("lastName", this.lastName);
-          formData.append("image", this.image);
-      console.log(this.image);
+      formData.append("file", this.file);
+      formData.append("imageUrl", this.imageUrl);
+      console.log(this.file);
       console.log(this.imageUrl);
-      console.log("test-récup", formData.get("image"));
-      userService.updateUser(formData)
-        .then((response) => {
-          this.user.id = response.data.user;
-          this.image = response.data.image;
-        });
-    },
-    async deleteMyAccount(id) {
+      console.log("test-récup", formData.get("imageUrl"));
+      userService.updateUser(formData).then((response) => {
+        this.user.id = response.data.user;
+        this.image = response.data.image;
+      });
+    },*/
+    del(id) {
       let confirmDeleteUser = confirm(
-        " la suppresion du compte est irréversible, voulez-vous vraiment supprimer le compte ?"
+        " Voulez-vous vraiment supprimer le compte ?"
       );
+
       if (confirmDeleteUser == true) {
-        await axios
-          .delete(`http://localhost:3000/api/users/${id}`, {
-            headers: {
-              Authorization: "Bearer " + this.token,
-            },
-          })
+        userService
+          .deleteUser(this.user.id)
+
           .then(() => {
             localStorage.clear();
             this.$router.push("/");
@@ -173,6 +105,5 @@ export default {
       }
     },
   },
-
 };
 </script>

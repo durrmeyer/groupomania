@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Home from "../views/Home.vue";
+
 import Login from "../components/Connection/Login";
 import Register from "../components/Connection/Register";
 
@@ -25,18 +25,28 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: Login,
 
   },
-  {
-    path: "/login",
-    name: "login",
-    component: Login,
-  },
+ 
   {
     path: "/register",
     name: "register",
     component: Register,
+  },
+
+  {
+    path: "/posts",
+    name: "posts",
+    component: Posts,
+    props: true,
+
+  },
+  {
+    path: "/posts/add",
+    name: "PostAdd",
+    component: PostAdd,
+    props: true,
   },
   {
     path: "/profil",
@@ -46,26 +56,14 @@ const routes = [
 
   },
 
-  {
-    path: "/posts",
-    name: "posts",
-    component: Posts,
-
-    props: true,
-
-  },
+ 
   {
     path: "/posts/index",
     name: "PostIndex",
     component: PostIndex,
     props: true,
   },
-  {
-    path: "/posts/add",
-    name: "PostAdd",
-    component: PostAdd,
-    props: true,
-  },
+  
   {
     path: "/edit/:id?",
     name: "postEdit",

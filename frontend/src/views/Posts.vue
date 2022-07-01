@@ -6,9 +6,9 @@
       <div class="section_post">
         <button @click="PostAdd">Ajouter un nouveau post</button>
       </div>
-      <div class="card-container">*
-        <div v-for="post in posts" class="card" :key="post.id">
-     <button class="btn btn-danger btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Delete" data-v-6837beee=""><i class="fa fa-trash" data-v-6837beee=""></i></button>
+      <div class="card-container">
+        <div v-for="(post, index) in posts" :key="post.id">
+       <button @click="del(index)">X</button>
           <div class="card_author">
             
             <div class="d-flex mr-3">
@@ -16,7 +16,7 @@
                 ><img
                   class="img-fluid rounded-circle"
                   src="../assets/images/avatar.png"
-                  alt="User"
+                  alt="user"
                 />
                 <span>{{ post.firstName }} {{ post.lastName }}</span></a
               >
@@ -49,13 +49,14 @@
 </template>
 
 <script>
-//import CreateComment from "../components/CreateComment.vue";
+
 import PostLayout from "../assets/layouts/PostLayout.vue";
 import postService from "../_services/postService";
 export default {
   name: "Posts",
   components: {
     PostLayout,
+   
   },
 
   data() {
@@ -76,6 +77,13 @@ export default {
     PostAdd() {
       this.$router.push({ name: "PostAdd" });
     },
+     del(index) {
+      console.log(index)
+      postService.deletePost(this.posts[index].id)
+      .then(res => console.log(res))
+      .catch(err =>console.log(err))
+      this.posts.splice(index, 1)
+    }
   },
 };
 </script>

@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-md-12">
           <div>
-            <router-view :user="userid"/>
+            <router-view :user="user"/>
           </div>
         </div>
       </div>
@@ -20,6 +20,17 @@ export default {
   name: "App",
   components: {
     Navigation,
+  },
+  data() {
+    return {
+      user: null
+    }
+  },
+  created() {
+    const res = userService.getUserById('user');
+    this.user = res.data;
+    
+    console.log(res)
   },
 };
 </script>

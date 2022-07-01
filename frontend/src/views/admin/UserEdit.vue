@@ -1,21 +1,39 @@
 <template>
   <div class="card" style="width: 30rem">
     <h3>Modification de l'utilisateur</h3>
-{{ id }}
-    
+    {{ id }}
+
     <form @submit.prevent="modifier()" enctype="multipart/form-data">
-      <div class="container col-md-12">
-        <div class="mb-5">
-          <label for="file" class="form-label">Image</label>
-          <input
-            class="form-control"
-            type="file"
-            accept="image/*"
-            ref="file"
-            name="image"
-            @change="imageUpload()"
+      <div class="card-body text-center" v-bind="user">
+        <div v-if="user.imageUrl == null" class="dropdown text-center">
+          <img
+            src="../../assets/images/avatar.png"
+            alt="photo de profil"
+            class="avatar"
           />
         </div>
+        <div v-else class="dropdown text-center">
+          <img
+            :src="user.imageUrl"
+            alt="photo de profil"
+            class="avatar"
+            id="avatar"
+          />
+        </div>
+      </div>
+      <div class="card-body d-flex flex-column justify-content-between">
+        <label class="text-center label" for="file"
+          ><strong>Choisir ma photo de profil</strong></label
+        >
+        <input
+          type="file"
+          class="form-control"
+          name="image"
+          id="image"
+          accept="image/*"
+          ref="file"
+          @change="file()"
+        />
       </div>
       <div class="card-body">
         <div class="card-form_group">
@@ -55,12 +73,14 @@
             type="text"
             id="email"
             name="email"
-            placeholder="Votre post ici !"
+            placeholder="test@test.com !"
             v-model="user.email"
             required
           />
         </div>
-        <button type="submit" class="button">Modifier</button>
+        <button type="submit" class="button" @click.prevent="modifier">
+          Modifier
+        </button>
       </div>
     </form>
   </div>
@@ -72,13 +92,10 @@ export default {
   props: ["id"],
   data() {
     return {
-      user: {
-        userId: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        imageUrl: "",
-      },
+      user: {},
+      token: localStorage.getItem("token"),
+      userId: localStorage.getItem("userId"),
+      imageUrl: "",
     };
   },
   mounted() {
@@ -86,42 +103,34 @@ export default {
     userService
       .getUserById(this.id)
       .then((res) => {
-        console.log(res, "1 ere étape");
         this.user = res.data;
         this.user.id = this.id;
       })
       .catch((err) => console.log(err));
   },
   methods: {
-    imageUpload() {
+    file() {
       this.image = this.$refs.file.files[0];
       this.imageUrl = URL.createObjectURL(this.image);
-      console.log(this.image);
     },
-    addPost() {
-      const formData = new FormData();
-      if (this.firstName !== "") {
-        formData.append("firstname", this.firstName);
-      }
-      if (this.lastName !== "") {
-        formData.append("lastName", this.lastName);
-      }
-      if (this.email !== "") {
-        formData.append("description", this.email);
-      }
-      if (this.file !== null) {
-        formData.append("image", this.file);
-      }
-    },
-    //envoi à l'api pour modification
+
     modifier() {
+      const formData = new FormData();
+      formData.append("userId", parseInt(localStorage.getItem("userId")));
+      formData.append("file", this.file);
+      formData.append("imageUrl", this.imageUrl);
+      formData.append("firstName", this.firstName);
+      formData.append("lastName", this.lastName);
+      formData.append("email", this.email);
+
       userService
         .updateUser(this.user)
-        .then(() => {
-          this.$router.push("/profil");
-        })
+        .then((res) => this.$router.push({ name: "Profil" }))
         .catch((err) => console.log(err));
+      location.reload();
     },
+
+    //envoi à l'api pour modification
   },
 };
 </script>
