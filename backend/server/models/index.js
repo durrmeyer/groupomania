@@ -33,11 +33,19 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-db.User = require('./user')(sequelize, Sequelize);
-db.Post = require('./post')(sequelize, Sequelize);
+db.User = require('./User')(sequelize, Sequelize);
+db.Post = require('./Post')(sequelize, Sequelize);
+db.Role = require("./Role")(sequelize, Sequelize);
+db.Comment = require("./Comment")(sequelize, Sequelize);
 
-//db.Post.hasMany(db.Comment);
-db.role = require("./role")(sequelize, Sequelize);
+
+db.User.hasMany(db.Post, { as: "posts" });
+db.User.hasMany(db.Comment, { as: "comments" });
+db.Post.hasMany(db.Comment, { as: "comments" });
+
+db.Post.belongsTo(db.User);
+db.Comment.belongsTo(db.Post);
+db.Comment.belongsTo(db.User);
 
 
 sequelize.authenticate()

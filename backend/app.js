@@ -1,4 +1,5 @@
-//const {Sequelize} = require('sequelize');
+
+const {Sequelize} = require('sequelize');
 
 const express = require('express');
 const db = require('./server/models')//utilisations du modèle pour la BDD

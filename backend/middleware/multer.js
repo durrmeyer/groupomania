@@ -5,7 +5,7 @@ const MIME_TYPES = {
 	'image/jpeg': 'jpg',
 	'image/png': 'png',
 	'image/gif': 'gif',
-}; //dictionnaire
+}; 
 
 //  création d'un objet de configuration //
 

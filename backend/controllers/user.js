@@ -1,9 +1,10 @@
 
+
 const bcrypt = require("bcrypt"); // Bcrypt permet de crypter le password et de le comparer
 const jwt = require("jsonwebtoken"); // Jwt necessaire pour la création d'un token
 const db = require('../server/models');// Récupération des modèles Sequelize
+const authUser = require("../middleware/authUser");
 
-const User = db.User;
 require("dotenv").config();
 
 exports.register = (req, res) => {
@@ -11,7 +12,7 @@ exports.register = (req, res) => {
 		// vérifie  si le mot de passe fait plus de 8 caractères
 		if (req.body.password.length > 8) {
 			// Vérifie si l'utilisateur existe déjà
-			User.findOne({ where: { email: req.body.email } })
+			db.User.findOne({ where: { email: req.body.email } })
 				.then((user) => {
 					if (!user) {
 						//  sécurise le mot de passe en le hachant
@@ -27,7 +28,7 @@ exports.register = (req, res) => {
 									password: hash,
 									idRole: 1
 								})
-							
+
 									.then(() => {
 										// message retourné en cas de réussite
 										res.status(201).json({ message: 'Utilisateur créé !' });
@@ -38,7 +39,7 @@ exports.register = (req, res) => {
 									});
 							})
 							// message d'erreur en cas d'échec de hachage du mot de passe
-							.catch((error) => res.status(500).json({ error: 'toto' }));
+							.catch((error) => res.status(500).json({ error }));
 					} else {
 						// message d'erreur si l'utilisateur à été trouvé dans la BDD
 						return res.status(401).json({ message: ' déjà inscrit!' });
@@ -49,125 +50,140 @@ exports.register = (req, res) => {
 	}
 	// message d'erreur si la présence de l'utilisateur dans la BDD n'a pu être vérifié
 	catch (error) {
-		res.status(500).json({ error: 'erreur' });
+		res.status(500).json({ error: 'aïe erreur' });
 	}
 
 };
 
-/********************Connection  utilisateur******************* */
+
 exports.login = async (req, res) => {
-	try {
-		User.findOne({
-			where: { email: req.body.email }
-		}).then((user) => {
-			if (!user) {
-				return res.status(401).json({ message: 'aucun compte ne correspond à votre adresse mail !' });
-			}
 
-			// bcrypt compare les Hashs
-			bcrypt
-				.compare(req.body.password, user.password)
-				.then((valid) => {
-					if (!valid) {
-						return res.status(401).json({ message: 'Mot de passe incorrect !' });
-					}
+	db.User.findOne({
+		where: { email: req.body.email }
+	}).then((user) => {
+		if (!user) {
+			return res.status(401).json({ message: 'aucun compte ne correspond à votre adresse mail !' });
+		}
 
-					res.status(200).json({
-						userId: user.id,
-						idRole: user.idRole,
-						token: jwt.sign(
-							{
-								userId: user.id,
-								idRole: user.idRole,
-							},
-							'KEY_SECRET',
-							{ expiresIn: '12h' }
-						)
-					});
-				})
-		});
+		// bcrypt compare les Hashs
+		bcrypt
+			.compare(req.body.password, user.password)
+			.then((valid) => {
+				if (!valid) {
+					return res.status(401).json({ message: 'Mot de passe incorrect !' });
+				}
 
-	} catch (error) {
-		res.status(400).json({ error: error.message })
-	}
-};
-exports.User = async (req, res) => {
-	// on trouve l'utilisateur et on renvoie l'objet user
-	try {
-		const user = await db.User.findOne({
-			where: { id: req.params.id },
-		});
-		res.status(200).send(user);
-	} catch (error) {
-		return res.status(500).send({ error: "Erreur serveur" });
-	}
-};
+				res.status(200).json({
+					userId: user.id,
+					token: jwt.sign(
+						{
+							userId: user.id
 
-/*exports.createUser = (req, res) => {
+						},
+						"RANDOM_TOKEN_SECRET",
+						{ expiresIn: '24h' }
+					),
+					message: "Bonjour " + user.firstName + " ! ",
+				});
+			})
+			.catch((error) => res.status(500).json({ error }));
+	});
 
-	if (req.file) {
-		User.create({
-			userId: req.body.userId,
-			firstName: req.body.firstName,
-			lastName: req.body.lastName,
-			email: req.body.email,
-			imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+}
 
-		})
-			.then(() => res.status(201).json({
-				message: 'user créé !'
-			}))
-			.catch((error) => res.status(400).json({
-				error,
-				message: 'Vous ne pouvez pas publier un user'
-			}))
-	}
-}*/
-exports.getAllUsers = async (req, res) => {
-	User.findAll()
-		.then((users) => res.status(200).json(users))
-		.catch((error) => res.status(400).json({ message: error }));
 
-};
-exports.getUserById = (req, res) => {
-	// On l'identifie par l'ID
-	User.findOne({
-		where: { id: req.params.id }
-	})
-		.then((user) => res.status(200).json(user))
-		.catch((error) => res.status(404).json({ error, message: 'user non trouvé' }));
-};
-
-exports.updateUser = (req, res) => {
-	const userObject = req.file ? {
-		...req.body.user,
-		imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-	} : {
-		...req.body
-	};
-	User.findOne({
+exports.getUser = (req, res) => {
+	/*** on récupére l'utilisateur depuis la base de données ***/
+	db.User.findOne({
 		where: {
 			id: req.params.id
-		}
+		},
 	})
-		
-		
+
+		.then(user => res.status(200).json({ user }))
+
+		.catch((err) =>
+			res.status(500).json({
+				err,
+				message: 'Erreur pas de profil'
+			}));
 };
 
-/****************************suppression de l'utilisateur***************************************/
+
+exports.getAllUsers = (req, res,) => {
+
+	// on envoie tous les users sauf admin
+
+	db.User.findAll({
+		attributes: [
+			"id",
+			"firstName",
+			"lastName",
+			"email",
+			"imageUrl",
+			"idRole",
+		],
+	})
+		.then((users) => res.status(200).send(users))
+		.catch((error) => res.status(500).send({ error: "Erreur serveur" }));
+};
+
+
+
+exports.updateUser = async (req, res) => {
+	let newImage;
+	db.User.findOne({ where: { id: req.params.id } });
+
+	if (req.file) {
+		newImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+		if (newImage && user.imageUrl) {
+			const filename = user.picture.split("/images/")[1];
+			fs.unlink(`images/${filename}`, (error) => {
+				if (error) console.log(error, 'non suprrimé');
+				else {
+					console.log(`supprimer: images/${filename}`);
+				}
+			});
+		}
+		db.User.findOne({
+			where: {
+				id: req.params.id,
+			}
+		})
+			.then(() => {
+				db.User.update({
+
+					id: user.id,
+					firstName: user.firstName,
+					lastName: user.lastName,
+					email: user.email,
+					imageUrl: user.imageUrl,
+
+
+				})
+					.catch(error => res.status(405).json({
+						error
+					}))
+			})
+	};
+};
 exports.deleteUser = (req, res) => {
 	//récupération dans la base de donnée
 
 	//l'id du user doit être le même que le paramètre de requête
-	User.findOne({ where: { id: req.params.id } })
+	db.User.findOne({ where: { id: req.params.id } })
 
 		//supprime l'ancienne image du server  
 		.then(user => {
-
+			if (user.id !== authUser(req)) {
+				return res.status(401).json({
+					error
+				})
+			}
 			if (req.file) {
 				const filename = user.imageUrl.split('/images/')[1];
 				fs.unlink(`images/${filename}`, () => {
-					user.destroy({
+					db.User.destroy({
 						where: {
 							id: req.params.id
 						}
@@ -180,7 +196,7 @@ exports.deleteUser = (req, res) => {
 						}))
 				})
 			} else {
-				user.destroy({
+				db.User.destroy({
 					where: {
 						id: req.params.id
 					}

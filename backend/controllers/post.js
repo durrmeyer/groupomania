@@ -1,57 +1,53 @@
 const db = require("../server/models");
+const jwt = require("jsonwebtoken");
 //Récupération du module 'file system' de Node permettant de gérer ici les téléchargements et modifications d'images
-const fs = require('fs'); //package qui permet de modifier ou supprimer des fichiers
-
-
-const Post = db.Post;
-
-
+const fs = require('fs'); //package qui permet de modifconst autUser = require("../middleware/authUser");
+const authUser = require("../middleware/authUser")
 //---------------------------------création d'un post----------------------------//
 
+
 exports.createPost = (req, res) => {
+  // const token = req.headers.authorization.split(' ')[1];
+  //const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+  //const userId = decodedToken.userId;
+  //console.log(userId, 'token?')
 
-  if (req.file) {
-    Post.create({
-      userId: req.body.userId,
-      title: req.body.title,
-      description: req.body.description,
-      imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
-      likes: 0
+
+
+  const image = (req.file) ? `${req.protocol}://${req.get("host")}/images/${req.files.filename}` : "";
+  db.User.findOne({
+    attributes: ["id", "firstName", "lastName", "imageUrl"],
+    where: { id: req.body.userId },
+  })
+    .then(() => {
+      imageUrl = image;
     })
-      .then(() => res.status(201).json({
-        message: 'post créé !'
-      }))
-      .catch((error) => res.status(400).json({
-        error,
-        message: 'Vous ne pouvez pas publier un post'
-      }))
-  }
-}
 
-/*Post.create({
- 
-  userId: req.body.userId,
-  title: req.body.title,
-  description: req.body.description,
-  imageUrl: (req.file) ? `${req.protocol}://${req.get("host")}/images/${req.files[index].filename}` : null,
-  likes:0,
- 
+  db.Post.create({
+    userId: req.body.userId,
+    title: req.body.title,
+    description: req.body.description,
+    Content: req.body.content,
+    imageUrl: image,
+    likes: [0],
+  })
+    .then(() => res.status(201).json({
+      message: 'post créé !'
+    }))
+    .catch((error) => res.status(400).json({
+      error: 'post invalid',
+      message: 'Vous ne pouvez pas publier un post'
+    }))
 
-})
-  .then(() => res.status(201).json({
-    message: 'post créé !'
-  }))
-  .catch((error) => res.status(400).json({
-    error,
-    message: 'Vous ne pouvez pas publier un post'
-  }))
-},*/
+};
+
+
 
 
 
 // -----------------------modification du post-----------------------//
 exports.updatePost = (req, res) => {
-  Post.findOne({ where: { id: req.params.id } });
+  db.Post.findOne({ where: { id: req.params.id } });
   const postObjet = req.file ? {
     ...(req.body.post),
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
@@ -67,25 +63,87 @@ exports.updatePost = (req, res) => {
       id: req.params.id
     }
   })
-    .then(() => res.status(200).json({ message: 'Post crée !' }))
+    .then(() => res.status(200).json({ message: 'Post modifié !' }))
     .catch((error) => res.status(400).json({ message: error }));
 };
 
 // ---------------------------------------base de donnée--------------------------------------------//
 // -----------------------trouver tous les posts--------------------------//
-exports.getAllPosts = (req, res) => {
-  Post.findAll()
-    .then((posts) => res.status(200).json(posts))
-    .catch((error) => res.status(400).json({ message: error }));
+exports.getAllPosts = (req, res, next) => {
+  /*** on récupère tous les posts ***/
+  db.Post.findAll({
+    attributes: ["id", "title", "description", "imageUrl", "likes", "userId"],
+    order: [["createdAt", "DESC"]],
+    include: [
+      {
+        model: db.User,
+        attributes: ["id", "firstName", "lastName", "imageUrl"]
+
+      },
+
+    ],
+
+  })
+    /*** si tout est ok ***/
+    .then(posts => res.status(200).json({
+      posts
+    }))
+    /*** sinon on envoie une erreur ***/
+    .catch(error => res.status(400).json({
+      error
+    }))
+
 };
-//----------------------trouver un post avec son ID----------------------//
-exports.getOnePost = (req, res) => {
-  // On l'identifie par l'ID
-  Post.findOne({
-    where: { id: req.params.id }
+/*exports.getAllPosts = (req, res) => {
+  db.Post.findAll({
+    attributes: ["id", "title", "description", "imageUrl", "likes", "createAt", "userId"],
+    order: [["createdAt", "DESC"]],
+    include: [
+      {
+        model: db.User,
+        attributes: ["id", "firstName", "lastName", "imageUrl", "like", "createdAt", "userId"],
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: db.User,
+            attributes: ["id", "firstName", "lastName", "comment",],
+          },
+          {
+            model: db.Comment,
+            order: [["createdAt", "DESC"]],
+            attributes: ["id", "comment", "UserId"],
+            include: [
+              {
+                model: db.User,
+                attributes: ["firstName", "lastName", "imageUrl"],
+              },
+            ],
+          },
+        ],
+
+      }
+    ],
   })
     .then((post) => res.status(200).json(post))
-    .catch((error) => res.status(404).json({ error, message: 'post non trouvé' }));
+    .catch((error) => res.status(400).json({ message: error }));
+
+
+};*/
+//----------------------trouver un post avec son ID----------------------//
+exports.getPost = (req, res) => {
+  // On l'identifie par l'ID
+  db.Post.findOne({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(post => res.status(200).json({
+      post
+    }))
+    .catch(error => res.status(404).json({
+      error,
+      message: 'post non récupèré'
+    }))
 };
 
 //------------------------suppression d'un post--------------------------//
@@ -93,7 +151,7 @@ exports.deletePost = (req, res) => {
   //récupération dans la base de donnée
 
   //l'id du post doit être le même que le paramètre de requête
-  Post.findOne({ where: { id: req.params.id } })
+  db.Post.findOne({ where: { id: req.params.id } })
 
     //supprime l'ancienne image du server  
     .then(post => {
@@ -132,6 +190,7 @@ exports.deletePost = (req, res) => {
       message: 'impossible de supprimer le post !'
     }))
 };
+
 
 
 

@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-//const user = require('../models/user')
-const userCtrl = require('../controllers/user') ;
-//const multer = require('../middleware/multer-config');
-//const auth = require('../middleware/auth');
+const userCtrl = require('../controllers/user');
+const multer = require('../middleware/multer');
+const auth = require('../middleware/auth');
 
 
 /***************récupération du routeur express***************** */
@@ -17,15 +16,15 @@ router.post('/register', userCtrl.register);
 /** route pour utilisateurs **/
 
 //-----récupérer tous les utilisateurs -----------//
-router.get("/", userCtrl.getAllUsers);
+router.get("/profils/",auth, userCtrl.getAllUsers);
 
 //-----modification de l'utilisateur-----------//
-router.put("/:id", userCtrl.updateUser);
+router.put("/profils/:id",auth, multer, userCtrl.updateUser);
 
 //-----récupérer un utilisateur-----------//
-router.get('/:id', userCtrl.User);
+router.get('/profils/:id',auth, userCtrl.getUser);
 
 //-----supprimer un utilisateur-----------//
-router.delete("/:id", userCtrl.deleteUser);
+router.delete("/:id",auth, multer, userCtrl.deleteUser);
 module.exports = router;
 
