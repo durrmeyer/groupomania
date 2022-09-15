@@ -1,11 +1,10 @@
 <template>
   <div class="card" style="width: 30rem">
     <h3>Modification de l'utilisateur</h3>
-    {{ id }}
 
     <form @submit.prevent="modifier()" enctype="multipart/form-data">
       <div class="card-body text-center" v-bind="user">
-        <div v-if="user.imageUrl == null" class="dropdown text-center">
+        <div v-if="imageUrl == null" class="dropdown text-center">
           <img
             src="../../assets/images/avatar.png"
             alt="photo de profil"
@@ -14,7 +13,7 @@
         </div>
         <div v-else class="dropdown text-center">
           <img
-            :src="user.imageUrl"
+            :src="imageUrl"
             alt="photo de profil"
             class="avatar"
             id="avatar"
@@ -46,7 +45,7 @@
             rows="5"
             cols="20"
             id="lastName"
-            v-model="user.lastName"
+            v-model="lastName"
             required
           />
         </div>
@@ -58,7 +57,7 @@
             rows="5"
             cols="20"
             id="firstName"
-            v-model="user.firstName"
+            v-model="firstName"
             required
           />
         </div>
@@ -74,7 +73,7 @@
             id="email"
             name="email"
             placeholder="test@test.com !"
-            v-model="user.email"
+            v-model="email"
             required
           />
         </div>
@@ -86,23 +85,29 @@
   </div>
 </template>
 <script>
-import userService from "../../_services/userService";
+
 export default {
   name: "UserEdit",
-  props: ["id"],
-  data() {
+
+ /* data() {
     return {
-      user: {},
-      token: localStorage.getItem("token"),
-      userId: localStorage.getItem("userId"),
+      user: {
+        firstName: "",
+        lastname: "",
+        email: "",
+      },
+      token: sessionStorage.getItem("token"),
+      userId: sessionStorage.getItem("userId"),
       imageUrl: "",
     };
-  },
+  },*/
   mounted() {
+    console.log(this.$route.params.id)
     //récupération à l'affichage de l'utilisateur
-    userService
-      .getUserById(this.id)
+    /*userService
+      .getUser(this.id)
       .then((res) => {
+        console.log(res)
         this.user = res.data;
         this.user.id = this.id;
       })
@@ -116,7 +121,7 @@ export default {
 
     modifier() {
       const formData = new FormData();
-      formData.append("userId", parseInt(localStorage.getItem("userId")));
+      formData.append("userId", parseInt(sessionStorage.getItem("userId")));
       formData.append("file", this.file);
       formData.append("imageUrl", this.imageUrl);
       formData.append("firstName", this.firstName);
@@ -127,8 +132,7 @@ export default {
         .updateUser(this.user)
         .then((res) => this.$router.push({ name: "Profil" }))
         .catch((err) => console.log(err));
-      location.reload();
-    },
+    },*/
 
     //envoi à l'api pour modification
   },

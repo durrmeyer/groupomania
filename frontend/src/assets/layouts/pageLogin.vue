@@ -84,6 +84,7 @@ body {
 .card:hover h2 a {
   color: #fff;
 }
+
 small {
   color: red;
   font-weight: 700;

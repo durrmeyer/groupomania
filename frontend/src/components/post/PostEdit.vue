@@ -4,18 +4,17 @@
     {{ id }}
     <form @submit.prevent="ajout()">
       <input type="text" id="user_id" v-model="post.user_id" hidden />
-      
+
       <div class="formGroup">
-        <label for="user_firstName">Prénom</label>
-        <input type="text" id="post_fistName" v-model="post.firstName" />
-      </div>
-      <div class="formGroup">
-        <label for="user_lastName">Prénom</label>
-        <input type="text" id="post_lastName" v-model="post.lastName" />
-      </div>
-      <div class="formGroup">
-        <label for="post_title">titre</label>
-        <input type="text" id="post_title" v-model="post.title" />
+        <label for="post_image">Image</label>
+         <input
+            class="form-control"
+            type="file"
+            accept="image/*"
+            ref="file"
+            name="image"
+            @change="imageUpload()"
+          />
       </div>
       <div class="formGroup">
         <label for="post_description">description</label>
@@ -24,7 +23,7 @@
 
       <div class="formGroup">
         <button type="submit" class="button">Modifier</button>
-     
+
         <a href="@/posts" class="button">Annuler</a>
       </div>
     </form>
@@ -32,36 +31,33 @@
 </template>
 <script>
 import postService from "../../_services/postService";
+
 export default {
   name: "PostEdit",
   props: ["id"],
   data() {
     return {
-      post: {
-        userId: "",
-        firstName: "",
-        lastName: "",
-        title: "",
-        imageUrl: "",
-        description: "",
-      },
+      post: {},
     };
   },
-  mounted() {
-    console.log(this.id)
-    if(this.id){
-        console.log('edition')
-    }else{
-        console.log('ajout')
-    }
-  },
+
   methods: {
     ajout() {
-         postService.updatePost(this.post)
-        .then(res => this.$router.push({name:"PostIndex"}))
-        .catch(err => console.log (err))
-        location.reload();
+      console.log;
+      postService
+        .updatePost(this.post)
+        .then((res) => this.$router.push({ name: "PostIndex" }))
+        .catch((err) => console.log(err));
+      location.reload();
     },
-  },
+    },
+    mounted() {
+     postService.getPostById(this.id)
+     .then(res=>{
+      console.log(res)
+      this.post = res.data
+     })
+    },
+
 };
 </script>

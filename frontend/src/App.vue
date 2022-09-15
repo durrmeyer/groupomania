@@ -1,11 +1,13 @@
 <template>
-  <div class="app">
-    <Navigation />
+  <div id="app">
+    <navigation />
     <div class="container">
       <div class="row">
         <div class="col-md-12">
           <div>
-            <router-view :user="user"/>
+            <div class="auth-wrapper">
+              <div class="auth-inner"><router-view /></div>
+            </div>
           </div>
         </div>
       </div>
@@ -15,22 +17,11 @@
 
 <script>
 import Navigation from "./components/Navigation.vue";
-import userService from "./_services/userService";
+
 export default {
   name: "App",
   components: {
     Navigation,
-  },
-  data() {
-    return {
-      user: null
-    }
-  },
-  created() {
-    const res = userService.getUserById('user');
-    this.user = res.data;
-    
-    console.log(res)
   },
 };
 </script>

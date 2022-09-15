@@ -1,15 +1,6 @@
 <template>
   <div>
-    <router-link
-            
-            to="/posts"
-            > page des posts</router-link
-          >||
-          <router-link
-            
-            to="/admin/users"
-            >liste des utilisateurs</router-link
-          >
+    
     <div class="title">
       <h2>liste des posts, il y en a {{ comptage }}</h2>
     </div>
@@ -30,9 +21,9 @@
         <tbody>
           <tr v-for="(post, index) in posts" :key="post.id">
             <th scope="row">{{ post.id }}</th>
-            <td>{{ post.firstName }}</td>
-            <td>{{ post.laststName }}</td>
-            <td>{{ post.title }}</td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+           
             <td>{{ post.imageUrl }}</td>
             <td>{{ post.description }}</td>
             <td>{{ dateFormat[index] }}</td>
@@ -48,7 +39,6 @@
 </template>
 <script>
 import postService from "../../_services/postService";
-
 export default {
   name: "PostIndex",
   data() {

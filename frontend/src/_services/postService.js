@@ -1,16 +1,18 @@
-import Axios from "../_services/axios";
+import Axios from "./axios";
 
 export default {
-  getAllPosts() {
-    return Axios.get("/posts");
-  },
-
+  
+  
+  createPost(data) {
+    return Axios.post("posts/add", data);
+  }, 
   getPostById(id) {
     return Axios.get("/posts/" + id);
   },
-  createPost() {
-    return Axios.post("/posts",);
+  getAllPosts() {
+    return Axios.get("posts");
   },
+ 
   updatePost(post) {
     return Axios.put("/posts/" + post.id, post);
   },
@@ -30,4 +32,12 @@ export default {
   deleteComment(id) {
     return Axios().delete("posts/comments/");
   },
+  savePostId(postId) {
+    sessionStorage.setItem('postId', postId);
+
+   },
+   getPostId() {
+    return sessionStorage.getItem('postId')
+  },
+
 };

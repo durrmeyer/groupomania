@@ -91,8 +91,10 @@
 
 <script>
 import PageLogin from "../../assets/layouts/pageLogin.vue";
-import userService from "../../_services/userService";
+import accountService from "../../_services/accountService";
+
 import { Form, Field, ErrorMessage } from "vee-validate";
+
 export default {
   name: "Register",
   components: {
@@ -104,7 +106,13 @@ export default {
 
   data() {
     return {
-      user: { firstName: "", lastName: "", email: "", password: "" },
+      user: {
+        id: sessionStorage.getItem("userId"),
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+      },
     };
   },
 
@@ -137,14 +145,17 @@ export default {
       }
       return true;
     },
-    register() {
-      userService
+     register() {
+     accountService
         .register(this.user)
         .then((res) => {
-          console.log(res);
+         
+          this.$store.dispatch("token", res.data.token);
+          this.$store.dispatch("user", res.data.user);
+         
         
-          userService.saveToken(res.data.token);
-          this.$router.push("/");
+          this.$router.push({name:'login'});
+            console.log(this.user, "consolelog data");
         })
         .catch((err) => console.log(err, "erreur de connexion"));
     },

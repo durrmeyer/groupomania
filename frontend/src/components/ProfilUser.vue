@@ -9,29 +9,75 @@
           <div class="col-12">
             <div class="card bg-light my-3 class=center-block">
               <div class="card-header">
-                <div v-bind="user" class="row justify-content-around">
-                  <div class="card-header-info">Vos informations</div>
+                <div class="row justify-content-around">
+                  <div class="card-header-info">Mon Profil</div>
                   <p class="text">
                     Prénom:
-                    <span class="text_color"> {{ user.firstName }} </span>
+                    <span class="text"> {{ user.firstName }} </span>
                   </p>
                   <p class="text">
                     Nom:
-                    <span class="text_color">{{ lastName }}</span>
+                    <span class="text">{{ user.lastName }}</span>
                   </p>
                   <p class="text">
                     Email:
-                    <span class="text_color">email</span>
+                    <span class="text_color">{{ user.email }}</span>
                   </p>
                 </div>
               </div>
-              <div class="img-container">
-                <img
-                  v-bind:src="imageUrl"
-                  alt="image du post"
-                  class="img"
-                />
-              </div>
+              <form
+                id="form"
+                enctype="multipart/form-data"
+                @submit.prevent="updatePicture()"
+              >
+                <div class="card-body text-center" v-bind="user">
+                  <div
+                    v-if="user.imageUrl == null"
+                    class="dropdown text-center"
+                  >
+                    <img
+                      src=""
+                      alt="photo de profil"
+                      class="rouned-circle mr-1 avatar"
+                    />
+                  </div>
+                  <div v-else class="dropdown text-center">
+                    <img
+                      :src="user.image"
+                      alt="photo de profil"
+                      class="rouned-circle mr-1 avatar"
+                      id="avatar"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="card-body d-flex flex-column justify-content-between"
+                >
+                  <label class="text-center label" for="image"
+                    ><strong>Choisir ma photo de profil</strong></label
+                  >
+                  <input
+                    type="file"
+                    class="form-control"
+                    name="image"
+                    id="image"
+                    accept="image/*"
+                    ref="image"
+                    @change="Upload()"
+                  />
+                  <div class="card-body mx-auto">
+                    <button
+                      type="submit"
+                      class="form-control btn btn-primary"
+                      name="imageUpdate"
+                      id="imageUpdate"
+                      @click.prevent="updateImage()"
+                    >
+                      Confirmer
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </section>
@@ -39,71 +85,38 @@
     </div>
   </div>
 </template>
-
 <script>
-import userService from "../_services/userService";
+import accountService from "../_services/accountService";
 export default {
-  name: "userEdit",
-
-  data(user) {
+  data() {
     return {
-     user: {
-        userId: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        file: "",
-      },
-      imageUrl: "",
+      token: sessionStorage.getItem("token"),
+      userId: sessionStorage.getItem("userId"),
+      file: "",
+      image: "",
     };
   },
-  mounted() {
-    //récupération à l'affichage de l'utilisateur
-    userService
-      .getUserById(this.user.id)
-      .then((res) => {
-        console.log(res, "1ere étape");
-        this.user = res.data.user;
-     
-      })
-      .catch((err) => console.log(err));
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    },
   },
 
   methods: {
-    file() {
-      this.image = this.$refs.file.files[0];
-      this.imageUrl = URL.createObjectURL(this.image);
+    Upload() {
+      this.image = this.$refs.image.files[0];
+      this.image = URL.createObjectURL(this.image);
     },
-    /*imageUpload() {
+    updateImage() {
       const formData = new FormData();
-      formData.append("userId", parseInt(localStorage.getItem("userId")));
-      formData.append("file", this.file);
-      formData.append("imageUrl", this.imageUrl);
-      console.log(this.file);
-      console.log(this.imageUrl);
-      console.log("test-récup", formData.get("imageUrl"));
-      userService.updateUser(formData).then((response) => {
-        this.user.id = response.data.user;
-        this.image = response.data.image;
+      formData.append("image", this.image);
+      console.log(this.image, "ytfbyugn");
+      accountService.updateUser(this.user.id, formData).then((res) => {
+        this.user = res.data.user;
+        this.image = res.data.image;
       });
-    },*/
-    del(id) {
-      let confirmDeleteUser = confirm(
-        " Voulez-vous vraiment supprimer le compte ?"
-      );
-
-      if (confirmDeleteUser == true) {
-        userService
-          .deleteUser(this.user.id)
-
-          .then(() => {
-            localStorage.clear();
-            this.$router.push("/");
-          });
-      } else {
-        return;
-      }
     },
   },
 };
 </script>
+

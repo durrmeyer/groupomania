@@ -1,27 +1,28 @@
-import axios from '../_services/axios';
+import axios from './axios';
 class AuthService {
   async login(user) {
-    const response = await axios
-          .post('/users/login', {
-              email: user.email,
-              password: user.password
-          })
-          .then(response => {
-            if (response.data.token) {
-              localStorage.setItem('user', JSON.stringify(response.data));
-            }
-            return response.data;
-          });
+    return axios
+      .post('/users/login', {
+        email: user.email,
+        password: user.password
+      })
+      .then(res => {
+        if (res.data.token) {
+          sessionStorage.setItem('user', JSON.stringify(res.data));
+        }
+
+        return res.data;
+      });
   }
   logout() {
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
   }
   register() {
     return axios.post('/register', {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
-      password:this.password,
+      password: this.password,
     });
   }
 }
