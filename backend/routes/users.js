@@ -16,13 +16,13 @@ router.post('/register', userCtrl.register);
 /** route pour utilisateurs **/
 
 //-----récupérer tous les utilisateurs -----------//
-router.get("/profils/",auth, userCtrl.getAllUsers);
+router.get("/",auth, userCtrl.getAllUsers);
 
 //-----modification de l'utilisateur-----------//
-router.put("/profils/:id",auth, multer, userCtrl.updateUser);
+router.put("/:id",auth, multer, userCtrl.updateUser);
 
 //-----récupérer un utilisateur-----------//
-router.get('/profils/:id',auth, userCtrl.getUser);
+router.get('/:id',auth, multer,userCtrl.getUserById);
 
 //-----supprimer un utilisateur-----------//
 router.delete("/:id",auth, multer, userCtrl.deleteUser);

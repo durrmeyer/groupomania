@@ -1,49 +1,47 @@
 const db = require("../server/models");
-const jwt = require("jsonwebtoken");
+const authUser = require("../middleware/authUser")
 //Récupération du module 'file system' de Node permettant de gérer ici les téléchargements et modifications d'images
 const fs = require('fs'); //package qui permet de modifconst autUser = require("../middleware/authUser");
-const authUser = require("../middleware/authUser")
+const {User} = require("../server/models");
+
+
+
 //---------------------------------création d'un post----------------------------//
 
 
 exports.createPost = (req, res) => {
-  // const token = req.headers.authorization.split(' ')[1];
-  //const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-  //const userId = decodedToken.userId;
-  //console.log(userId, 'token?')
 
+  let imageUrl = (req.file) ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : "null";
+  const UserId = authUser;
 
-
-  const image = (req.file) ? `${req.protocol}://${req.get("host")}/images/${req.files.filename}` : "";
   db.User.findOne({
-    attributes: ["id", "firstName", "lastName", "imageUrl"],
-    where: { id: req.body.userId },
-  })
-    .then(() => {
-      imageUrl = image;
-    })
+    attributes: ["id", "firstName", "lastName", "image"],
+    where: { id: UserId },
+  });
 
   db.Post.create({
-    userId: req.body.userId,
-    title: req.body.title,
     description: req.body.description,
-    Content: req.body.content,
-    imageUrl: image,
-    likes: [0],
+    imageUrl: imageUrl,
+ UserId:req.body.userId,
+    
+    include: [
+      {
+        associate: db.User,
+        include: ["user"]
+      },
+    ],
+
   })
-    .then(() => res.status(201).json({
-      message: 'post créé !'
-    }))
+    .then(() => {
+      res.status(201).json({
+        message: 'post créé !'
+      })
+    })
     .catch((error) => res.status(400).json({
-      error: 'post invalid',
-      message: 'Vous ne pouvez pas publier un post'
+      error
     }))
-
+  console.log(req.body.userId, 'user post')
 };
-
-
-
-
 
 // -----------------------modification du post-----------------------//
 exports.updatePost = (req, res) => {
@@ -54,7 +52,7 @@ exports.updatePost = (req, res) => {
   }
     : {
       ...req.body
-    }; //fichier n'existe pas
+    }; 
 
   Post.update({
     ...postObjet
@@ -67,82 +65,76 @@ exports.updatePost = (req, res) => {
     .catch((error) => res.status(400).json({ message: error }));
 };
 
-// ---------------------------------------base de donnée--------------------------------------------//
 // -----------------------trouver tous les posts--------------------------//
-exports.getAllPosts = (req, res, next) => {
-  /*** on récupère tous les posts ***/
-  db.Post.findAll({
-    attributes: ["id", "title", "description", "imageUrl", "likes", "userId"],
-    order: [["createdAt", "DESC"]],
+exports.getAllPosts = async (req, res) => {
+  await db.Post.findAll({
+    user: {
+      id: User.id,
+      firstName: User.firstName,
+      lastName: User.lastName,
+      imageUrl: User.imageUrl,
+    },
     include: [
       {
-        model: db.User,
-        attributes: ["id", "firstName", "lastName", "imageUrl"]
-
+        associate: db.User,
+        include: ['user']
       },
-
     ],
 
+    /*{
+      model: db.Comment,
+      attributes: ["id", "content", "UserId",],
+ 
+      include: [
+        {
+          model: db.User,
+          attributes: ["firstName", "imageUrl"],
+        },
+      ],
+    },
+  ],*/
   })
+
+
     /*** si tout est ok ***/
-    .then(posts => res.status(200).json({
-      posts
-    }))
+    .then((posts) => res.status(200).send(posts))
     /*** sinon on envoie une erreur ***/
-    .catch(error => res.status(400).json({
-      error
-    }))
+    .catch((error) => res.status(400).send({ error }));
 
 };
-/*exports.getAllPosts = (req, res) => {
-  db.Post.findAll({
-    attributes: ["id", "title", "description", "imageUrl", "likes", "createAt", "userId"],
-    order: [["createdAt", "DESC"]],
+
+//----------------------trouver un post avec son ID----------------------//
+exports.getPostById = async (req, res) => {
+
+  // On l'identifie par l'ID
+  await db.Post.findOne({
+    where: { id: req.params.id },
     include: [
       {
-        model: db.User,
-        attributes: ["id", "firstName", "lastName", "imageUrl", "like", "createdAt", "userId"],
-        order: [["createdAt", "DESC"]],
-        include: [
-          {
-            model: db.User,
-            attributes: ["id", "firstName", "lastName", "comment",],
-          },
-          {
-            model: db.Comment,
-            order: [["createdAt", "DESC"]],
-            attributes: ["id", "comment", "UserId"],
-            include: [
-              {
-                model: db.User,
-                attributes: ["firstName", "lastName", "imageUrl"],
-              },
-            ],
-          },
-        ],
-
-      }
+        association: db.User,
+        include: [User.id, User.firstName, User.lastName, User.imageUrl, User.userId]
+      },
     ],
-  })
-    .then((post) => res.status(200).json(post))
-    .catch((error) => res.status(400).json({ message: error }));
+    /*{
+ model: db.Comment,
+ order: [["createdAt", "DESC"]],
+ attributes: ["content", "fistName", "UserId"],
+ include: [
+   {
+     model: db.User,
+     attributes: ["imageUrl", "firstName"],
+   },
+ ],
+},*/
 
-
-};*/
-//----------------------trouver un post avec son ID----------------------//
-exports.getPost = (req, res) => {
-  // On l'identifie par l'ID
-  db.Post.findOne({
-    where: {
-      id: req.params.id
-    }
   })
+
     .then(post => res.status(200).json({
       post
     }))
     .catch(error => res.status(404).json({
       error,
-      message: 'post non récupèré'
+
     }))
 };
 
@@ -193,9 +185,6 @@ exports.deletePost = (req, res) => {
 
 
 
-
-
-// supprimer le post dans la base de donnée
 
 
 

@@ -21,17 +21,21 @@ exports.register = (req, res) => {
 							.then((hash) => {
 								// crée une instance du model User, y insert les données et les sauvegardes dans la base de données.
 								db.User.create({
-									id: req.body.id,
+									
 									firstName: req.body.firstName,
 									lastName: req.body.lastName,
 									email: req.body.email,
 									password: hash,
-									idRole: 1
+									admin: false,
 								})
 
 									.then(() => {
+
 										// message retourné en cas de réussite
-										res.status(201).json({ message: 'Utilisateur créé !' });
+										res.status(201).json({
+
+											message: 'Utilisateur créé !'
+										});
 									})
 									.catch((error) => {
 										// message d'erreur retourné en cas d'échec de l'ajout des données dans la BDD
@@ -55,7 +59,6 @@ exports.register = (req, res) => {
 
 };
 
-
 exports.login = async (req, res) => {
 
 	db.User.findOne({
@@ -74,9 +77,13 @@ exports.login = async (req, res) => {
 				}
 
 				res.status(200).json({
+
 					userId: user.id,
+					user: user,
+					isAdmin: false,
 					token: jwt.sign(
 						{
+
 							userId: user.id
 
 						},
@@ -91,53 +98,50 @@ exports.login = async (req, res) => {
 
 }
 
+exports.getUserById = (req, res) => {
 
-exports.getUser = (req, res) => {
-	/*** on récupére l'utilisateur depuis la base de données ***/
 	db.User.findOne({
 		where: {
-			id: req.params.id
+			id: req.params.id,
 		},
 	})
+		.then((user) => res.status(200).send(user))
+		.catch((err) => res.status(500).send({
+			err,
+			message: 'Erreur serveur'
 
-		.then(user => res.status(200).json({ user }))
+		}));
 
-		.catch((err) =>
-			res.status(500).json({
-				err,
-				message: 'Erreur pas de profil'
-			}));
+
 };
-
 
 exports.getAllUsers = (req, res,) => {
 
-	// on envoie tous les users sauf admin
-
 	db.User.findAll({
+		where: { id: req.params.id },
 		attributes: [
 			"id",
 			"firstName",
 			"lastName",
 			"email",
-			"imageUrl",
-			"idRole",
+			"image",
+			"createdAt"
 		],
+		
 	})
 		.then((users) => res.status(200).send(users))
-		.catch((error) => res.status(500).send({ error: "Erreur serveur" }));
+		.catch((error) => res.status(500).send({ error }));
+
 };
 
-
-
 exports.updateUser = async (req, res) => {
-	let newImage;
+	let image;
 	db.User.findOne({ where: { id: req.params.id } });
 
 	if (req.file) {
-		newImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-		if (newImage && user.imageUrl) {
-			const filename = user.picture.split("/images/")[1];
+		image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+		if (image && user.image) {
+			const filename = user.image.split("/images/")[1];
 			fs.unlink(`images/${filename}`, (error) => {
 				if (error) console.log(error, 'non suprrimé');
 				else {
@@ -157,7 +161,7 @@ exports.updateUser = async (req, res) => {
 					firstName: user.firstName,
 					lastName: user.lastName,
 					email: user.email,
-					imageUrl: user.imageUrl,
+					image: user.image,
 
 
 				})
@@ -175,7 +179,7 @@ exports.deleteUser = (req, res) => {
 
 		//supprime l'ancienne image du server  
 		.then(user => {
-			if (user.id !== authUser(req)) {
+			if (user.id !== authUser.authUser(req)) {
 				return res.status(401).json({
 					error
 				})

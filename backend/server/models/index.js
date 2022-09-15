@@ -35,17 +35,18 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.User = require('./User')(sequelize, Sequelize);
 db.Post = require('./Post')(sequelize, Sequelize);
-db.Role = require("./Role")(sequelize, Sequelize);
-db.Comment = require("./Comment")(sequelize, Sequelize);
+/*db.Role = require("./Role")(sequelize, Sequelize);
+db.Comment = require("./Comment")(sequelize, Sequelize);*/
 
 
-db.User.hasMany(db.Post, { as: "posts" });
-db.User.hasMany(db.Comment, { as: "comments" });
-db.Post.hasMany(db.Comment, { as: "comments" });
-
+db.User.hasOne(db.Post);
 db.Post.belongsTo(db.User);
-db.Comment.belongsTo(db.Post);
-db.Comment.belongsTo(db.User);
+/*db.User.hasMany(db.Comment, { as: "comments" });
+db.Post.hasMany(db.Comment, { as: "comments" });*/
+
+
+/*db.Comment.belongsTo(db.Post);
+db.Comment.belongsTo(db.User);*/
 
 
 sequelize.authenticate()

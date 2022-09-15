@@ -9,13 +9,13 @@ const commentCtrl = require('../controllers/comment');
 /***************récupération du routeur express***************** */
 
 // Créer un nouveau post
-router.post("/", auth, multer, postCtrl.createPost);
+router.post("/add", auth, multer, postCtrl.createPost);
 
 // trouver tous les posts
 router.get("/", auth, postCtrl.getAllPosts);
 
 // récupérer le post avec l'id
-router.get("/:id", auth, postCtrl.getPost);
+router.get("/:id", auth, postCtrl.getPostById);
 
 // modifier le post avec l'id
 router.put("/:id", auth, multer, postCtrl.updatePost);
