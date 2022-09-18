@@ -118,8 +118,7 @@ exports.getUserById = (req, res) => {
 exports.getAllUsers = (req, res,) => {
 
 	db.User.findAll({
-		where: { id: req.params.id },
-		attributes: [
+			attributes: [
 			"id",
 			"firstName",
 			"lastName",

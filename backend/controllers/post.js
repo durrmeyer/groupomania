@@ -2,19 +2,19 @@ const db = require("../server/models");
 const authUser = require("../middleware/authUser")
 //Récupération du module 'file system' de Node permettant de gérer ici les téléchargements et modifications d'images
 const fs = require('fs'); //package qui permet de modifconst autUser = require("../middleware/authUser");
-const {User} = require("../server/models");
+const { User } = require("../server/models");
 
 
 
 //---------------------------------création d'un post----------------------------//
 
 
-exports.createPost = (req, res) => {
+exports.createPost = async (req, res) => {
 
   let imageUrl = (req.file) ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : "null";
   const UserId = authUser;
 
-  db.User.findOne({
+  await db.User.findOne({
     attributes: ["id", "firstName", "lastName", "image"],
     where: { id: UserId },
   });
@@ -22,8 +22,8 @@ exports.createPost = (req, res) => {
   db.Post.create({
     description: req.body.description,
     imageUrl: imageUrl,
- UserId:req.body.userId,
-    
+    UserId: req.body.userId,
+
     include: [
       {
         associate: db.User,
@@ -52,7 +52,7 @@ exports.updatePost = (req, res) => {
   }
     : {
       ...req.body
-    }; 
+    };
 
   Post.update({
     ...postObjet
@@ -66,18 +66,14 @@ exports.updatePost = (req, res) => {
 };
 
 // -----------------------trouver tous les posts--------------------------//
-exports.getAllPosts = async (req, res) => {
-  await db.Post.findAll({
-    user: {
-      id: User.id,
-      firstName: User.firstName,
-      lastName: User.lastName,
-      imageUrl: User.imageUrl,
-    },
-    include: [
+exports.getAllPosts = (req, res) => {
+  db.Post.findAll({
+    attributes: ["id", "description", "imageUrl", "UserId"],
+
+   include: [
       {
-        associate: db.User,
-        include: ['user']
+        model: db.User,
+        attributes: ["id", "lastName", "firstName", "image"],
       },
     ],
 
@@ -111,8 +107,8 @@ exports.getPostById = async (req, res) => {
     where: { id: req.params.id },
     include: [
       {
-        association: db.User,
-        include: [User.id, User.firstName, User.lastName, User.imageUrl, User.userId]
+        model: db.User,
+        attributes: ["id", "firstName", "lastName", "image",]
       },
     ],
     /*{
@@ -132,7 +128,7 @@ exports.getPostById = async (req, res) => {
     .then(post => res.status(200).json({
       post
     }))
-    .catch(error => res.status(404).json({
+    .catch(error => res.status(500).json({
       error,
 
     }))
