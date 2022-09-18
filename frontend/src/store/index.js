@@ -25,7 +25,7 @@ const store = createStore({
       return state.isLoggedIn;
     },
 
-    ////////////////////////////////////////////   POSTS        ////////////////////////////////////////////////////////////
+    
     posts(state) {
       return state.posts;
     },

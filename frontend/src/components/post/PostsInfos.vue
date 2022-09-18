@@ -1,17 +1,17 @@
 <template>
-  <div >
+  <div>
     <h1>Bienvenue sur le Blog</h1>
-    <div>{{ $store.state.title }} {{ user.firstName }}</div>
-
-    <div>
-      <button @click="PostAdd()">Ajouter un nouveau post</button>
-      <div>
+    <div>{{ $store.state.title }} </div>
+   <button @click="PostAdd()">Ajouter un nouveau post</button>
+    <div @getPosts="getAllPosts()">
+   
+      <div v-for="post in posts" :key="post.id"  id="post.id">
         <div
           class="card"
          
           style="width: 18rem"
         >
-          <div class="card-header" >
+      <div class="card-header">
             <div class="d-flex mr-3" size="52px">
               <img
                 v-if="user.image == null"
@@ -19,7 +19,7 @@
                 alt="photo de profil "
                 class="avatar"
               />
-          
+
               <img
                 v-else
                 :src="user.image"
@@ -27,14 +27,18 @@
                 class="avatar"
               />
             </div>
-            <span>{{user.firstName }} {{ user.lastName }}</span>
+            <span>{{post.User.firstName }} {{post.User.lastName }}</span>
             <span class="btn-end"> </span>
-          </div>
+          </div> 
           <div class="d-flex mr-3">
             <div class="card-body">
               <div class="img-container">
                 <div>
-                  <img v-bind:src="post.imageUrl" alt="image du post" class="img" />
+                  <img
+                    v-bind:src="post.imageUrl"
+                    alt="image du post"
+                    class="img"
+                  />
                 </div>
               </div>
               <div class="card-text">
@@ -50,7 +54,7 @@
               <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
           </div>
-                <a href="#" class="card-link">Ajouter un commentaire</a>
+          <a href="#" class="card-link">Ajouter un commentaire</a>
         </div>
       </div>
     </div>
@@ -59,36 +63,57 @@
 
 <script>
 import PostLayout from "../../assets/layouts/PostLayout.vue";
+import postService from '../../_services/postService';
 import PostAdd from "../post/PostAdd.vue";
 
 export default {
   name: "postsInfo",
-
+ 
   components: {
     PostLayout,
     PostAdd,
   },
   data() {
-    
     return {
-   
-    image:"",
-    
+      userId: localStorage.getItem("userId"),
+      token: localStorage.getItem("token"),
+      imageUrl: "",
+      file: "",
+     
     };
   },
-  computed:{
- user() {
+
+  computed: {
+    user() {
       return this.$store.getters.user;
     },
-  post() {
-      return this.$store.getters.post;
+     posts() {
+      return this.$store.getters.posts;
     },
-     },
-  
+    
+  },
+  created() {
+   
+    this.$store.dispatch("getAllPosts");
+  },
+
   methods: {
     PostAdd() {
-  
+      
       this.$router.push({ name: "PostAdd" });
+    },
+    getAllPosts(){
+      postService.getAllPosts()
+      .then((res)=>{
+        this.posts = res.data.posts;
+          console.log(this.posts, 'ij,hiprcherj;hji');
+        })
+        .catch(function(error) {
+          alert(error);
+          console.log(error);
+        });
+    
+      
     },
   },
 };

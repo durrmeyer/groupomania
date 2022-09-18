@@ -5,12 +5,12 @@
     <form @submit.prevent="addPost" enctype="multipart/form-data">
       <label for="file" class="form-label">Image</label>
       <input
+        id="image"
         class="form-control"
         type="file"
-        accept="image/*"
-        ref="file"
+        ref="image"
         name="image"
-        @change="imageUpload()"
+        @change="select()"
       />
       <label>Description:</label>
       <textarea
@@ -19,7 +19,9 @@
         name="description"
         required
       ></textarea>
-      <button type="submit" class="button">Poster</button>
+      <button type="submit" class="button" @click.prevent="addPost">
+        Poster
+      </button>
     </form>
   </div>
 </template>
@@ -34,30 +36,31 @@ export default {
       token: sessionStorage.getItem("token"),
       description: "",
       imageUrl: "",
+      file: "",
     };
   },
 
   methods: {
-    imageUpload() {
-      this.image = this.$refs.file.files[0];
+    select() {
+      this.image = this.$refs.image.files[0];
       this.imageUrl = URL.createObjectURL(this.image);
     },
     addPost() {
-      let id = this.$route.params.id;
       const formData = new FormData();
       formData.append("description", this.description);
-
-      if (this.image !== null) {
-        formData.append("image", this.imageUrl);
-      }
+      formData.append("image", this.image);
       formData.append("userId", this.userId);
-      console.log(formData);
+      
+ 
+    
       console.log("test", formData.get("description"));
       console.log("test", formData.get("image"));
 
       postService
         .createPost(formData)
-
+        .then(() => {
+          this.$router.push("/posts");
+        })
         .catch((err) => console.log(err, "erreur de connexion"));
     },
   },
