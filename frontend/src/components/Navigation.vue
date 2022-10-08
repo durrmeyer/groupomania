@@ -1,9 +1,23 @@
 <template>
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <div class="container">
-      <a href="#" class="navbar-brand">Groupomania</a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ml-auto" v-if="isUserLogged ===false">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand mt-8 mt-lg-0" href="#">
+        <img src="../assets/images/1.png" height="200" alt="Groupomania Logo" />
+      </a>
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item" v-if="isUserLogged === true">
+          <router-link to="/dashboard/admin" class="nav-link"
+            >Admin</router-link
+          >
+        </li>
+        <li class="nav-item" v-if="isUserLogged === true">
+          <router-link to="/posts" class="nav-link">Posts</router-link>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center">
+        <ul class="navbar-nav ml-auto" v-if="isUserLogged === false">
           <li class="nav-item">
             <router-link to="/" class="nav-link">Connexion</router-link>
           </li>
@@ -14,59 +28,64 @@
           </li>
         </ul>
 
-        <ul class="navbar-nav ml-auto" v-if="isUserLogged === true">
-          <li class="nav-item">
-            <router-link to="/posts" class="nav-link">Posts</router-link>
-          </li>
+        <div class="navprofil" v-if="isUserLogged === true">
+          <img
+            src="../assets/images/avatar.png"
+            class="rounded-circle"
+            height="90"
+            alt="Black and White Portrait of a Man"
+            loading="lazy"
+          />
 
-          <li class="nav-item">
-            <router-link to="/profil" class="nav-link">Profil</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/dashboard" class="nav-link">Admin</router-link>
-          </li>
-
-          <li class="nav-item" v-if="$store.state.isLoggedIn">
-            <router-link to="/" @click="logOut()">Déconnexion</router-link>
-          </li>
-        </ul>
+          <ul class="navAvatar-end" aria-labelledby="navbarMenuAvatar">
+            <li class="nav-item" v-if="$store.state.isLoggedIn">
+              <router-link to="/profil" class="nav-link"
+                >Mon Compte</router-link
+              >
+            </li>
+            <li class="nav-item" v-if="$store.state.isLoggedIn">
+              <router-link to="/" @click="logOut()">Déconnexion</router-link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>
 </template>
+
 <script>
 export default {
   name: "Navigation",
-
   data() {
     return {};
   },
-
   computed: {
     isUserLogged() {
       return this.$store.getters.isLoggedIn;
     },
   },
-
   methods: {
     logOut() {
-        this.$store.dispatch("logout");
+      this.$store.dispatch("logout");
+    },
   },
-  }
 };
 </script>
+
 <style scoped>
-h4,
-a {
-  color: #fff;
-  font-size: 18px;
-  padding: 10px 35px 0;
+.nav-item {
+  font-size: 25px;
 }
-li {
+.navprofil {
   display: flex;
-  padding-right: 15px;
+}
+ul {
+  list-style-type: none;
 }
 a {
-  padding-top: 6px;
+  text-decoration: none;
+  color: black;
 }
+
 </style>
+

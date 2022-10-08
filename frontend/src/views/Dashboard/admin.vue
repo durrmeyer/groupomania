@@ -1,16 +1,16 @@
 <template>
   <div>
     <h1 class="card-titlepost">Réseau social Groupomania</h1>
-    <PostsInfo />
+    <ListUsers />
   </div>
 </template>
 
 <script>
-import PostsInfo from "../components/Post/PostsInfos.vue";
+import ListUsers from "../../components/User/UserIndex.vue";
 export default {
-  name: "Posts",
+  name: "Users",
   components: {
-    PostsInfo,
+    ListUsers,
   },
   
 };

@@ -1,4 +1,3 @@
-
 <template>
   <div id="add-blog">
     <h2>Nouveau post</h2>
@@ -27,7 +26,8 @@
 </template>
 
 <script>
-import postService from "../../_services/postService";
+
+import postService from "../../_services/postService"
 export default {
   name: "PostAdd",
   data() {
@@ -43,25 +43,26 @@ export default {
   methods: {
     select() {
       this.image = this.$refs.image.files[0];
-      this.imageUrl = URL.createObjectURL(this.image);
+      this.image = URL.createObjectURL(this.image);
     },
     addPost() {
       const formData = new FormData();
       formData.append("description", this.description);
       formData.append("image", this.image);
       formData.append("userId", this.userId);
-      
- 
-    
+  
+
       console.log("test", formData.get("description"));
       console.log("test", formData.get("image"));
-
-      postService
-        .createPost(formData)
+       console.log("test", formData.get("userId"));
+    
+         postService
+        .createPost(id, formData)
         .then(() => {
           this.$router.push("/posts");
         })
         .catch((err) => console.log(err, "erreur de connexion"));
+  
     },
   },
 };

@@ -19,24 +19,7 @@ register(user) {
   setToken(token) {
     sessionStorage.setItem('token', token)
   },
-
-  getUserById(id) {
-    return Axios.get("users/" + id);
-  },
-  getAllUsers() {
-    return Axios.get('/users')
-  },
-  updateUser(user) {
-    return Axios.put('/users/' + user.id);
-  },
-  getUser() {
-    return Axios.put('/users',)
-  },
-
-  deleteUser(id) {
-    return Axios.delete("users/" + id);
-  },
-
+ 
   isAdmin(idRole) {
     if (idRole === 2) {
       sessionStorage.setItem('isAdmin', true)
@@ -49,22 +32,7 @@ register(user) {
     return !!token
   },
   
-  saveUserId(userId) {
-    sessionStorage.setItem('UserId', userId)
-   },
-   getUserId() {
-     return sessionStorage.getItem('UserId')
-   },
-   saveUser(user) {
-    sessionStorage.setItem('user', JSON.stringify(user))
-   },
-   getUserId() {
-     returnsessionStorage.getItem('user')
-   },
+
  
   }
   
- 
- 
-   
-

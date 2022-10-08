@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import accountService from "@/_services/accountService";
-import postService from "@/_services/postService";
 import userService from "@/_services/userService";
+import postService from "@/_services/postService";
 const store = createStore({
   strict: true,
   state: {
@@ -12,6 +12,8 @@ const store = createStore({
     isLoggedIn: false,
     posts: [],
     post: {},
+    comments: [],
+    comment: {},
   },
 
 
@@ -26,12 +28,18 @@ const store = createStore({
       return state.isLoggedIn;
     },
 
-    
+
     posts(state) {
       return state.posts;
     },
     post(state) {
       return state.post;
+    },
+    comments(state) {
+      return state.comments;
+    },
+    comment(state) {
+      return state.comment;
     },
 
   },
@@ -44,6 +52,15 @@ const store = createStore({
     },
     GET_USERS(state, users) {
       state.users = users;
+    },
+    UPDATE_USER(state, id, user) {
+      Object.assign(
+        state.users.find((el) => el.id === id),
+        user
+      );
+    },
+    DELETE_USER(state, id) {
+      state.users = [...state.users.filter((el) => el.id !== id)];
     },
     TOKEN(state, token) {
       state.token = token;
@@ -88,34 +105,54 @@ const store = createStore({
         post
       );
     },
+    ADD_Like(state, like) {
+      state.posts = [like, ...state.posts];
+
+    },
+    GET_COMMENT(state, comment) {
+      state.comments = [comment, ...state.posts];
+    },
   },
   actions: {
     user({ commit }, user) {
       commit("USER", user);
     },
     getUsers({ commit }) {
-      accountService.getAllUsers().then((response) => {
-        const users = response.data;
-        console.log(users, "ucygeutgyeyrtgupù")
+      userService.getAllUsers().then((res) => {
+        const users = res.data;
+        console.log(users, "store Action")
         commit("GET_USERS", users);
       });
     },
-    getUserById({ commit }) {
-      let id = this.state.user.id;
+    getUserById({ commit }, id) {
       userService.getUserById(id).then((res) => {
         const user = res.data;
+        console.log(user, "store User Action")
         commit("GET_USER_BY_ID", user);
       });
     },
     updateUser({ commit }, data) {
-      userService.updateUser(data.id, data.data)
+      let id = this.state.user.id;
+      userService.updateUser(id, data)
+
         .then((res) => {
-          const user = res.data;
-          commit("UPDATE_USER", user);
-        });
+          const data = res.data;
+          commit("UPDATE_USER", id, data);
+        })
+        .then(() => {
+          postService.getAllPosts().then((res) => {
+            const posts = res.data;
+            commit("GET_POSTS", posts);
+          })
+        })
     },
-    
-    
+    deleteUser({ commit }, id) {
+      userService.deleteUser(id).then(() => {
+        commit("DELETE_USER", id);
+      })
+        .catch((err) => { err })
+    },
+
     token({ commit }, token) {
       commit("TOKEN", token);
     },
@@ -131,7 +168,7 @@ const store = createStore({
 
 
     createPost({ commit }, post) {
-      console.log(post, "base de données");
+      console.log(post, "Store Post");
       postService.createPost(post)
         .then((res) => {
           const post = res.data;
@@ -159,7 +196,39 @@ const store = createStore({
         const post = res.data;
         commit("UPDATE_POST", post);
       });
+  },
+
+  createComment({ commit }, data) {
+    postService.createComment(
+    )
+      .then((res) => {
+
+        const comment = res.data;
+        commit("GET_COMMENT", comment);
+        console.log(comment);
+      })
+      .then(() => {
+        postService.getAllPosts()
+          .then((res) => {
+            const posts = res.data;
+            commit("GET_POSTS", posts)
+          })
+      });
+  },
+  deleteComment: ({ commit }, id) => {
+    postService.deleteComment(id)
+      .then(() => {
+        commit("DELETE_COMMENT", id);
+      })
+      .then(() => {
+        postService.deleteComment().then((response) => {
+          const posts = response.data;
+          commit("GET_POSTS", posts);
+        });
+      });
   }
+
+
 });
 
 export default store;

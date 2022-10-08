@@ -1,35 +1,33 @@
 <template>
   <div>
-    
     <div class="title">
-      <h2>liste des posts, il y en a {{ comptage }}</h2>
+      <h2>liste des posts il y en a {{ comptage }}</h2>
     </div>
     <main>
       <table class="table table-striped">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Prénom</th>
-             <th scope="col">Nom</th>
-            <th scope="col">titre</th>
-            <th scope="col">image</th>
-            <th scope="col">description</th>
-            <th scope="col">Création</th>
+            <th scope="col">Id</th>
+            <th scope="col">ImageUrl</th>
+            <th scope="col">Description</th>
+            <!--<th scope="col">Création</th>-->
             <th scope="col">actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(post, index) in posts" :key="post.id">
-            <th scope="row">{{ post.id }}</th>
-            <td>{{ user.firstName }}</td>
-            <td>{{ user.lastName }}</td>
-           
+          <tr v-for="post in posts" :key="post.id">
+            <td>{{ post.id }}</td>
             <td>{{ post.imageUrl }}</td>
             <td>{{ post.description }}</td>
-            <td>{{ dateFormat[index] }}</td>
+            <!--<td>{{ dateFormat[index] }}</td>-->
+
             <div class="add-to-action">
-              <button @click="edit(post.id)">Modifier</button>
-              <button @click="del(index)">supprimer</button>
+                <button
+                      class="btn btn-danger"
+                      @click="delPost(index)"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button>
             </div>
           </tr>
         </tbody>
@@ -40,32 +38,19 @@
 <script>
 import postService from "../../_services/postService";
 export default {
-  name: "PostIndex",
+  name: "PostsIndex",
   data() {
     return {
-      posts:[],
+      posts: [],
     };
-  },
-  methods: {
-    edit(id) {
-      console.log(id)
-      //this.$router.push('/admin/userEdit/:id')
-      this.$router.push({name: "postEdit", params:{id:id}})
-    },
-    del(index) {
-      console.log(index)
-      postService.deletePost(this.posts[index].id)
-      .then(res => console.log(res))
-      .catch(err =>console.log(err))
-      this.users.splice(index, 1)
-    }
   },
   mounted() {
     postService
       .getAllPosts()
       .then((res) => {
-        console.log(res.data);
         this.posts = res.data;
+
+        console.log(this.posts);
       })
       .catch((err) => console.log(err));
   },
@@ -73,10 +58,23 @@ export default {
     comptage() {
       return this.posts.length;
     },
-    dateFormat(date) {
+    dateFormat() {
       return this.posts.map((u) =>
         u.createdAt.split("T")[0].split("-").reverse().join("/")
       );
+    },
+  },
+  method: {
+    edit(id) {
+      this.$router.push({ name: "UserEdit", params: { id: id } });
+    },
+    delPost(index) {
+      console.log(index);
+      userService
+        .deleteUser(this.user[index].id)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+      this.user.splice(index, 1);
     },
   },
 };

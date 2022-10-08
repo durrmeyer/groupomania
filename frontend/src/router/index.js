@@ -1,24 +1,28 @@
 import { createWebHistory, createRouter } from "vue-router";
 
 
+import Login from "../components/Login";
+import Register from "../components/Register";
 
-import Login from "../components/Connection/Login";
-import Register from "../components/Connection/Register";
+import Admin from "../views/Dashboard/admin";
+import Moderateur from "../views/Dashboard/moderateur";
+
+import Posts from "../views/Posts";
+import PostAdd from "../components/Post/PostAdd";
+import PostIndex from "../components/Post/PostIndex";
+
+
+import User from "../components/User/ProfilUser";
+
+
+import UserIndex from "../components/User/UserIndex";
+import UserEdit from "../components/User/UserEdit";
+import UserAdd from "../components/User/UserAdd";
+import store from "@/store";
 
 
 
 
-import UsersIndex from "../components/user/UserIndex";
-import UserEdit from "../components/user/UserEdit";
-
-
-import Posts from "../views/Posts"
-import PostIndex from "../components/post/PostIndex";
-import PostEdit from "../components/post/PostEdit"
-import PostAdd from "../components/post/PostAdd";
-
-import Profil from "../components/ProfilUser";
-import Dashboard from "../views/admin/Dashboard";
 
 
 
@@ -27,8 +31,8 @@ const routes = [
 
 
   {
-    path: "/",
-    name: "login",
+    path: '/',
+    name: 'login',
     component: Login,
 
   },
@@ -38,14 +42,14 @@ const routes = [
     name: "register",
     component: Register,
   },
-
   {
     path: "/posts",
     name: "posts",
     component: Posts,
 
-
   },
+
+
   {
     path: "/posts/add",
     name: "PostAdd",
@@ -53,65 +57,77 @@ const routes = [
 
   },
   {
-    path: "/profil",
-    name: "profil",
-    component: Profil,
-    props: true,
-  },
-  {
-    path: "/dashboard",
-    name: "dashboard",
-    component: Dashboard,
- 
-
-  },
-
-  {
     path: "/posts/index",
     name: "PostIndex",
     component: PostIndex,
     props: true,
   },
 
+
+
+
   {
-    path: "/edit/:id?",
-    name: "postEdit",
-    component: PostEdit,
-    props: true,
+    path: "/profil",
+    name: "user",
+    component: User,
+
+
+    children: [
+      {
+        path: "users/add",
+        name: "UserAdd",
+        component: UserAdd,
+
+      },
+    ]
   },
- 
   {
-    path: "/users",
-    name: "users",
-    component: UsersIndex,
+    path: "/profil/:id",
+    name: "UserIndex",
+    component: UserIndex,
     props: true,
   },
 
   {
-    path: "/userEdit/:id",
+    path: "/profil/edit/${id}",
     name: "UserEdit",
     component: UserEdit,
     props: true
   },
 
+
+  {
+    path: "/dashboard/admin",
+    name: "admin",
+    component: Admin,
+
+  },
+
+  {
+    path: "/dashboard/moderateur",
+    name: "moderateur",
+    component: Moderateur,
+  },
+
+
 ];
-
-
-
-
-
-
-
-/*************posts route*****************/
-
-
-
-
-
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next();
+      return;
+    }
+    next("/")
+  } else {
+    next()
+  }
 })
+
 
 
 export default router;
