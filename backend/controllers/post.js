@@ -1,8 +1,8 @@
-const db = require("../server/models");
+const db = require("../models");
 const authUser = require("../middleware/authUser")
 //Récupération du module 'file system' de Node permettant de gérer ici les téléchargements et modifications d'images
 const fs = require('fs'); //package qui permet de modifconst autUser = require("../middleware/authUser");
-const { User } = require("../server/models");
+
 
 
 
@@ -77,18 +77,6 @@ exports.getAllPosts = (req, res) => {
       },
     ],
 
-    /*{
-      model: db.Comment,
-      attributes: ["id", "content", "UserId",],
- 
-      include: [
-        {
-          model: db.User,
-          attributes: ["firstName", "imageUrl"],
-        },
-      ],
-    },
-  ],*/
   })
 
 
@@ -110,18 +98,19 @@ exports.getPostById = async (req, res) => {
         model: db.User,
         attributes: ["id", "firstName", "lastName", "image",]
       },
+      {
+        model: db.Comment,
+        order: [["createdAt", "DESC"]],
+        attributes: ["content", "fistName", "UserId"],
+        include: [
+          {
+            model: db.User,
+            attributes: ["imageUrl", "firstName"],
+          },
+        ],
+       },
     ],
-    /*{
- model: db.Comment,
- order: [["createdAt", "DESC"]],
- attributes: ["content", "fistName", "UserId"],
- include: [
-   {
-     model: db.User,
-     attributes: ["imageUrl", "firstName"],
-   },
- ],
-},*/
+    
 
   })
 
@@ -178,6 +167,7 @@ exports.deletePost = (req, res) => {
       message: 'impossible de supprimer le post !'
     }))
 };
+
 
 
 

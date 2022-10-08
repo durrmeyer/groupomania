@@ -12,4 +12,3 @@ function authUser(req) {
 };
 
 module.exports = authUser;
-

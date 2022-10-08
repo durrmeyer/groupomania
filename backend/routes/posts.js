@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('../middleware/multer');
 const auth = require('../middleware/auth')
 const postCtrl = require('../controllers/post');
-const commentCtrl = require('../controllers/comment');
+const commentCtrl = require('../controllers/comment')
 
 
 /***************récupération du routeur express***************** */
@@ -23,17 +23,9 @@ router.put("/:id", auth, multer, postCtrl.updatePost);
 // Supprimer le post avec l'id
 router.delete("/:id", auth, multer, postCtrl.deletePost);
 
+router.post("/:id/like", auth, postCtrl.likeUser);
 
-
-/*************************Commentaire*******************/
-
-// créer un nouveau commentaire //
-//router.post('/:postId/comments', auth, commentCtrl.createComment);
-
-// récupérer les commentaires //
-//router.get('/comments', auth, commentCtrl.getComments);
-
-// supprimer un commentaire //
-//router.delete('/comments/:id', auth, commentCtrl.deleteComment);
-
+router.post("/:id/comments", auth, commentCtrl.createComment);
+router.get("/:id/comments", auth, commentCtrl.getAllComments);
+router.delete("/:postId/comments/:id", auth, multer, commentCtrl.deletecomment);
 module.exports = router;

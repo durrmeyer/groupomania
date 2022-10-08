@@ -1,8 +1,9 @@
-
 const {Sequelize} = require('sequelize');
 
+
+
 const express = require('express');
-const db = require('./server/models')//utilisations du modèle pour la BDD
+const db = require('./models')//utilisations du modèle pour la BDD
 const mysql = require('mysql2');
 const cors = require('cors')
 
@@ -18,6 +19,7 @@ app.use(cors());
 /** importer de la route user **/
 const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
+
 
 
 

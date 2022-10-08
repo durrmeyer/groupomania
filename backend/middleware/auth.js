@@ -3,13 +3,14 @@ const authUser = require("./authUser");
 
 module.exports = (req, res, next) => {
 	const token = req.headers.authorization;
+	const userId = req.body.userId;
 	console.log(token, "c'est celui-ci")
 
 	try {
 		if (!token) throw new Error("Problème auth");
 
 
-		if (req.body.userId && req.body.userId !== authUser(req))
+		if (userId && userId !== authUser(req))
 			throw 'Invalid user ';
 
 		next();
@@ -20,4 +21,3 @@ module.exports = (req, res, next) => {
 		});
 	}
 }
-
