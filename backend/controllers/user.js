@@ -23,7 +23,7 @@ exports.register = (req, res) => {
 									lastName: req.body.lastName,
 									email: req.body.email,
 									password: hash,
-									
+
 									admin: false,
 								})
 
@@ -148,7 +148,7 @@ exports.updateUser = async (req, res) => {
 			}
 		});
 	}
-	console.log(req.params, req.body)
+	console.warn('update', req.params, req.body)
 	db.User.findOne({
 		where: {
 			id: req.params.id,
@@ -164,7 +164,14 @@ exports.updateUser = async (req, res) => {
 				{
 					where: { id: req.params.id }
 				})
-				.then(() => res.status(200).json({ message: 'User modifié !' }))
+				.then(() => res.status(200).json({
+					message: 'User modifié !', user: {
+						firstName: req.body.firstName,
+						lastName: req.body.lastName,
+						email: req.body.email,
+						image: req.body.image,
+					}
+				}))
 
 				.catch(error => res.status(400).json({
 					error
