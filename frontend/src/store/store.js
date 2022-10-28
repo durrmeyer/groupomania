@@ -1,5 +1,4 @@
 import { createStore } from "vuex";
-import accountService from "@/_services/accountService";
 import userService from "@/_services/userService";
 import postService from "@/_services/postService";
 const store = createStore({
@@ -53,11 +52,10 @@ const store = createStore({
     GET_USERS(state, users) {
       state.users = users;
     },
-    UPDATE_USER(state, id, user) {
-      Object.assign(
-        state.users.find((el) => el.id === id),
-        user
-      );
+    UPDATE_USER(state, users) {
+      state.users = users;
+
+
     },
     DELETE_USER(state, id) {
       state.users = [...state.users.filter((el) => el.id !== id)];
@@ -124,7 +122,8 @@ const store = createStore({
         commit("GET_USERS", users);
       });
     },
-    getUserById({ commit }, id) {
+    getUserById({ commit }) {
+      let id = localStorage.getItem("UserId")
       userService.getUserById(id).then((res) => {
         const user = res.data;
         console.log(user, "store User Action")
@@ -132,12 +131,14 @@ const store = createStore({
       });
     },
     updateUser({ commit }, data) {
-      let id = this.state.user.id;
-      userService.updateUser(id, data)
+     
+      userService.updateUser(data.id, data.data, {
+        headers: { Authorization: this.state.token }
+      })
 
         .then((res) => {
-          const data = res.data;
-          commit("UPDATE_USER", id, data);
+          const user = res.data;
+          commit("UPDATE_USER", user);
         })
         .then(() => {
           postService.getAllPosts().then((res) => {
@@ -162,6 +163,8 @@ const store = createStore({
     },
     logout({ commit }) {
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("UserId");
       commit("LOGOUT");
     },
 

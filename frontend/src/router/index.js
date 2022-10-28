@@ -18,18 +18,8 @@ import User from "../components/User/ProfilUser";
 import UserIndex from "../components/User/UserIndex";
 import UserEdit from "../components/User/UserEdit";
 import UserAdd from "../components/User/UserAdd";
-import store from "@/store";
-
-
-
-
-
-
-
 
 const routes = [
-
-
   {
     path: '/',
     name: 'login',
@@ -49,7 +39,6 @@ const routes = [
 
   },
 
-
   {
     path: "/posts/add",
     name: "PostAdd",
@@ -62,30 +51,23 @@ const routes = [
     component: PostIndex,
     props: true,
   },
-
-
-
-
   {
-    path: "/profil",
+    path: "/profil/",
     name: "user",
     component: User,
-
-
-    children: [
-      {
-        path: "users/add",
-        name: "UserAdd",
-        component: UserAdd,
-
-      },
-    ]
   },
+  {
+    path: "/profil/add",
+    name: "UserAdd",
+    component: UserAdd,
+
+  },
+
   {
     path: "/profil/:id",
     name: "UserIndex",
     component: UserIndex,
-    props: true,
+    
   },
 
   {
@@ -116,17 +98,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (store.getters.isLoggedIn) {
-      next();
-      return;
-    }
-    next("/")
-  } else {
-    next()
-  }
-})
+
 
 
 

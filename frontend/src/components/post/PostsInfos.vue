@@ -18,7 +18,7 @@
                   />
                   <img
                     v-else
-                    :src="user.imageUrl"
+                    :src="user.image"
                     alt="photo profil de l'utilisateur"
                     class="avatar"
                   />

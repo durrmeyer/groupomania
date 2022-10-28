@@ -18,47 +18,55 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4">
-          <form @submit.prevent="addUser()" enctype="multipart/form-data">
-            <label for="file" class="form-label">
-             
-            </label>
+          <form @submit.prevent="udapteUser" enctype="multipart/form-data">
+            <label for="file" class="form-label">Image</label>
             <input
-              id="image"
               class="form-control"
               type="file"
               ref="image"
               name="image"
-              @change="select()"
+              @change="selectImage()"
             />télécharger une photo de profil
 
             <div class="mb-2">
+              <label for="user_firstName">Prénom</label>
               <input
                 v-model="firstName"
                 type="text"
                 class="form-control"
                 placeholder="Prénom"
-              />Prénom
+              />
             </div>
 
             <div class="mb-2">
+              <label for="user_lastName">Nom</label>
               <input
                 v-model="lastName"
                 type="text"
                 class="form-control"
                 placeholder="Nom"
-              />Nom
+              />
             </div>
 
             <div class="mb-2">
+              
+              <label for="user_email">Email</label>
               <input
                 v-model="email"
                 type="text"
                 class="form-control"
                 placeholder="Email"
-              />email
+              />
             </div>
-
-            
+            <div class="button">
+              <button
+                type="submit"
+                class="button"
+                @click.prevent="updateUser()"
+              >
+                Modifier
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -66,9 +74,10 @@
   </div>
 </template>
 <script>
-
-import userService from "../../_services/userService";
 import layoutUser from "../../assets/layouts/cardUser.vue";
+
+import { mapState } from "vuex";
+
 export default {
   name: "UserAdd",
   components: {
@@ -76,49 +85,47 @@ export default {
   },
   data() {
     return {
-      userId: sessionStorage.getItem("UserId"),
-      token: sessionStorage.getItem("token"),
-        firstName: "",
-        lastName: "",
-        email: "",
-        image: "",
-         file: "",
+      userId: localStorage.getItem("UserId"),
+      token: localStorage.getItem("token"),
+      image: "",
+      firstName:"",
+      lastName: "",
+      email: "",
     };
   },
-created() {
-  userService
-      .getUserById()
-      .then((res) => {
-        this.user = res.data;
-
-        console.log(this.user);
-      })
-      .catch((err) => console.log(err));
-},
+mounted() {
+    this.$store.dispatch("getUserById");
+  },
+  computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
+  },
   methods: {
-    select() {
-      this.image= this.$refs.image.files[0];
+    selectImage() {
+      this.image = this.$refs.image.files[0];
       this.image = URL.createObjectURL(this.image);
+      console.log(this.image);
     },
-    addUser() {
-    
+    updateUser() {
       const formData = new FormData();
-    
-        formData.append("image", this.image);
-      
+
+      formData.append("image", this.image);
       formData.append("firstName", this.firstName);
-      formData.append("lastName", this.lastName);
       formData.append("email", this.email);
       formData.append("userId", this.userId);
+
       console.log("test", formData.get("userId"));
       console.log("test", formData.get("image"));
+      console.log("test", formData.get("lastName"));
       console.log("test", formData.get("firstName"));
       console.log("test", formData.get("email"));
-        userService
-        .updateUser(formData)
+      let id = this.$store.state.user.id;
+      this.$store
+        .dispatch("updateUser", { id: id, data: formData })
 
         .then(() => {
-          this.$router.push("/profil");
+          this.$router.push("/profil/");
         })
         .catch((err) => console.log(err, "erreur de connexion"));
     },

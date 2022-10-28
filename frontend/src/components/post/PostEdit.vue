@@ -52,8 +52,8 @@ export default {
     },
     },
     mounted() {
-     postService.getPostById(this.id)
-     .then(res=>{
+     postService.getPostById(this.userId)
+     .then((res)=>{
       console.log(res)
       this.post = res.data
      })

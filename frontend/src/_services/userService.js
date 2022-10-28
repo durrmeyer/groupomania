@@ -7,35 +7,35 @@ export default {
 
 
   getUserById(id) {
-    return Axios.get("users/" + id);
+    return Axios.get('users/' + id);
   },
   getAllUsers() {
     return Axios.get('/users')
   },
   updateUser(id, data) {
-    return Axios.put('/users/' + id, data);
+    return Axios.put('/users/profil/' + id, data);
   },
   getUser() {
     return Axios.put('/users',)
   },
 
   deleteUser(id) {
-    return Axios.delete('/users/'+id);
+    return Axios.delete('/users/' + id);
   },
 
 
 
   saveUserId(userId) {
-    sessionStorage.setItem('UserId', userId)
+    localStorage.setItem('UserId', userId)
   },
   getUserId() {
-    return sessionStorage.getItem('UserId')
+    return localStorage.getItem('UserId')
   },
   saveUser(user) {
-    sessionStorage.setItem('user', JSON.stringify(user))
+    localStorage.setItem('user', JSON.stringify(user))
   },
   getUserId() {
-    returnsessionStorage.getItem('user')
+    return localStorage.getItem('user')
   },
 
 }

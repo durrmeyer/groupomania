@@ -20,72 +20,68 @@
         <div class="container">
           <div class="row align-items-center">
             <div class="col-md-9">
-              <div class="card-list" v-for="user in users" :key="user" :user="user">
-                <div class="card-body">
+              <div
+                class="card-list"
+                v-for="user in users"
+                :key="user"
+                :user="user"
+              >
+                <div class="card-body" v-bind="user">
                   <div class="container-profil">
-                    <div class="col-md-4">
-                      <form
-                        id="form"
-                        enctype="multipart/form-data"
-                        @submit.prevent="updatePicture()"
-                      >
-                        <div class="card-body text-center">
-                          <div
-                            v-if="user.image === null"
-                            class="dropdown text-center"
-                          >
-                            <img
-                              src="../../assets/images/avatar.png"
-                              alt="photo de profil"
-                              class="avatar"
-                            />
-                          </div>
-                          <div v-else class="dropdown text-center">
-                            <img
-                              :src="user.image"
-                              alt="photo de profil"
-                              class="avatar"
-                            />
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  
-                  <div class="col-md-6">
-                    <ul class="list-group">
-                      <li class="list-group-item">
-                        Nom: <span class="fw-bold"> {{ user.lastName }}</span>
-                      </li>
-                      <li class="list-group-item">
-                        Prénom:
-                        <span class="fw-bold">{{ user.firstName }}</span>
-                      </li>
-                      <li class="list-group-item">
-                        Email: <span class="fw-bold">{{ user.email }}</span>
-                      </li>
-                      <li class="list-group-item">
-                        Date Création du compte:<span class="fw-bold">
-                          {{ dateFormat }}</span
+                    <div class="col">
+                      <div class="card-body text-center">
+                        <div
+                          v-if="user.image === null"
+                          class="dropdown text-center"
                         >
-                      </li>
-                    </ul>
-                  </div>
+                          <img
+                            src="../../assets/images/avatar.png"
+                            alt="photo de profil"
+                            class="avatar"
+                          />
+                        </div>
+                        <div v-else class="dropdown text-center">
+                          <img
+                            :src="user.image"
+                            alt="photo de profil"
+                            class="avatar"
+                          />
+                        </div>
+                      </div>
+                    </div>
 
-                  <div class="row mt-5">
-                    <div class="button">
-                      <router-link to="profil/add" class="btn btn-primary my-1"
-                        ><i class="fa fa-pen"></i
-                      ></router-link>
-                      <button
-                        class="btn btn-danger my-1"
-                       v-on:click="deleteUser"
-                      >
-                        <i class="fa fa-trash"></i>
-                      </button>
+                    <div class="col-md-6">
+                      <ul class="list-group">
+                        <li class="list-group-item">
+                          Nom: <span class="fw-bold"> {{ user.lastName }}</span>
+                        </li>
+                        <li class="list-group-item">
+                          Prénom:
+                          <span class="fw-bold">{{ user.firstName }}</span>
+                        </li>
+                        <li class="list-group-item">
+                          Email: <span class="fw-bold">{{ user.email }}</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="row mt-5">
+                      <div class="button">
+                        <button
+                          @click="addUser(UserId)"
+                          class="btn btn-primary my-1"
+                        >
+                          <i class="fa fa-pen"></i>
+                        </button>
+                        <button
+                          class="btn btn-danger my-1"
+                          @click="deleteUser(user.id)"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                
-                </div>
                 </div>
               </div>
             </div>
@@ -96,8 +92,6 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-
 import userService from "../../_services/userService";
 
 export default {
@@ -105,11 +99,13 @@ export default {
 
   data() {
     return {
-      userId: sessionStorage.getItem("UserId"),
+      userId: localStorage.getItem("UserId"),
       users: [],
     };
   },
-
+beforeMount() {
+  this.$store.dispatch("getUsers")
+},
   created() {
     userService
       .getAllUsers()
@@ -119,14 +115,17 @@ export default {
       .catch((err) => console.log(err));
   },
 
-    comptage() {
-      return this.users.length;
-    },
+  comptage() {
+    return this.users.length;
+  },
 
   method: {
+    addUser() {
+      this.$router.push("/profil/add");
+    },
     deleteUser(id) {
-      console.log(id);
-      this.$emit('update' , user.id);
+      console.log(id, "user suprrimer");
+      this.userId.$remove(user.id);
     },
   },
 };

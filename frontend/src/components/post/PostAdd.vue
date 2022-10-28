@@ -18,7 +18,7 @@
         name="description"
         required
       ></textarea>
-      <button type="submit" class="button" @click.prevent="addPost">
+      <button type="submit" class="button" @click.prevent="addPost()">
         Poster
       </button>
     </form>
@@ -26,14 +26,12 @@
 </template>
 
 <script>
-
-import postService from "../../_services/postService"
+import postService from "../../_services/postService";
 export default {
   name: "PostAdd",
   data() {
     return {
-      userId: sessionStorage.getItem("UserId"),
-      token: sessionStorage.getItem("token"),
+      userId: localStorage.getItem("UserId"),
       description: "",
       imageUrl: "",
       file: "",
@@ -43,26 +41,23 @@ export default {
   methods: {
     select() {
       this.image = this.$refs.image.files[0];
-      this.image = URL.createObjectURL(this.image);
+      this.imageUrl = URL.createObjectURL(this.image);
     },
     addPost() {
       const formData = new FormData();
       formData.append("description", this.description);
       formData.append("image", this.image);
       formData.append("userId", this.userId);
-  
 
       console.log("test", formData.get("description"));
       console.log("test", formData.get("image"));
-       console.log("test", formData.get("userId"));
-    
-         postService
-        .createPost(id, formData)
+
+      postService
+        .createPost(formData)
         .then(() => {
           this.$router.push("/posts");
         })
         .catch((err) => console.log(err, "erreur de connexion"));
-  
     },
   },
 };

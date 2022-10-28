@@ -12,7 +12,7 @@
 }
 
  .container-profil{
-  display: flex;
+
   margin-top:50px;
     padding: 50px;
     border: 1px solid;

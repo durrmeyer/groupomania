@@ -33,11 +33,11 @@ export default {
     return Axios().delete("posts/comments/"+id);
   },
   savePostId(postId) {
-    sessionStorage.setItem('postId', postId);
+    localStorage.setItem('postId', postId);
 
   },
   getPostId() {
-    return sessionStorage.getItem('postId')
+    return localStorage.getItem('postId')
   },
 
 };

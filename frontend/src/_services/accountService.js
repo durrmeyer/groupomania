@@ -11,24 +11,24 @@ register(user) {
     return Axios.post("/users/login", user);
   },
   logout() {
-    sessionStorage.removeItem('token')
+    localStorage.removeItem('token')
   },
   getToken() {
-   return sessionStorage.getItem('token')
+   return localStorage.getItem('token')
   },
   setToken(token) {
-    sessionStorage.setItem('token', token)
+    localStorage.setItem('token', token)
   },
  
   isAdmin(idRole) {
     if (idRole === 2) {
-      sessionStorage.setItem('isAdmin', true)
+      localStorage.setItem('isAdmin', true)
     } else {
-      sessionStorage.setItem('isAdmin', false)
+      localStorage.setItem('isAdmin', false)
     }
   },
  isLogged() {
-   const token = sessionStorage.getItem('token')
+   const token = localStorage.getItem('token')
     return !!token
   },
   

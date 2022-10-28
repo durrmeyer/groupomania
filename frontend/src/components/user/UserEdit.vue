@@ -137,7 +137,7 @@ export default {
       formData.append("userId", this.userId);
 
       userService
-        .updateUser(userId, formData)
+        .updateUser( formData)
 
         .then(() => {
           this.user = response.data.user;

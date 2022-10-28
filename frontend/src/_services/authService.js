@@ -8,14 +8,14 @@ class AuthService {
       })
       .then(res => {
         if (res.data.token) {
-          sessionStorage.setItem('user', JSON.stringify(res.data));
+          localStorage.setItem('user', JSON.stringify(res.data));
         }
 
         return res.data;
       });
   }
   logout() {
-    sessionStorage.removeItem('user');
+    localStorage.removeItem('user');
   }
   register() {
     return axios.post('/register', {

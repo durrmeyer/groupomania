@@ -59,6 +59,7 @@ export default {
   data() {
     return {};
   },
+  
   computed: {
     isUserLogged() {
       return this.$store.getters.isLoggedIn;
