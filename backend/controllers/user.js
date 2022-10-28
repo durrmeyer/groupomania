@@ -19,11 +19,11 @@ exports.register = (req, res) => {
 							.then((hash) => {
 								// crée une instance du model User, y insert les données et les sauvegardes dans la base de données.
 								db.User.create({
-
 									firstName: req.body.firstName,
 									lastName: req.body.lastName,
 									email: req.body.email,
 									password: hash,
+									
 									admin: false,
 								})
 
@@ -132,49 +132,46 @@ exports.getAllUsers = (req, res,) => {
 };
 
 exports.updateUser = async (req, res) => {
-	let image;
 
+	let newImage;
 	let user = await db.User.findOne({ where: { id: req.params.id } });
 
-	if (req.file) {
-		image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-
-		if (image && user.image) {
-			const filename = user.image.split("/images/")[1];
-			fs.unlink(`images/${filename}`, (error) => {
-				if (error) console.log(error);
-				else {
-					console.log(`supprimer: images/${filename}`);
-				}
-			});
-		}
-		db.User.findOne({
-			where: {
-				id: req.params.id,
+	if (req.image) {
+		newImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+	}
+	if (newImage && user.image) {
+		const filename = user.image.split("/images/")[1];
+		fs.unlink(`images/${filename}`, (error) => {
+			if (error) console.log(error);
+			else {
+				console.log(`supprimer: images/${filename}`);
 			}
+		});
+	}
+	console.log(req.params, req.body)
+	db.User.findOne({
+		where: {
+			id: req.params.id,
+		}
+	})
+		.then(() => {
+			db.User.update({
+				firstName: req.body.firstName,
+				lastName: req.body.lastName,
+				email: req.body.email,
+				image: req.body.image,
+			},
+				{
+					where: { id: req.params.id }
+				})
+				.then(() => res.status(200).json({ message: 'User modifié !' }))
+
+				.catch(error => res.status(400).json({
+					error
+				}))
 		})
-			.then(() => {
-				db.User.update({
-					
-					firstName: req.body.firstName,
-					lastName: req.body.lastName,
-					email: req.body.email,
-					image: req.body.image,
-
-
-				},
-					{
-						where: { id: req.params.id }
-					})
-					.then(() => res.status(200).json({ message: 'User modifié !' }))
-
-					.catch(error => res.status(400).json({
-						error
-					}))
-			})
-	};
-
 };
+
 exports.deleteUser = (req, res) => {
 	//récupération dans la base de donnée
 
