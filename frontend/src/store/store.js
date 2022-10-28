@@ -52,8 +52,8 @@ const store = createStore({
     GET_USERS(state, users) {
       state.users = users;
     },
-    UPDATE_USER(state, users) {
-      state.users = users;
+    UPDATE_USER(state, user) {
+      state.user = user;
 
 
     },
@@ -135,9 +135,11 @@ const store = createStore({
       userService.updateUser(data.id, data.data, {
         headers: { Authorization: this.state.token }
       })
-
+      
         .then((res) => {
-          const user = res.data;
+          
+          const user = res.data.user;
+          console.log("user", user)
           commit("UPDATE_USER", user);
         })
         .then(() => {

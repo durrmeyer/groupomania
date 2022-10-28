@@ -112,6 +112,7 @@ mounted() {
 
       formData.append("image", this.image);
       formData.append("firstName", this.firstName);
+      formData.append("lastName", this.lastName);
       formData.append("email", this.email);
       formData.append("userId", this.userId);
 
@@ -124,7 +125,8 @@ mounted() {
       this.$store
         .dispatch("updateUser", { id: id, data: formData })
 
-        .then(() => {
+        .then((user) => {
+          console.log("user", user)
           this.$router.push("/profil/");
         })
         .catch((err) => console.log(err, "erreur de connexion"));
