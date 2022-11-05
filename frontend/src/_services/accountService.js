@@ -8,7 +8,7 @@ register(user) {
     return Axios.post('/users/register', user);
   },
   login(user) {
-    return Axios.post("/users/login", user);
+    return Axios.post("/users/login/", user);
   },
   logout() {
     localStorage.removeItem('token')

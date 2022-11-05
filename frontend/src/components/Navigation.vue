@@ -49,7 +49,7 @@
               >
             </li>
             <li class="nav-item" v-if="$store.state.isLoggedIn">
-              <router-link to="/" @click="logOut()">Déconnexion</router-link>
+              <router-link to="/" @click="logOut()"><i class="fa-solid fa-right-from-bracket"></i></router-link>
             </li>
           </ul>
         </div>

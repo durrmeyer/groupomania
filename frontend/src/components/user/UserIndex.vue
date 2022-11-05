@@ -68,7 +68,7 @@
                     <div class="row mt-5">
                       <div class="button">
                         <button
-                          @click="modifUser()"
+                          v-on@click=" addUser"
                           class="btn btn-primary my-1"
                         >
                           <i class="fa fa-pen"></i>

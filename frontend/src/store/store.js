@@ -11,8 +11,7 @@ const store = createStore({
     isLoggedIn: false,
     posts: [],
     post: {},
-    comments:[],
-    comment:{},
+    
   },
 
 
@@ -34,12 +33,7 @@ const store = createStore({
     post(state) {
       return state.post;
     },
-    comments(state) {
-      return state.comments;
-    },
-    comment(state) {
-      return state.comment;
-    },
+    
 
   },
   mutations: {

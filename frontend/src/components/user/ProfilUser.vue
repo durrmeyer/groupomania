@@ -66,7 +66,7 @@ export default {
       firstName: "",
       lastName: "",
       email: "",
-     imageUrl: "",
+   
     };
   },
   beforemounted() {

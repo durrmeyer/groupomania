@@ -26,7 +26,7 @@ export default {
   },
 
   getAllComments() {
-    return Axios.get("posts/" + id + "/comments");
+    return Axios.get("posts/comments");
   },
   createComment(id, data) {
     return Axios.post("/posts/" + id + "/comments", data);

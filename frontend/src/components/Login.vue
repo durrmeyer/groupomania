@@ -93,7 +93,7 @@ export default {
         .then((res) => {
           accountService.setToken(res.data.token);
           userService.saveUserId(res.data.userId);
-          /*userService.saveUser(res.data.user);*/
+        
 
           this.$store.dispatch("token", res.data.token);
           this.$store.dispatch("getUserById", res.data.user.id);

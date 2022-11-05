@@ -11,14 +11,14 @@
               <div class="card-image">
                 <div class="card-avatar">
                   <img
-                    v-if="user.image === null"
+                    v-if="post.User.image !== null"
                     src="../../assets/images/avatar.png"
                     alt="photo de profil "
                     class="avatar"
                   />
                   <img
                     v-else
-                    :src="user.image"
+                    :src="post.User.image"
                     alt="photo profil de l'utilisateur"
                     class="avatar"
                   />
@@ -59,31 +59,48 @@
                     type="button"
                     title="Liker"
                     @click="like(post.id)"
-                  ></button>
+                    :color="isLiked"
+                  ><i class='far fa-heart' style='font-size:26px'></i></button>
                   <button
                     class="btn btn"
                     title="commentaire"
                     aria-label="bouton pour écrire un commentaire"
                     @click="CommentAdd(post.id)"
                   >
-                    <i class="fas fa-comment"
-                      >Ajouter un commentaire</i
-                    >
+                    <i class="fas fa-comment">Ajouter un commentaire</i>
                   </button>
-                  <p class="text-xs font-light text-center">J'aime</p>
+                  
                 </div>
-                <div
-                  class="card-list"
-                  v-for="comment in comments"
-                  :key="comment.id"
-                >
-                  <div class="card-footer" v-bind="comment">
-                    <div @getComments="getAllComments()">
-                      <p>
-                        commentaires: <span>{{ post.content }}</span>
-                      </p>
-                    </div>
+
+                <div class="card-footer">
+                  commentaires:
+                  <div
+                    class="card-list"
+                    v-for="comment in post.Comments"
+                    :key="comment.id"
+                  >
+                  
+                       <div class="card-avatar">
+                  <img
+                    v-if="post.User.image !== null"
+                    src="../../assets/images/avatar.png"
+                    alt="photo de profil "
+                    class="avatar"
+                  />
+                  <img
+                    v-else
+                    :src="post.User.image"
+                    alt="photo profil de l'utilisateur"
+                    class="avatar"
+                  />
+                </div>
+                <span>{{ post.User.firstName }} {{ post.User.lastName }} </span>
+                           
+                    <div>
+                        <span>{{ comment.content }}</span></div> 
+                    
                   </div>
+                  
                 </div>
               </div>
             </div>
@@ -107,12 +124,12 @@ export default {
   },
   data() {
     return {
-     
       userId: localStorage.getItem("userId"),
       token: localStorage.getItem("token"),
-       content: "",
+      content: "",
     };
   },
+
   computed: {
     user() {
       return this.$store.getters.user;
@@ -123,14 +140,13 @@ export default {
   },
   created() {
     this.$store.dispatch("getAllPosts");
-    this.$store.dispatch("getAllComments");
   },
   methods: {
     PostAdd() {
       this.$router.push({ name: "PostAdd" });
     },
     CommentAdd(id) {
-      this.$router.push({ name: "CommentAdd", params:{id} });
+      this.$router.push({ name: "CommentAdd", params: { id } });
     },
 
     delPost(id) {
@@ -142,8 +158,8 @@ export default {
       this.posts.splice(id, 1);
     },
   },
-  like(id) {
-    this.$store.dispatch("postLike", id);
-  },
+  like() {
+      this.$emit("like", this.post.id);
+    },
 };
 </script>
