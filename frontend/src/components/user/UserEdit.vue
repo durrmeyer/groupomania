@@ -113,7 +113,6 @@ export default {
   data() {
     return {
       userId: sessionStorage.getItem("UserId"),
-      showImage: true,
       firstName: "",
       lastName: "",
       email: "",
@@ -125,12 +124,12 @@ export default {
   methods: {
     select() {
       this.image = this.$refs.image.files[0];
-      this.imageUrl = URL.createObjectURL(this.image);
+      this.image = URL.createObjectURL(this.image);
     },
     addUser() {
       const formData = new FormData();
       formData.append("image", this.image);
-      formData.append("imageUrl", this.imageUrl);
+      formData.append("image", this.image);
       formData.append("firstName", this.firstName);
       formData.append("lastName", this.lastName);
       formData.append("email", this.email);

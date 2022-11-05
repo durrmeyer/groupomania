@@ -1,4 +1,3 @@
-
 <template>
   <div class="card" v-bind="user">
     <div class="title">
@@ -67,7 +66,7 @@ export default {
       firstName: "",
       lastName: "",
       email: "",
-     
+     imageUrl: "",
     };
   },
   beforemounted() {
@@ -82,7 +81,6 @@ export default {
     addUser() {
       this.$router.push("/profil/add");
     },
-
     deleteUser(id) {
       this.$store.dispatch("deleteUser", id);
       this.$store.dispatch("logout");
@@ -97,12 +95,10 @@ export default {
   margin: auto;
   text-align: center;
 }
-
 .title {
   color: grey;
   font-size: 18px;
 }
-
 button {
   border: none;
   outline: 0;
@@ -115,13 +111,11 @@ button {
   width: 100%;
   font-size: 18px;
 }
-
 a {
   text-decoration: none;
   font-size: 22px;
   color: black;
 }
-
 button:hover,
 a:hover {
   opacity: 0.7;

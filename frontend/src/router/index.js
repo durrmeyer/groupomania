@@ -11,6 +11,7 @@ import Posts from "../views/Posts";
 import PostAdd from "../components/Post/PostAdd";
 import PostIndex from "../components/Post/PostIndex";
 
+import CommentAdd from "../components/Comment/CommentAdd";
 
 import User from "../components/User/ProfilUser";
 
@@ -51,6 +52,7 @@ const routes = [
     component: PostIndex,
     props: true,
   },
+ 
   {
     path: "/profil/",
     name: "user",
@@ -76,7 +78,14 @@ const routes = [
     component: UserEdit,
     props: true
   },
+ 
 
+  {
+    path: "/comments/post/:id",
+    name: "CommentAdd",
+    component: CommentAdd,
+
+  },
 
   {
     path: "/dashboard/admin",

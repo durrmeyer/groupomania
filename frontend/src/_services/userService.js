@@ -13,14 +13,14 @@ export default {
     return Axios.get('/users')
   },
   updateUser(id, data) {
-    return Axios.put('/users/profil/' + id, data);
+    return Axios.patch('/users/profil/' + id, data);
   },
   getUser() {
-    return Axios.put('/users',)
+    return Axios.patch('/users',)
   },
 
   deleteUser(id) {
-    return Axios.delete('/users/' + id);
+    return Axios.delete('users/' + id);
   },
 
 
@@ -31,11 +31,7 @@ export default {
   getUserId() {
     return localStorage.getItem('UserId')
   },
-  saveUser(user) {
-    localStorage.setItem('user', JSON.stringify(user))
-  },
-  getUserId() {
-    return localStorage.getItem('user')
-  },
+  
+ 
 
 }

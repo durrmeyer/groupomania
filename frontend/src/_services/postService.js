@@ -14,7 +14,7 @@ export default {
   },
 
   updatePost(id, post) {
-    return Axios.put("posts/" + id, post);
+    return Axios.patch("posts/" + id, post);
   },
 
   deletePost(id) {
@@ -25,19 +25,24 @@ export default {
     return Axios().post(`/post/${id}`) + "/like";
   },
 
-  commentPost(id, data) {
-    return Axios().post("posts/" + id + "/comments", data);
+  getAllComments() {
+    return Axios.get("posts/" + id + "/comments");
   },
-
+  createComment(id, data) {
+    return Axios.post("/posts/" + id + "/comments", data);
+  },
+  getCommentById(id) {
+    return Axios.get("/posts/" + id + "/comments");
+  },
   deleteComment(id) {
-    return Axios().delete("posts/comments/"+id);
+    return Axios.delete("posts/comments/" + id);
   },
   savePostId(postId) {
-    localStorage.setItem('postId', postId);
+    localStorage.setItem('PostId', postId);
 
   },
   getPostId() {
-    return localStorage.getItem('postId')
+    return localStorage.getItem('PostId')
   },
 
 };

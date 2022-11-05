@@ -9,7 +9,7 @@
           <div class="card">
             <div class="card-header">
               <div class="card-image">
-                <div class="card-avatar" >
+                <div class="card-avatar">
                   <img
                     v-if="user.image === null"
                     src="../../assets/images/avatar.png"
@@ -23,9 +23,9 @@
                     class="avatar"
                   />
                 </div>
-                 <span>{{ post.User.firstName }} {{ post.User.lastName }} </span>
+                <span>{{ post.User.firstName }} {{ post.User.lastName }} </span>
               </div>
-             
+
               <p>a partagé une publication</p>
               <button
                 v-if="post.User.id === user.id"
@@ -52,10 +52,6 @@
               </div>
             </div>
             <div class="card-footer">
-              <div class="flex flex-wrap mx-4 my-2">
-                <p class="text-left">{{ post.User.content }}</p>
-              </div>
-
               <div class="flex items-center my-2 px-4">
                 <div class="flex justify-between items-center mr-2">
                   <button
@@ -64,72 +60,28 @@
                     title="Liker"
                     @click="like(post.id)"
                   ></button>
+                  <button
+                    class="btn btn"
+                    title="commentaire"
+                    aria-label="bouton pour écrire un commentaire"
+                    @click="CommentAdd(post.id)"
+                  >
+                    <i class="fas fa-comment"
+                      >Ajouter un commentaire</i
+                    >
+                  </button>
                   <p class="text-xs font-light text-center">J'aime</p>
                 </div>
-                <div class="flex justify-between items-center">
-                  <button
-                    type="button"
-                    title="Accéder aux commentaires"
-                    @click="showComments = !showComments"
-                  >
-                    Commentaire <i class="fas fa-comment"></i>
-                  </button>
-                  <p class="text-xs font-light text-center">
-                    comments {{ post.User.content }}
-                  </p>
-                </div>
-              </div>
-
-              <div
-                class="flex flex-col w-full p-3 my-3 rounded-md bg-gray-50"
-                v-show="showComments"
-              >
-                {{ post.id }}
-                <form>
-                  <div class="flex items-center">
-                    <textarea
-                      class="content"
-                      name="content"
-                      ref="content"
-                      type="text"
-                      rows="15"
-                      placeholder="Votre commentaire"
-                      aria-label="Ecrire un commentaire"
-                    />
-                    <button
-                      type="submit"
-                      title="Envoyer le commentaire"
-                      ref="comment"
-                      @click="commentPost(post.id)"
-                    >
-                      Poster
-                      <i class="far fa-paper-plane"></i>
-                    </button>
-                  </div>
-                </form>
-                <div class="items-center p-2">
-                  <div
-                    v-for="comment in post.comments"
-                    :key="comment.id"
-                    class="flex my-2 items-center"
-                  >
-                    <img
-                      v-if="comment.User.imageUrl === null"
-                      src="../../assets/images/avatar.png"
-                      alt="photo de profil "
-                      class="avatar"
-                    />
-                    <div
-                      class="
-                        flex-col
-                        items-center
-                        w-full
-                        p-2
-                        bg-gray-100
-                        rounded-xl
-                      "
-                    >
-                      
+                <div
+                  class="card-list"
+                  v-for="comment in comments"
+                  :key="comment.id"
+                >
+                  <div class="card-footer" v-bind="comment">
+                    <div @getComments="getAllComments()">
+                      <p>
+                        commentaires: <span>{{ post.content }}</span>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -144,23 +96,21 @@
 
 
 <script>
-
 import postService from "../../_services/postService";
 import PostAdd from "../Post/PostAdd";
+import CommentAdd from "../Comment/CommentAdd";
 export default {
   name: "postsInfo",
-
   components: {
-  
     PostAdd,
+    CommentAdd,
   },
   data() {
     return {
+     
       userId: localStorage.getItem("userId"),
       token: localStorage.getItem("token"),
-      postId: "",
-      showComments: false,
-      content: "",
+       content: "",
     };
   },
   computed: {
@@ -170,14 +120,17 @@ export default {
     posts() {
       return this.$store.getters.posts;
     },
-    
   },
   created() {
     this.$store.dispatch("getAllPosts");
+    this.$store.dispatch("getAllComments");
   },
   methods: {
     PostAdd() {
       this.$router.push({ name: "PostAdd" });
+    },
+    CommentAdd(id) {
+      this.$router.push({ name: "CommentAdd", params:{id} });
     },
 
     delPost(id) {
@@ -192,8 +145,5 @@ export default {
   like(id) {
     this.$store.dispatch("postLike", id);
   },
-
- 
-  
 };
 </script>

@@ -68,7 +68,7 @@
                     <div class="row mt-5">
                       <div class="button">
                         <button
-                          @click="addUser(UserId)"
+                          @click="modifUser()"
                           class="btn btn-primary my-1"
                         >
                           <i class="fa fa-pen"></i>
@@ -121,10 +121,11 @@ beforeMount() {
 
   method: {
     addUser() {
-      this.$router.push("/profil/add");
+      console.log("ok cela fonctionne")
+      this.$router.push("profil/add");
     },
     deleteUser(id) {
-      console.log(id, "user suprrimer");
+      console.log( "user suprrimer");
       this.userId.$remove(user.id);
     },
   },

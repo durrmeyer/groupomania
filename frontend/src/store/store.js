@@ -11,8 +11,8 @@ const store = createStore({
     isLoggedIn: false,
     posts: [],
     post: {},
-    comments: [],
-    comment: {},
+    comments:[],
+    comment:{},
   },
 
 
@@ -97,19 +97,22 @@ const store = createStore({
       state.posts = [post, ...state.posts];
 
     },
-    UPDATE_POST(state, id, post) {
-      Object.assign(
-        state.posts.find((el) => el.id === id),
-        post
-      );
+    UPDATE_POST(state, post) {
+      state.post = post;
+
     },
     ADD_Like(state, like) {
       state.posts = [like, ...state.posts];
 
     },
-    GET_COMMENT(state, comment) {
-      state.comments = [comment, ...state.posts];
+    ADD_COMMENT(state, comment) {
+      state.posts = [comment, ...state.posts];
+
     },
+    GET_COMMENTS(state, comments) {
+      state.comments = comments;
+    },
+
   },
   actions: {
     user({ commit }, user) {
@@ -118,7 +121,6 @@ const store = createStore({
     getUsers({ commit }) {
       userService.getAllUsers().then((res) => {
         const users = res.data;
-        console.log(users, "store Action")
         commit("GET_USERS", users);
       });
     },
@@ -126,20 +128,18 @@ const store = createStore({
       let id = localStorage.getItem("UserId")
       userService.getUserById(id).then((res) => {
         const user = res.data;
-        console.log(user, "store User Action")
         commit("GET_USER_BY_ID", user);
       });
     },
     updateUser({ commit }, data) {
-     
+
       userService.updateUser(data.id, data.data, {
         headers: { Authorization: this.state.token }
       })
-      
+
         .then((res) => {
-          
+
           const user = res.data.user;
-          console.log("user", user)
           commit("UPDATE_USER", user);
         })
         .then(() => {
@@ -165,15 +165,13 @@ const store = createStore({
     },
     logout({ commit }) {
       localStorage.removeItem("token");
-      localStorage.removeItem("user");
+
       localStorage.removeItem("UserId");
       commit("LOGOUT");
     },
 
 
-
     createPost({ commit }, post) {
-      console.log(post, "Store Post");
       postService.createPost(post)
         .then((res) => {
           const post = res.data;
@@ -196,30 +194,43 @@ const store = createStore({
 
   },
   updatePost({ commit }, data) {
-    postService.updatePost(data.id, data.data)
+    postService.updatePost(data.id, data.data,{
+      headers: { Authorization: this.state.token }
+    })
       .then((res) => {
-        const post = res.data;
+        const post = res.data.post;
         commit("UPDATE_POST", post);
       });
   },
-
-  createComment({ commit }, data) {
-    postService.createComment(
-    )
-      .then((res) => {
-
-        const comment = res.data;
-        commit("GET_COMMENT", comment);
-        console.log(comment);
-      })
-      .then(() => {
-        postService.getAllPosts()
-          .then((res) => {
-            const posts = res.data;
-            commit("GET_POSTS", posts)
-          })
-      });
+ 
+  /*createComment({ commit }, data) {
+   
+      postService
+        .createComment(data)
+        .then(function(res) {
+          const comment = res.data.comment;
+          commit("ADD_COMMENT", comment);
+          resolve(response.data);
+        })
+        .then(() => {
+          // Important pour maintenir le state à jour !
+          postService.getAllPosts().then(function(response) {
+            const posts = response.data;
+            commit("GET_POSTS", posts);
+            resolve(response.data);
+          });
+        })
+        .catch(function(error) {
+          reject(error);
+        });
+      },*/
+  getAllComments({ commit }) {
+    postService.getAllPosts().then((res) => {
+      const comments = res.data;
+      commit("GET_COMMENTS", comments);
+    });
   },
+
   deleteComment: ({ commit }, id) => {
     postService.deleteComment(id)
       .then(() => {

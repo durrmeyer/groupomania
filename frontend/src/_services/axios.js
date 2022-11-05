@@ -1,5 +1,6 @@
 import axios from 'axios';
 import accountService from './accountService';
+import router from "@/router";
 
 const Axios = axios.create({
   baseURL: 'http://localhost:3000/api'
@@ -18,10 +19,9 @@ Axios.interceptors.request.use(request => {
 Axios.interceptors.response.use(response => {
   return response
 }, error => {
-  console.log(error.response.status)
   if (error.response.status == 401) {
     accountService.logout()
-    router.push('/')
+    router.push({name: login})
   }
 })
 

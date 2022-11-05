@@ -93,9 +93,9 @@ export default {
         .then((res) => {
           accountService.setToken(res.data.token);
           userService.saveUserId(res.data.userId);
-          userService.saveUser(res.data.user);
+          /*userService.saveUser(res.data.user);*/
+
           this.$store.dispatch("token", res.data.token);
-          this.$store.dispatch("user", res.data.user);
           this.$store.dispatch("getUserById", res.data.user.id);
 
           this.$router.push("/profil");

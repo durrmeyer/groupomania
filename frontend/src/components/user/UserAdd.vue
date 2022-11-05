@@ -25,6 +25,7 @@
               type="file"
               ref="image"
               name="image"
+              accept="image/*"
               @change="selectImage()"
             />télécharger une photo de profil
 
@@ -49,7 +50,6 @@
             </div>
 
             <div class="mb-2">
-              
               <label for="user_email">Email</label>
               <input
                 v-model="email"
@@ -88,45 +88,44 @@ export default {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
       image: "",
-      firstName:"",
-      lastName: "",
-      email: "",
     };
   },
-mounted() {
+  mounted() {
     this.$store.dispatch("getUserById");
   },
   computed: {
     ...mapState({
-      user: (state) => state.user,
+      firstName: (state) => state.user.firstName,
+      lastName: (state) => state.user.lastName,
+      email: (state) => state.user.email,
     }),
   },
   methods: {
     selectImage() {
       this.image = this.$refs.image.files[0];
       this.image = URL.createObjectURL(this.image);
-      console.log(this.image);
     },
     updateUser() {
       const formData = new FormData();
 
       formData.append("image", this.image);
+
       formData.append("firstName", this.firstName);
       formData.append("lastName", this.lastName);
       formData.append("email", this.email);
       formData.append("userId", this.userId);
 
-      console.log("test", formData.get("userId"));
-      console.log("test", formData.get("image"));
-      console.log("test", formData.get("lastName"));
-      console.log("test", formData.get("firstName"));
-      console.log("test", formData.get("email"));
+      console.log(" image", formData.get("image"));
+      console.log("UserId", formData.get("userId"));
+
+      console.log("Lastname", formData.get("lastName"));
+      console.log("Firstname", formData.get("firstName"));
+      console.log("email", formData.get("email"));
       let id = this.$store.state.user.id;
       this.$store
         .dispatch("updateUser", { id: id, data: formData })
 
-        .then((user) => {
-          console.log("user", user)
+        .then((res) => {
           this.$router.push("/profil/");
         })
         .catch((err) => console.log(err, "erreur de connexion"));

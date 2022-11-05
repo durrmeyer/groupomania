@@ -11,6 +11,11 @@
             >Admin</router-link
           >
         </li>
+         <li class="nav-item" v-if="isUserLogged === true">
+          <router-link to="/dashboard/moderateur" class="nav-link"
+            >Moderateur</router-link
+          >
+        </li>
         <li class="nav-item" v-if="isUserLogged === true">
           <router-link to="/posts" class="nav-link">Posts</router-link>
         </li>

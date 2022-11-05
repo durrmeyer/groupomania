@@ -16,15 +16,18 @@
         </thead>
         <tbody>
           <tr v-for="post in posts" :key="post.id">
+            
             <td>{{ post.id }}</td>
             <td>{{ post.imageUrl }}</td>
             <td>{{ post.description }}</td>
             <!--<td>{{ dateFormat[index] }}</td>-->
 
             <div class="add-to-action">
+             
                 <button
+                 v-if="user.id === userId"
                       class="btn btn-danger"
-                      @click="delPost(index)"
+                      v-on@click="delPost(index)"
                     >
                       <i class="fa fa-trash"></i>
                     </button>

@@ -160,7 +160,7 @@ export default {
       accountService
         .register(this.user)
         .then((res) => {
-          this.$store.dispatch("token", res.data.token);
+       
           this.$store.dispatch("user", res.data.user);
           this.$router.push({ name: "login" });
           console.log(this.user, "consolelog data");
