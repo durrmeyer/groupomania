@@ -5,7 +5,7 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.js')[env];
+const config = require(__dirname + '/../../config/config.js')[env];
 const db = {};
 
 let sequelize;
@@ -34,9 +34,10 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.User = require('./user')(sequelize, Sequelize);
-db.Post = require('./Post')(sequelize, Sequelize);
-db.Role = require("./Role")(sequelize, Sequelize);
-db.Comment = require("./Comment")(sequelize, Sequelize);
+db.Post = require('./post')(sequelize, Sequelize);
+//db.Role = require("./")(sequelize, Sequelize);
+db.Comment = require("./comment")(sequelize, Sequelize);
+
 
 
 db.User.hasMany(db.Post);
@@ -47,6 +48,7 @@ db.Post.hasMany(db.Comment);
 
 db.Comment.belongsTo(db.Post);
 db.Comment.belongsTo(db.User);
+
 
 
 sequelize.authenticate()

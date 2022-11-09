@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
 	console.log(token, "c'est celui-ci")
 
 	try {
-		if (!token) throw new Error("Problème auth");
+		if (!token) throw new Error("Problème authentification");
 
 
 		if (userId && userId !== authUser(req))

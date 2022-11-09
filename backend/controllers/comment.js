@@ -1,7 +1,7 @@
-const db = require("../models");
-const authUser = require("../middleware/authUser")
+const db = require("../db/models")
 //Récupération du module 'file system' de Node permettant de gérer ici les téléchargements et modifications d'images
 const fs = require('fs'); //package qui permet de modif
+const authUser = require("../middleware/authUser");
 
 
 
@@ -10,56 +10,74 @@ const fs = require('fs'); //package qui permet de modif
 
 
 exports.createComment = async (req, res) => {
+const UserId = authUser;
+    db.Post.findOne({
+        attributes: ["id", "description", "imageUrl", "UserId"],
+        where: { id: req.params.id, UserId:UserId},
+    }),
 
-    const UserId = authUser;
-
-    await db.Post.findOne({
-        attributes: ["id", "description", "imageUrl"],
-        where: { id: req.params.id, UserId: UserId, },
-    });
-
+        console.log(req.body);
     db.Comment.create({
         content: req.body.content,
-        UserId: req.body.userId,
-        PostId: req.params.postId,
-
+        UserId: req.body.UserId,
+        PostId: req.params.id,
+       
     })
         .then((res) => {
             res.status(201).json({
+                content: req.body.content,
+                userId: req.body.userId,
+                PostId: req.params.id,
                 message: 'comment créé !'
             })
+            console.log("content", req.body.content)
         })
         .catch((error) => res.status(400).json({
             error
         }))
-    console.log(req.body.userId, 'user comment')
+    console.log(req.body, 'user comment')
 };
 
+exports.updateComment = (req, res) => {
+    db.Comment.findOne({ where: { id: req.params.id } });
+    const commentObjet = req.file ? {
+        ...(req.body.comment),
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    }
+        : {
+            ...req.body
+        };
 
+    comment.update({
+        ...commentObjet
+    }, {
+        where: {
+            id: req.params.id
+        }
+    })
+        .then(() => res.status(200).json({ message: 'comment modifié !' }))
+        .catch((error) => res.status(400).json({ message: error }));
+};
 // -----------------------trouver tous les comments--------------------------//
 exports.getAllComments = (req, res) => {
     db.Comment.findAll({
-        where: {
-            PostId: req.params.postId,
-          },
-        attributes: ["id", "content", "UserId"],
-
+        where: { id: req.params.id, },
+        attributes: ["id", "comment", "UserId"],
         include: [
             {
-                model: db.Post,
-                attributes: ["id", "description","imageUrl", "UserId"],
+                model: db.User,
+                attributes: ["id", "firstName", "lastName", "imageUrl", "PostId"],
             },
-            {
-            model: db.User,
-            attributes: ["id", "description","imageUrl"],
-        },
         ],
     })
-        /*** si tout est ok ***/
-        .then((comments) => res.status(200).send(comments))
-        /*** sinon on envoie une erreur ***/
-        .catch((error) => res.status(400).send({ error }));
+        .then((comments) => res.status(200).json(comments))
+        .catch(error => res.status(400).json({
+            error,
+            message: 'impossible de récupérer les commentaires'
+        }))
 };
+
+
 
 //----------------------trouver un comment avec son ID----------------------//
 exports.getCommentById = async (req, res) => {
@@ -69,8 +87,8 @@ exports.getCommentById = async (req, res) => {
         where: { id: req.params.id },
         include: [
             {
-                model: db.Post,
-                attributes: ["id", "firstName", "lastName", "image"]
+                model: db.User,
+                attributes: ["id", "firstName", "lastName", "imageUrl", "PostId"]
             },
 
         ],
@@ -87,7 +105,7 @@ exports.getCommentById = async (req, res) => {
 
 
 //------------------------suppression d'un comment--------------------------//
-exports.deletecomment = (req, res) => {
+exports.deleteComment = (req, res) => {
     //récupération dans la base de donnée
 
     //l'id du comment doit être le même que le paramètre de requête

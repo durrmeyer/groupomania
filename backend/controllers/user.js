@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt"); // Bcrypt permet de crypter le password et de le comparer
 const jwt = require("jsonwebtoken"); // Jwt necessaire pour la création d'un token
-const db = require('../models');// Récupération des modèles Sequelize
+const db = require('../db/models');// Récupération des modèles Sequelize
 const authUser = require("../middleware/authUser");
 
 require("dotenv").config();
@@ -31,7 +31,17 @@ exports.register = (req, res) => {
 
 										// message retourné en cas de réussite
 										res.status(201).json({
+											userId: user.id,
+											isAdmin: user.isAdmin,
+											isModerateur: user.isModerateur,
+											token: jwt.sign({
+												userId: user.id,
 
+											},
+												`${process.env.SECRET_KEY}`, {
+												expiresIn: '24h'
+											}
+											),
 											message: 'Utilisateur créé !'
 										});
 									})
@@ -78,12 +88,14 @@ exports.login = async (req, res) => {
 
 					userId: user.id,
 					user: user,
-					isAdmin: false,
+					imageUrl: user.imageUrl,
+					isAdmin: user.isAdmin,
+					isModerateur: user.isModerateur,
 					token: jwt.sign(
 						{
-
-							userId: user.id
-
+							userId: user.id,
+							isAdmin: user.isAdmin,
+							isModerateur: user.isModerateur,
 						},
 						"RANDOM_TOKEN_SECRET",
 						{ expiresIn: '24h' }
@@ -121,7 +133,8 @@ exports.getAllUsers = (req, res,) => {
 			"firstName",
 			"lastName",
 			"email",
-			"image",
+			"imageUrl",
+			"role",
 			"createdAt"
 		],
 
@@ -159,7 +172,7 @@ exports.updateUser = async (req, res) => {
 				firstName: req.body.firstName,
 				lastName: req.body.lastName,
 				email: req.body.email,
-				image: req.body.image,
+				imageUrl: req.body.imageUrl,
 			},
 				{
 					where: { id: req.params.id }
@@ -169,7 +182,7 @@ exports.updateUser = async (req, res) => {
 						firstName: req.body.firstName,
 						lastName: req.body.lastName,
 						email: req.body.email,
-						image: req.body.image,
+						imageUrl: req.body.imageUrl,
 					}
 				}))
 
@@ -207,19 +220,7 @@ exports.deleteUser = (req, res) => {
 							error
 						}))
 				})
-			} else {
-				db.User.destroy({
-					where: {
-						id: req.params.id
-					}
-				})
-					.then(() => res.status(200).json({
-						message: 'un utilisateur est bien supprimé !'
-					}))
-					.catch(error => res.status(400).json({
-						error
-					}))
-			}
+			} 
 		})
 		.catch(error => res.status(500).json({
 			error,

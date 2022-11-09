@@ -16,7 +16,7 @@ router.post('/register', userCtrl.register);
 router.get("/",auth, userCtrl.getAllUsers);
 
 //-----modification de l'utilisateur-----------//
-router.put("/profil/:id",auth, multer, userCtrl.updateUser);
+router.patch("/profil/:id",auth, multer, userCtrl.updateUser);
 
 //-----récupérer un utilisateur-----------//
 router.get('/:id',auth, multer,userCtrl.getUserById);
