@@ -161,9 +161,9 @@ export default {
         .register(this.user)
         .then((res) => {
        
-          this.$store.dispatch("user", res.data.user);
+          this.$store.dispatch("getUserById", res.data.user.id);
           this.$router.push({ name: "login" });
-          console.log(this.user, "consolelog data");
+          console.log(this.user, "console log data");
         })
         .catch((err) => console.log(err, "erreur de connexion"));
     },

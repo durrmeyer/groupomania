@@ -21,11 +21,11 @@
           <form @submit.prevent="udapteUser" enctype="multipart/form-data">
             <label for="file" class="form-label">Image</label>
             <input
+              id="image"
               class="form-control"
               type="file"
               ref="image"
               name="image"
-              accept="image/*"
               @change="selectImage()"
             />télécharger une photo de profil
 
@@ -87,13 +87,18 @@ export default {
     return {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
+      imageUrl: "",
       image: "",
+      file: null,
     };
   },
   mounted() {
     this.$store.dispatch("getUserById");
   },
   computed: {
+    user() {
+      return this.$store.getters.user;
+    },
     ...mapState({
       firstName: (state) => state.user.firstName,
       lastName: (state) => state.user.lastName,
@@ -103,24 +108,19 @@ export default {
   methods: {
     selectImage() {
       this.image = this.$refs.image.files[0];
-      this.image = URL.createObjectURL(this.image);
+      this.imageUrl = URL.createObjectURL(this.image);
     },
     updateUser() {
       const formData = new FormData();
-
       formData.append("image", this.image);
-
+      formData.append("imageUrl", this.imageUrl);
       formData.append("firstName", this.firstName);
       formData.append("lastName", this.lastName);
       formData.append("email", this.email);
       formData.append("userId", this.userId);
 
       console.log(" image", formData.get("image"));
-      console.log("UserId", formData.get("userId"));
-
-      console.log("Lastname", formData.get("lastName"));
-      console.log("Firstname", formData.get("firstName"));
-      console.log("email", formData.get("email"));
+      console.log("test-récup", formData.get("imageUrl"));
       let id = this.$store.state.user.id;
       this.$store
         .dispatch("updateUser", { id: id, data: formData })

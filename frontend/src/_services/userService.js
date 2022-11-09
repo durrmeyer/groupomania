@@ -7,20 +7,20 @@ export default {
 
 
   getUserById(id) {
-    return Axios.get('users/' + id);
+    return Axios.get('users/' + id)
   },
   getAllUsers() {
     return Axios.get('/users')
   },
   updateUser(id, data) {
-    return Axios.patch('/users/profil/' + id, data);
+    return Axios.patch("/users/profil/" + id, data)
   },
-  getUser() {
-    return Axios.patch('/users',)
+  getUser(id) {
+    return Axios.get("/users/" + id)
   },
 
   deleteUser(id) {
-    return Axios.delete('users/' + id);
+    return Axios.delete("/users/" + id)
   },
 
 
@@ -31,7 +31,7 @@ export default {
   getUserId() {
     return localStorage.getItem('UserId')
   },
-  
- 
+
+
 
 }

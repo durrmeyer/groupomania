@@ -73,7 +73,7 @@ const routes = [
   },
 
   {
-    path: "/profil/edit/${id}",
+    path: "/profil/edit/:id",
     name: "UserEdit",
     component: UserEdit,
     props: true
@@ -81,7 +81,7 @@ const routes = [
  
 
   {
-    path: "/comments/post/:id",
+    path: "/posts/comments/:id",
     name: "CommentAdd",
     component: CommentAdd,
 

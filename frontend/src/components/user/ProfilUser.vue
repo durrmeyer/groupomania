@@ -9,36 +9,28 @@
       </p>
     </div>
 
-    <div class="card-body text-center">
+    <div class="card-body text-center" v-bind="user">
       <div class="dropdown text-center">
-        <div
-                          v-if="user.image === null"
-                          class="dropdown text-center"
-                        >
-                          <img
-                            src="../../assets/images/avatar.png"
-                            alt="photo de profil"
-                            class="avatar"
-                          />
-                        </div>
-                        <div v-else class="dropdown text-center">
-                          <img
-                            :src="user.image"
-                            alt="photo de profil"
-                            class="avatar"
-                          />
-                        </div>
-                      
+        <div v-if="user.imageUrl === null" class="dropdown text-center">
+          <img
+            src="../../assets/images/avatar.png"
+            alt="photo de profil"
+            class="avatar"
+          />
+        </div>
+        <div v-else class="dropdown text-center">
+          <img :src="user.imageUrl" alt="photo de profil" class="avatar" />
+        </div>
       </div>
 
-      <h1>{{ user.firstName }}  {{ user.lastName }} </h1>
+      <h1>{{ user.firstName }} {{ user.lastName }}</h1>
       <p class="role">rôle:</p>
       <p>{{ user.email }}</p>
       <button @click="addUser" class="btn btn-primary my-1">
         <i class="fa fa-pen"></i>
       </button>
       <div class="button">
-        <button @click="deleteUser(user.userId)">
+        <button @click="deleteUser(id)">
           <i class="fa fa-trash"></i>
         </button>
       </div>
@@ -62,11 +54,10 @@ export default {
     return {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
-      image: "",
+      imageUrl: "",
       firstName: "",
       lastName: "",
       email: "",
-   
     };
   },
   beforemounted() {
@@ -81,9 +72,8 @@ export default {
     addUser() {
       this.$router.push("/profil/add");
     },
-    deleteUser(id) {
-      this.$store.dispatch("deleteUser", id);
-      this.$store.dispatch("logout");
+    deleteUser(uid) {
+      this.$store.dispatch("deleteUser", uid);
     },
   },
 };

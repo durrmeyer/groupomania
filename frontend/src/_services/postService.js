@@ -25,9 +25,7 @@ export default {
     return Axios().post(`/post/${id}`) + "/like";
   },
 
-  getAllComments() {
-    return Axios.get("posts/comments");
-  },
+
   createComment(id, data) {
     return Axios.post("/posts/" + id + "/comments", data);
   },
@@ -43,6 +41,9 @@ export default {
   },
   getPostId() {
     return localStorage.getItem('PostId')
+  },
+  like(id) {
+    return Axios.post("posts/" + id + "/likes");
   },
 
 };

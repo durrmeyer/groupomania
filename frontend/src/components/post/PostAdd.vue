@@ -48,10 +48,6 @@ export default {
       formData.append("description", this.description);
       formData.append("image", this.image);
       formData.append("userId", this.userId);
-
-      console.log("test", formData.get("description"));
-      console.log("test", formData.get("image"));
-
       postService
         .createPost(formData)
         .then(() => {

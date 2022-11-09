@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="main">
+    <div class="title">
+      <h2>liste des utlisateurs il y en a {{ comptage }}</h2>
       <div class="title">
         <p class="h3 text-success fw-bold">DashBoard Administrateur</p>
         <p class="fst-italic">
@@ -13,120 +14,101 @@
           occaecat cupidatat non proident, sunt in culpa qui officia deserunt
           mollit anim id est laborum."
         </p>
-
         <router-link to="/posts" class="btn btn-success btn-sm"
           ><i class="fa fa-eye"></i> Voir les posts</router-link
         >
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-md-9">
-              <div
-                class="card-list"
-                v-for="user in users"
-                :key="user"
-                :user="user"
-              >
-                <div class="card-body" v-bind="user">
-                  <div class="container-profil">
-                    <div class="col">
-                      <div class="card-body text-center">
-                        <div
-                          v-if="user.image === null"
-                          class="dropdown text-center"
-                        >
-                          <img
-                            src="../../assets/images/avatar.png"
-                            alt="photo de profil"
-                            class="avatar"
-                          />
-                        </div>
-                        <div v-else class="dropdown text-center">
-                          <img
-                            :src="user.image"
-                            alt="photo de profil"
-                            class="avatar"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-6">
-                      <ul class="list-group">
-                        <li class="list-group-item">
-                          Nom: <span class="fw-bold"> {{ user.lastName }}</span>
-                        </li>
-                        <li class="list-group-item">
-                          Prénom:
-                          <span class="fw-bold">{{ user.firstName }}</span>
-                        </li>
-                        <li class="list-group-item">
-                          Email: <span class="fw-bold">{{ user.email }}</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div class="row mt-5">
-                      <div class="button">
-                        <button
-                          v-on@click=" addUser"
-                          class="btn btn-primary my-1"
-                        >
-                          <i class="fa fa-pen"></i>
-                        </button>
-                        <button
-                          class="btn btn-danger my-1"
-                          @click="deleteUser(user.id)"
-                        >
-                          <i class="fa fa-trash"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
+    <main>
+      <table class="table table-striped" v-bind="user">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">ImageUrl</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Email</th>
+            <th scope="col">Date de Création</th>
+            <th scope="col">actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(user, index) in users" :key="user.id">
+            <td>{{ user.id }}</td>
+            <td>{{ user.imageUrl }}</td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ dateFormat[index] }}</td>
+
+            <div class="add-to-action">
+              <div class="button">
+              
+                <button class="btn btn-primary my-1" @click="addUser(user.id)">
+                  <i class="fa fa-pen"></i>
+                </button>
+                <button class="btn btn-danger my-1" @click="delUser(index)">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </tr>
+        </tbody>
+      </table>
+    </main>
   </div>
 </template>
 <script>
 import userService from "../../_services/userService";
-
+import AddUser from "../../components/User/UserAdd.vue";
 export default {
   name: "UserIndex",
-
+  components: {
+    AddUser,
+  },
   data() {
     return {
-      userId: localStorage.getItem("UserId"),
+      user: {},
       users: [],
     };
   },
-beforeMount() {
-  this.$store.dispatch("getUsers")
-},
-  created() {
+
+  mounted() {
     userService
       .getAllUsers()
       .then((res) => {
-        this.users = res.data;
+      this.users = res.data;
       })
       .catch((err) => console.log(err));
   },
-
-  comptage() {
-    return this.users.length;
+  computed: {
+    comptage() {
+      return this.users.length;
+    },
+    dateFormat() {
+      return this.users.map((u) =>
+        u.createdAt.split("T")[0].split("-").reverse().join("/")
+      );
+    },
   },
 
-  method: {
-    addUser() {
-      console.log("ok cela fonctionne")
-      this.$router.push("profil/add");
+  methods: {
+    addUser(id) {
+      this.$router.push({ name: "UserAdd",id } );
     },
-    deleteUser(id) {
-      console.log( "user suprrimer");
-      this.userId.$remove(user.id);
+    /*addUser(id) {
+      this.$router.push("/profil/add", id);
+    },*/
+    delUser(index) {
+      console.log(index)
+      console.log(this.users[index].id);
+      userService.deleteUser(this.users[index].id)
+      .then((res) => {
+        console.log(res);
+        
+      })
+      .catch((err) => console.log(err));
+      //this.users.splice(index, 1);
     },
   },
 };

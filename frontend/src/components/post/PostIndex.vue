@@ -10,7 +10,7 @@
             <th scope="col">Id</th>
             <th scope="col">ImageUrl</th>
             <th scope="col">Description</th>
-            <th scope="col">Commentaire</th>
+           
             <!--<th scope="col">Création</th>-->
             <th scope="col">actions</th>
           </tr>
@@ -20,12 +20,12 @@
             <td>{{ post.id }}</td>
             <td>{{ post.imageUrl }}</td>
             <td>{{ post.description }}</td>
-            <td>{{ post.comment }}</td>
+           
 
             <!--<td>{{ dateFormat[index] }}</td>-->
 
             <div class="add-to-action">
-              <button class="btn btn-danger" @click="delPost(index)">
+              <button class="btn btn-danger my-1" @click="delPost()">
                 <i class="fa fa-trash"></i>
               </button>
             </div>
@@ -42,6 +42,7 @@ export default {
   data() {
     return {
       posts: [],
+      posts:{},
     };
   },
   mounted() {
@@ -57,8 +58,8 @@ export default {
       return this.posts.length;
     },
     dateFormat() {
-      return this.posts.map((u) =>
-        u.createdAt.split("T")[0].split("-").reverse().join("/")
+      return this.posts.map((p) =>
+        p.createdAt.split("T")[0].split("-").reverse().join("/")
       );
     },
   },
@@ -67,12 +68,11 @@ export default {
       this.$router.push({ name: "UserEdit", params: { id: id } });
     },
     delPost(index) {
-      console.log(index, "jhfgnjlgr");
-      userService
-        .deleteUser(this.user[index].id)
+        postService
+        .deletePost(id)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
-      this.user.splice(index, 1);
+      this.posts.splice(id, 1);
     },
   },
 };

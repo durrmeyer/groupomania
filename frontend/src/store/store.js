@@ -11,7 +11,8 @@ const store = createStore({
     isLoggedIn: false,
     posts: [],
     post: {},
-    
+   
+
   },
 
 
@@ -33,7 +34,7 @@ const store = createStore({
     post(state) {
       return state.post;
     },
-    
+   
 
   },
   mutations: {
@@ -196,30 +197,9 @@ const store = createStore({
         commit("UPDATE_POST", post);
       });
   },
- 
-  /*createComment({ commit }, data) {
-   
-      postService
-        .createComment(data)
-        .then(function(res) {
-          const comment = res.data.comment;
-          commit("ADD_COMMENT", comment);
-          resolve(response.data);
-        })
-        .then(() => {
-          // Important pour maintenir le state à jour !
-          postService.getAllPosts().then(function(response) {
-            const posts = response.data;
-            commit("GET_POSTS", posts);
-            resolve(response.data);
-          });
-        })
-        .catch(function(error) {
-          reject(error);
-        });
-      },*/
+
   getAllComments({ commit }) {
-    postService.getAllPosts().then((res) => {
+    postService.getAllComments().then((res) => {
       const comments = res.data;
       commit("GET_COMMENTS", comments);
     });
@@ -236,9 +216,29 @@ const store = createStore({
           commit("GET_POSTS", posts);
         });
       });
-  }
+  },
 
-
+  likeUser({ commit }, id) {
+   
+    postService
+      .likeUser(id)
+      .then(function(res) {
+        const like = res.data.comment;
+        commit("ADD_LIKE", like);
+        resolve(res.data);
+      })
+      .then(() => {
+        // Important pour maintenir le state à jour !
+        postService.getAllPosts().then(function(response) {
+          const posts = response.data;
+          commit("GET_POSTS", posts);
+          resolve(response.data);
+        });
+      })
+      .catch(function(error) {
+        reject(error);
+      });
+    },
 });
 
 export default store;
