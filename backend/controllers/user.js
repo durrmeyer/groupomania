@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt"); // Bcrypt permet de crypter le password et de le comparer
 const jwt = require("jsonwebtoken"); // Jwt necessaire pour la création d'un token
-const db = require('../db/models');// Récupération des modèles Sequelize
-const authUser = require("../middleware/authUser");
+const db = require("../db/models");// Récupération des modèles Sequelize
+const authUser = require("../middleware/authUser")
 
 require("dotenv").config();
 
@@ -23,8 +23,8 @@ exports.register = (req, res) => {
 									lastName: req.body.lastName,
 									email: req.body.email,
 									password: hash,
+									RoleId: 3,
 
-									admin: false,
 								})
 
 									.then(() => {
@@ -32,8 +32,6 @@ exports.register = (req, res) => {
 										// message retourné en cas de réussite
 										res.status(201).json({
 											userId: user.id,
-											isAdmin: user.isAdmin,
-											isModerateur: user.isModerateur,
 											token: jwt.sign({
 												userId: user.id,
 
@@ -88,14 +86,12 @@ exports.login = async (req, res) => {
 
 					userId: user.id,
 					user: user,
-					imageUrl: user.imageUrl,
-					isAdmin: user.isAdmin,
-					isModerateur: user.isModerateur,
+					image: user.image,
+
 					token: jwt.sign(
 						{
 							userId: user.id,
-							isAdmin: user.isAdmin,
-							isModerateur: user.isModerateur,
+
 						},
 						"RANDOM_TOKEN_SECRET",
 						{ expiresIn: '24h' }
@@ -114,6 +110,11 @@ exports.getUserById = (req, res) => {
 		where: {
 			id: req.params.id,
 		},
+		include: [{
+			model: db.Role,
+			attributes: ["id", "roleName"],
+		},
+	]
 	})
 		.then((user) => res.status(200).send(user))
 		.catch((err) => res.status(500).send({
@@ -133,10 +134,15 @@ exports.getAllUsers = (req, res,) => {
 			"firstName",
 			"lastName",
 			"email",
-			"imageUrl",
-			"role",
+			"image",
+			"RoleId",
 			"createdAt"
 		],
+		include: [{
+			model: db.Role,
+			attributes: ["id", "roleName"],
+		},
+	]
 
 	})
 		.then((users) => res.status(200).send(users))
@@ -145,14 +151,14 @@ exports.getAllUsers = (req, res,) => {
 };
 
 exports.updateUser = async (req, res) => {
-
+	const userId = authUser;
 	let newImage;
-	let user = await db.User.findOne({ where: { id: req.params.id } });
-
-	if (req.image) {
+let user = await db.User.findOne({ where: { id: req.params.id } });
+if(userId === user.id){ 
+	if (req.file) {
 		newImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
 	}
-	if (newImage && user.image) {
+	if(newImage && user.image){ 
 		const filename = user.image.split("/images/")[1];
 		fs.unlink(`images/${filename}`, (error) => {
 			if (error) console.log(error);
@@ -161,54 +167,54 @@ exports.updateUser = async (req, res) => {
 			}
 		});
 	}
-	console.warn('update', req.params, req.body)
+
 	db.User.findOne({
+		
 		where: {
 			id: req.params.id,
 		}
+		
 	})
 		.then(() => {
+			console.log(req)
 			db.User.update({
 				firstName: req.body.firstName,
 				lastName: req.body.lastName,
 				email: req.body.email,
-				imageUrl: req.body.imageUrl,
+				image: req.body.newImage,
+				
 			},
 				{
 					where: { id: req.params.id }
 				})
 				.then(() => res.status(200).json({
+					
 					message: 'User modifié !', user: {
-						firstName: req.body.firstName,
-						lastName: req.body.lastName,
-						email: req.body.email,
-						imageUrl: req.body.imageUrl,
+						firstName: user.firstName,
+						lastName: user.lastName,
+						email:user.email,
+						image: user.newImage,
 					}
+					
 				}))
-
+				
 				.catch(error => res.status(400).json({
 					error
 				}))
 		})
+	}
 };
 
 exports.deleteUser = (req, res) => {
-	//récupération dans la base de donnée
-
-	//l'id du user doit être le même que le paramètre de requête
+	console.log(req.params.id, "user supression")
 	db.User.findOne({ where: { id: req.params.id } })
 
-		//supprime l'ancienne image du server  
 		.then(user => {
-			if (user.id !== authUser.authUser(req)) {
-				return res.status(401).json({
-					error
-				})
-			}
+			console.log(user.firstName, "user image")
 			if (req.file) {
 				const filename = user.image.split('/images/')[1];
 				fs.unlink(`images/${filename}`, () => {
-					db.User.destroy({
+					user.destroy({
 						where: {
 							id: req.params.id
 						}
@@ -216,11 +222,24 @@ exports.deleteUser = (req, res) => {
 						.then(() => res.status(200).json({
 							message: 'le user est bien supprimé !'
 						}))
-						.catch(error => res.status(400).json({
-							error
+						.catch(err => res.status(400).json({
+							message: "Database error",
+							error: err
 						}))
 				})
-			} 
+			} else {
+				user.destroy({
+					where: {
+						id: req.params.id
+					}
+				})
+					.then(() => res.status(200).json({
+						message: 'le user est bien supprimé !'
+					}))
+					.catch(error => res.status(400).json({
+						error
+					}))
+			}
 		})
 		.catch(error => res.status(500).json({
 			error,

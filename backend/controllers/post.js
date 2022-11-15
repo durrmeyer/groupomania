@@ -15,7 +15,7 @@ exports.createPost = async (req, res) => {
   const UserId = authUser;
 
   await db.User.findOne({
-    attributes: ["id", "firstName", "lastName", "imageUrl"],
+    attributes: ["id", "firstName", "lastName", "image"],
     where: { id: UserId },
   });
 
@@ -68,16 +68,23 @@ exports.updatePost = (req, res) => {
 // -----------------------trouver tous les posts--------------------------//
 exports.getAllPosts = (req, res) => {
   db.Post.findAll({
-    attributes: ["id", "description", "imageUrl", "UserId"],
-
-   include: [
+    attributes: ["id", "description", "imageUrl", "UserId", "createdAt"],
+    order: [["createdAt", "DESC"]],
+    include: [
       {
         model: db.User,
-        attributes: ["id", "lastName", "firstName", "imageUrl"],
+        attributes: ["id", "lastName", "firstName", "image"],
       },
       {
         model: db.Comment,
-        attributes: ["id","content","UserId"],
+        attributes: ["id", "content", "UserId", "createdAt"],
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: db.User,
+
+          },
+        ]
       },
     ],
 
@@ -105,16 +112,16 @@ exports.getPostById = async (req, res) => {
       {
         model: db.Comment,
         order: [["createdAt", "DESC"]],
-        attributes: ["id","content","UserId"],
+        attributes: ["id", "content", "UserId"],
         include: [
           {
             model: db.User,
-            attributes: [ "firstName","lastName","imageUrl"],
+            attributes: ["firstName", "lastName", "imageUrl"],
           },
         ],
-       },
+      },
     ],
-    
+
 
   })
 
@@ -136,7 +143,6 @@ exports.deletePost = (req, res) => {
 
     //supprime l'ancienne image du server  
     .then(post => {
-
       if (req.file) {
         const filename = post.imageUrl.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => {

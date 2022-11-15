@@ -13,14 +13,14 @@ router.post('/register', userCtrl.register);
 
 
 //-----récupérer tous les utilisateurs -----------//
-router.get("/",auth, userCtrl.getAllUsers);
+router.get("/", auth, userCtrl.getAllUsers);
 
 //-----modification de l'utilisateur-----------//
-router.patch("/profil/:id",auth, multer, userCtrl.updateUser);
+router.patch("/profil/:id", auth, multer, userCtrl.updateUser);
 
 //-----récupérer un utilisateur-----------//
-router.get('/:id',auth, multer,userCtrl.getUserById);
+router.get("/:id", auth, multer, userCtrl.getUserById);
 
 //-----supprimer un utilisateur-----------//
-router.delete("/:id",auth, multer, userCtrl.deleteUser);
+router.delete("/:id", auth, multer, userCtrl.deleteUser);
 module.exports = router;

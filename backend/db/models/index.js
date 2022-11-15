@@ -33,23 +33,64 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-db.User = require('./user')(sequelize, Sequelize);
-db.Post = require('./post')(sequelize, Sequelize);
-//db.Role = require("./")(sequelize, Sequelize);
+db.User = require("./user")(sequelize, Sequelize);
+db.Post = require("./post")(sequelize, Sequelize);
+db.Role = require("./role")(sequelize, Sequelize);
 db.Comment = require("./comment")(sequelize, Sequelize);
 
 
 
-db.User.hasMany(db.Post);
-db.Post.belongsTo(db.User);
-db.User.hasMany(db.Comment);
-db.Post.hasMany(db.Comment);
+db.User.hasMany(db.Post,{
+  onDelete: "CASCADE",
+});
+db.User.hasMany(db.Comment,{
+  onDelete: "CASCADE",
+});
+db.Post.hasMany(db.Comment,
+  {
+    onDelete: "CASCADE",
+  });
+db.Role.hasMany(db.User, {
+  onDelete: "CASCADE",
+});
+db.User.hasMany(db.Like, {
+  onDelete: "CASCADE",
+});
+db.Post.belongsTo(db.User, {
+  foreignKey: {
+    allowNull: false
+  }, onDelete: "CASCADE",
+});
 
 
-db.Comment.belongsTo(db.Post);
-db.Comment.belongsTo(db.User);
 
+db.Comment.belongsTo(db.Post,
+  {
+    foreignKey: {
+      allowNull: false
+    }, onDelete: "CASCADE",
+  });
+db.Comment.belongsTo(db.User,
+  {
+    foreignKey: {
+      allowNull: false
 
+    }, onDelete: "CASCADE",
+  });
+
+  db.User.belongsTo(db.Role,
+    {
+      foreignKey: {
+        allowNull: false
+  
+      }, onDelete: "CASCADE",
+    });
+    db.Like.belongsTo(db.Post, {
+      foreignKey: {
+        allowNull: false,
+      },
+      onDelete: "CASCADE",
+    });
 
 sequelize.authenticate()
   .then(() => console.log('Connexion à mysql réussie !'))

@@ -18,7 +18,10 @@ router.get("/:id", auth, postCtrl.getPostById);
 router.patch("/:id", auth, multer, postCtrl.updatePost);
 // Supprimer le post avec l'id
 router.delete("/:id", auth, multer, postCtrl.deletePost);
+
+
 router.post("/:id/comments", auth, multer, commentCtrl.createComment);
-router.post("/like", auth, likeCtrl.likeUser);
+router.delete("/comments/:id", auth, commentCtrl.deleteComment);
+router.post("/:id/likes", auth, likeCtrl.likeUser);
 
 module.exports = router;
