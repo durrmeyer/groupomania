@@ -11,14 +11,14 @@
             <div class="card-image">
               <div class="card-avatar">
                 <img
-                  v-if="post.User.imageUrl === null"
+                  v-if="post.User.image === null"
                   src="../../assets/images/avatar.png"
                   alt="photo de profil "
                   class="avatar"
                 />
                 <img
                   v-else
-                  :src="post.User.imageUrl"
+                  :src="post.User.image"
                   alt="photo profil de l'utilisateur"
                   class="avatar"
                 />
@@ -40,7 +40,12 @@
 
           <div class="card-body">
             <div class="img-container">
-              <img v-bind:src="post.imageUrl" v-if="post.imageUrl" alt="image du post" class="img" />
+              <img
+                :src="post.imageUrl"
+                v-if="post.imageUrl"
+                alt="image du post"
+                class="img"
+              />
             </div>
 
             <div class="card-text">
@@ -54,13 +59,11 @@
                   class="btn btn-primary"
                   type="button"
                   title="like"
-                  @click="likeUser"
+                  @click="likeUser(post.id)"
                 >
                   <i class="far fa-heart" style="font-size: 26px"></i>
                 </button>
-               <div class="d-flex flex-column align-end pr-3">
-         
-        </div>
+                <div class="d-flex flex-column align-end pr-3"></div>
                 <button
                   class="btn btn"
                   title="commentaire"
@@ -72,40 +75,40 @@
               </div>
 
               <div class="card-footer">
-               <p> commentaires:</p>
+                <p>commentaires:{{ post.Comments.length }}</p>
                 <div
                   class="card-list"
                   v-for="comment in post.Comments"
                   :key="comment.id"
-                 
                 >
-               <img
-                      v-if="comment.User.imageUrl !== null"
-                      src="../../assets/images/avatar.png"
-                      alt="photo de profil "
-                      class="avatar"
-                    />
-                    <img
-                      v-else
-                      :src="comment.User.imageUrl"
-                      alt="photo profil de l'utilisateur"
-                      class="avatar"
-                    />
-                 <button
-            
-              class="btn btn-danger"
-              title="supprimer"
-              aria-label="bouton supprimer"
-              @click="delComment(comment.id)"
-            >
-              <i class="fa fa-trash" aria-hidden="true"></i>
-            </button>
-                  
-                 
-                  <span>{{comment.User.firstName }} {{comment.User.lastName }} </span>
+                  <img
+                    v-if="comment.User.image !== null"
+                    src="../../assets/images/avatar.png"
+                    alt="photo de profil "
+                    class="avatar"
+                  />
+                  <img
+                    v-else
+                    :src="comment.User.image"
+                    alt="photo profil de l'utilisateur"
+                    class="avatar"
+                  />
+
+                  <span
+                    >{{ comment.User.firstName }} {{ comment.User.lastName }}
+                  </span>
                   <div>
                     <span>{{ comment.content }}</span>
                   </div>
+                  <button
+                    v-if="comment.User.id == user.id"
+                    class="btn btn-danger"
+                    title="supprimer"
+                    aria-label="bouton supprimer"
+                    @click="delComment(comment.id)"
+                  >
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -118,7 +121,7 @@
 
 
 <script>
-import postLayout from"../../assets/layouts/post.vue";
+import postLayout from "../../assets/layouts/post.vue";
 import postService from "../../_services/postService";
 import PostAdd from "../Post/PostAdd";
 import CommentAdd from "../Comment/CommentAdd";
@@ -138,20 +141,26 @@ export default {
   },
 
   computed: {
+    userLike() {
+      const userId = this.$store.state.user.UserId;
+      let like = this.post.Likes.map((id) => id.UserId.toString());
+      console.log(typeof userId);
+      console.log(typeof userLike);
+      if (like.includes(userId)) {
+        return "green";
+      } else {
+        return "";
+      }
+    },
     user() {
       return this.$store.getters.user;
     },
     posts() {
-      console.log(this.$store.getters.posts)
       return this.$store.getters.posts;
     },
-   
-    
   },
   created() {
     this.$store.dispatch("getAllPosts");
-  
-  
   },
   methods: {
     PostAdd() {
@@ -160,17 +169,31 @@ export default {
     CommentAdd(id) {
       this.$router.push({ name: "CommentAdd", params: { id } });
     },
-
-    delPost(id) {
-        postService
-        .deletePost(id)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-      this.posts.splice(id, 1);
+     delPost(id) {
+      console.log(id, "krhgicpezrg");
+      let deletePost = confirm(
+        " la suppression de votre commentaire est irréversible, voulez-vous vraiment le supprimer ?"
+      );
+      if (deletePost == true) {
+        this.$store.dispatch("deletePost", id)
+      }
+      console.log(id, "ok");
     },
-  },
-  likeUser(id) {
+    delComment(id) {
+      console.log(id, "krhgicpezrg");
+      let deleteComment = confirm(
+        " la suppression de votre commentaire est irréversible, voulez-vous vraiment le supprimer ?"
+      );
+      if (deleteComment == true) {
+        this.$store.dispatch("deleteComment", id)
+      }
+      console.log(id, "ok");
+    },
+    likeUser(id) {
     this.$store.dispatch("likeUser", id);
   },
+  },
+
+  
 };
 </script>

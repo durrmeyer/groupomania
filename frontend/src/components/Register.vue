@@ -125,6 +125,7 @@ export default {
         lastName: "",
         email: "",
         password: "",
+       
       },
     };
   },
@@ -161,7 +162,7 @@ export default {
         .register(this.user)
         .then((res) => {
        
-          this.$store.dispatch("getUserById", res.data.user.id);
+          this.$store.dispatch("getUserById");
           this.$router.push({ name: "login" });
           console.log(this.user, "console log data");
         })

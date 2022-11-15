@@ -19,14 +19,7 @@ register(user) {
   setToken(token) {
     localStorage.setItem('token', token)
   },
- 
-  isAdmin(idRole) {
-    if (idRole === 2) {
-      localStorage.setItem('isAdmin', true)
-    } else {
-      localStorage.setItem('isAdmin', false)
-    }
-  },
+  
  isLogged() {
    const token = localStorage.getItem('token')
     return !!token

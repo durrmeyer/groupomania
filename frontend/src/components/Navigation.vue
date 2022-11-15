@@ -6,16 +6,18 @@
       </a>
 
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item" v-if="isUserLogged === true">
+        <li class="nav-item" v-if="isAdmin === true">
           <router-link to="/dashboard/admin" class="nav-link"
             >Admin</router-link
           >
         </li>
-         <li class="nav-item" v-if="isUserLogged === true">
+         <li class="nav-item" v-if="isModerateur || isAdmin === true">
           <router-link to="/dashboard/moderateur" class="nav-link"
             >Moderateur</router-link
           >
         </li>
+      </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item" v-if="isUserLogged === true">
           <router-link to="/posts" class="nav-link">Posts</router-link>
         </li>
@@ -35,7 +37,7 @@
 
         <div class="navprofil" v-if="isUserLogged === true">
           <img
-            src="../assets/images/avatar.png"
+            src=""
             class="rounded-circle"
             height="90"
             alt="Black and White Portrait of a Man"
@@ -64,8 +66,14 @@ export default {
   data() {
     return {};
   },
-  
+ 
   computed: {
+    isAdmin(){
+      return this.$store.getters.isAdmin;
+    },
+    isModerateur(){
+      return this.$store.getters.isModerateur;
+    },
     isUserLogged() {
       return this.$store.getters.isLoggedIn;
     },

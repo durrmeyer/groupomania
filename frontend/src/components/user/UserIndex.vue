@@ -24,31 +24,33 @@
         <thead>
           <tr>
             <th scope="col">Id</th>
-            <th scope="col">ImageUrl</th>
+            <th scope="col">Image</th>
             <th scope="col">Prénom</th>
             <th scope="col">Nom</th>
             <th scope="col">Email</th>
+            <th scope="col">Rôle</th>
             <th scope="col">Date de Création</th>
+
             <th scope="col">actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(user, index) in users" :key="user.id">
             <td>{{ user.id }}</td>
-            <td>{{ user.imageUrl }}</td>
+            <td>{{ user.image }}</td>
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
             <td>{{ user.email }}</td>
+            <td>{{ user.Role.roleName }}</td>
             <td>{{ dateFormat[index] }}</td>
 
             <div class="add-to-action">
               <div class="button">
-              
                 <button class="btn btn-primary my-1" @click="addUser(user.id)">
                   <i class="fa fa-pen"></i>
                 </button>
-                <button class="btn btn-danger my-1" @click="delUser(index)">
-                  <i class="fa fa-trash"></i>
+                <button class="btn btn-danger my-1" @click="delUser(user.id)">
+                  <i class="fa fa-trash" aria_hidden="true"></i>
                 </button>
               </div>
             </div>
@@ -68,19 +70,11 @@ export default {
   },
   data() {
     return {
-      user: {},
       users: [],
+      user: {},
     };
   },
 
-  mounted() {
-    userService
-      .getAllUsers()
-      .then((res) => {
-      this.users = res.data;
-      })
-      .catch((err) => console.log(err));
-  },
   computed: {
     comptage() {
       return this.users.length;
@@ -93,23 +87,29 @@ export default {
   },
 
   methods: {
-    addUser(id) {
-      this.$router.push({ name: "UserAdd",id } );
+    addUser(uid) {
+      this.$router.push({ name: "UserAdd", params: { id: uid } });
     },
     /*addUser(id) {
-      this.$router.push("/profil/add", id);
-    },*/
-    delUser(index) {
-      console.log(index)
-      console.log(this.users[index].id);
-      userService.deleteUser(this.users[index].id)
+      this.$router.push("/profil/add", id);*/
+    delUser(id) {
+      let deleteUser = confirm(
+        " la suppression de votre compte est irréversible, voulez-vous vraiment supprimer le compte ?"
+      );
+      if (deleteUser == true) {
+        this.$store.dispatch("deleteUser", id);
+      }
+    },
+  },
+
+  mounted() {
+    userService
+      .getAllUsers()
       .then((res) => {
-        console.log(res);
-        
+        this.users = res.data;
+        console.log(this.users, "liste des users");
       })
       .catch((err) => console.log(err));
-      //this.users.splice(index, 1);
-    },
   },
 };
 </script>

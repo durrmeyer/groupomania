@@ -21,7 +21,7 @@ Axios.interceptors.response.use(response => {
 }, error => {
   if (error.response.status == 401) {
     accountService.logout()
-    router.push({name: login})
+    router.push("/");
   }
 })
 

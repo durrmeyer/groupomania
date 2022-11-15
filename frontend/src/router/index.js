@@ -22,8 +22,8 @@ import UserAdd from "../components/User/UserAdd";
 
 const routes = [
   {
-    path: '/',
-    name: 'login',
+    path: "/",
+    name: "login",
     component: Login,
 
   },

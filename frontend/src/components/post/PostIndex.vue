@@ -8,9 +8,12 @@
         <thead>
           <tr>
             <th scope="col">Id</th>
+            <th scope="col">Avatar</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
             <th scope="col">ImageUrl</th>
             <th scope="col">Description</th>
-           
+
             <!--<th scope="col">Création</th>-->
             <th scope="col">actions</th>
           </tr>
@@ -18,14 +21,14 @@
         <tbody>
           <tr v-for="post in posts" :key="post.id">
             <td>{{ post.id }}</td>
+            <td>{{ post.User.image }}</td>
+            <td>{{ post.User.lastName }}</td>
+            <td>{{ post.User.firstName }}</td>
             <td>{{ post.imageUrl }}</td>
             <td>{{ post.description }}</td>
-           
-
             <!--<td>{{ dateFormat[index] }}</td>-->
-
             <div class="add-to-action">
-              <button class="btn btn-danger my-1" @click="delPost()">
+              <button class="btn btn-danger my-1" @click="delPost(post.id)">
                 <i class="fa fa-trash"></i>
               </button>
             </div>
@@ -42,17 +45,10 @@ export default {
   data() {
     return {
       posts: [],
-      posts:{},
+      posts: {},
     };
   },
-  mounted() {
-    postService
-      .getAllPosts()
-      .then((res) => {
-        this.posts = res.data;
-      })
-      .catch((err) => console.log(err));
-  },
+  
   computed: {
     comptage() {
       return this.posts.length;
@@ -63,17 +59,29 @@ export default {
       );
     },
   },
-  method: {
+  methods: {
     edit(id) {
       this.$router.push({ name: "UserEdit", params: { id: id } });
     },
-    delPost(index) {
-        postService
-        .deletePost(id)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-      this.posts.splice(id, 1);
+    delPost(id) {
+       let deletePost = confirm(
+        " la suppression du post et tous les commentaires sont irréversibles, voulez-vous vraiment le supprimer ?"
+      );
+      if (deletePost == true) {
+      this.$store.dispatch("deletePost", id);
+        
+      }
+      
+       this.$router.push("/posts/");
     },
+  },
+  mounted() {
+    postService
+      .getAllPosts()
+      .then((res) => {
+        this.posts = res.data;
+      })
+      .catch((err) => console.log(err));
   },
 };
 </script>

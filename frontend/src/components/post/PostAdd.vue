@@ -34,7 +34,6 @@ export default {
       userId: localStorage.getItem("UserId"),
       description: "",
       imageUrl: "",
-      file: "",
     };
   },
 
@@ -48,7 +47,8 @@ export default {
       formData.append("description", this.description);
       formData.append("image", this.image);
       formData.append("userId", this.userId);
-      postService
+  
+        postService
         .createPost(formData)
         .then(() => {
           this.$router.push("/posts");

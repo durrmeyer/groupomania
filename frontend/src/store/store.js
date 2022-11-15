@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import userService from "@/_services/userService";
 import postService from "@/_services/postService";
+
 const store = createStore({
   strict: true,
   state: {
@@ -8,10 +9,11 @@ const store = createStore({
     token: {},
     user: {},
     users: [],
-    isLoggedIn: false,
     posts: [],
     post: {},
-   
+    isLoggedIn: false,
+    isAdmin: false,
+    isModerateur: false,
 
   },
 
@@ -26,7 +28,12 @@ const store = createStore({
     isLoggedIn(state) {
       return state.isLoggedIn;
     },
-
+    isAdmin(state) {
+      return state.isAdmin;
+    },
+    isModerateur(state) {
+      return state.isModerateur;
+    },
 
     posts(state) {
       return state.posts;
@@ -34,13 +41,14 @@ const store = createStore({
     post(state) {
       return state.post;
     },
-   
+
 
   },
   mutations: {
     USER(state, user) {
       state.user = user;
     },
+
     GET_USER_BY_ID(state, user) {
       state.user = user;
     },
@@ -59,8 +67,12 @@ const store = createStore({
       state.token = token;
       if (token) {
         state.isLoggedIn = true;
+        state.isAdmin = true;
+        state.isModerateur = true;
       } else {
         state.isLoggedIn = false;
+        state.isAdmin = false;
+        state.isModerateur = false;
       }
     },
 
@@ -68,6 +80,8 @@ const store = createStore({
       state.token = "";
       state.user = "";
       state.isLoggedIn = false;
+      state.isAdmin = false;
+      state.isModerateur = false;
     },
 
 
@@ -76,6 +90,8 @@ const store = createStore({
       state.token = null;
       state.user = null;
       state.isLoggedIn = false;
+      state.isAdmin = false;
+      state.isModerateur = false;
 
 
     },
@@ -96,6 +112,9 @@ const store = createStore({
       state.post = post;
 
     },
+    DELETE_POST(state, id) {
+      state.posts = [...state.posts.filter((el) => el.id !== id)];
+    },
     ADD_Like(state, like) {
       state.posts = [like, ...state.posts];
 
@@ -104,14 +123,17 @@ const store = createStore({
       state.posts = [comment, ...state.posts];
 
     },
-    GET_COMMENTS(state, comments) {
-      state.comments = comments;
-    },
+    DELETE_COMMENT(state, id) {
+      state.posts = [...state.posts.filter((el) => el.id !== id)];
+    }
 
   },
   actions: {
     user({ commit }, user) {
       commit("USER", user);
+    },
+    isAdmin({ commit }, admin) {
+      commit("ADMIN", admin);
     },
     getUsers({ commit }) {
       userService.getAllUsers().then((res) => {
@@ -133,21 +155,22 @@ const store = createStore({
       })
 
         .then((res) => {
-
           const user = res.data.user;
           commit("UPDATE_USER", user);
         })
         .then(() => {
           postService.getAllPosts().then((res) => {
             const posts = res.data;
+
             commit("GET_POSTS", posts);
           })
         })
     },
     deleteUser({ commit }, id) {
-      userService.deleteUser(id).then(() => {
-        commit("DELETE_USER", id);
-      })
+      userService.deleteUser(id)
+        .then(() => {
+          commit("DELETE_USER", id);
+        })
         .catch((err) => { err })
     },
 
@@ -171,8 +194,9 @@ const store = createStore({
         .then((res) => {
           const post = res.data;
           commit("ADD_POST", post);
+          router.push("/posts");
         })
-
+        .catch((err) => console.log(err, "erreur de connexion"));
     },
     getPostById({ commit }, id) {
       postService.getPostById(id).then((res) => {
@@ -186,59 +210,58 @@ const store = createStore({
         commit("GET_POSTS", posts);
       });
     },
-
-  },
-  updatePost({ commit }, data) {
-    postService.updatePost(data.id, data.data,{
-      headers: { Authorization: this.state.token }
-    })
-      .then((res) => {
-        const post = res.data.post;
-        commit("UPDATE_POST", post);
-      });
-  },
-
-  getAllComments({ commit }) {
-    postService.getAllComments().then((res) => {
-      const comments = res.data;
-      commit("GET_COMMENTS", comments);
-    });
-  },
-
-  deleteComment: ({ commit }, id) => {
-    postService.deleteComment(id)
-      .then(() => {
-        commit("DELETE_COMMENT", id);
+    updatePost({ commit }, data) {
+      postService.updatePost(data.id, data.data, {
+        headers: { Authorization: this.state.token }
       })
-      .then(() => {
-        postService.deleteComment().then((response) => {
-          const posts = response.data;
-          commit("GET_POSTS", posts);
+        .then((res) => {
+          const post = res.data.post;
+          commit("UPDATE_POST", post);
         });
-      });
-  },
+    },
+    deletePost({ commit }, id) {
+      postService.deletePost(id)
+        .then(() => {
+          commit("DELETE_POST", id);
+        })
+        .catch((err) => { err })
+    },
 
-  likeUser({ commit }, id) {
-   
-    postService
-      .likeUser(id)
-      .then(function(res) {
-        const like = res.data.comment;
-        commit("ADD_LIKE", like);
-        resolve(res.data);
-      })
-      .then(() => {
-        // Important pour maintenir le state à jour !
-        postService.getAllPosts().then(function(response) {
-          const posts = response.data;
-          commit("GET_POSTS", posts);
-          resolve(response.data);
-        });
-      })
-      .catch(function(error) {
-        reject(error);
+    getAllComments({ commit }) {
+      postService.getAllComments().then((res) => {
+        const comments = res.data;
+        commit("GET_COMMENTS", comments);
       });
     },
+
+    deleteComment({ commit }, id) {
+      postService.deleteComment(id)
+        .then(() => {
+          commit("DELETE_COMMENT", id);
+        })
+    },
+
+    likeUser({ commit }, id) {
+
+      postService
+        .like(id)
+        .then((res)=> {
+          const like = res.data;
+          commit("ADD_LIKE", like);
+          resolve(res.data);
+        })
+        .then(() => {
+          postService.getAllPosts().then((res) => {
+            const posts = res.data.posts;
+            commit("GET_POSTS", posts);
+          });
+        })
+        .catch(function (error) {
+          error
+        });
+    },
+  },
+
 });
 
 export default store;
