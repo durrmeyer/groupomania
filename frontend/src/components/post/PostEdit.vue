@@ -1,63 +1,58 @@
 <template>
-  <div>
-    <h3>Modification du post</h3>
-    {{ id }}
-    <form @submit.prevent="ajout()">
-      <input type="text" id="user_id" v-model="post.user_id" hidden />
-
-      <div class="formGroup">
-        <label for="post_image">Image</label>
-         <input
-            class="form-control"
-            type="file"
-            accept="image/*"
-            ref="file"
-            name="image"
-            @change="imageUpload()"
-          />
-      </div>
-      <div class="formGroup">
-        <label for="post_description">description</label>
-        <input type="text" id="post_title" v-model="post.description" />
-      </div>
-
-      <div class="formGroup">
-        <button type="submit" class="button">Modifier</button>
-
-        <a href="@/posts" class="button">Annuler</a>
-      </div>
+  <div id="add-blog">
+    <h2>Modifier son post</h2>
+    <form @submit.prevent="addEdit" enctype="multipart/form-data">
+      <label for="file" class="form-label">Image</label>
+      <input
+        id="image"
+        class="form-control"
+        type="file"
+        ref="image"
+        name="image"
+        @change="select()"
+      />
+      <label>Description:</label>
+      <textarea
+        v-model="description"
+        label="description"
+        name="description"
+        required
+      ></textarea>
+      <button type="submit" class="button" @click.prevent="addEdit()">
+        Poster
+      </button>
     </form>
   </div>
 </template>
-<script>
-import postService from "../../_services/postService";
 
+<script>
 export default {
   name: "PostEdit",
-  props: ["id"],
   data() {
     return {
-      post: {},
+      userId: localStorage.getItem("UserId"),
+      description: "",
+      imageUrl: "",
     };
   },
 
   methods: {
-    ajout() {
-      console.log;
-      postService
-        .updatePost(this.post)
-        .then((res) => this.$router.push({ name: "PostIndex" }))
-        .catch((err) => console.log(err));
-      location.reload();
+    select() {
+      this.image = this.$refs.image.files[0];
+      this.imageUrl = URL.createObjectURL(this.image);
     },
-    },
-    mounted() {
-     postService.getPostById(this.userId)
-     .then((res)=>{
-      console.log(res)
-      this.post = res.data
-     })
-    },
+    addEdit() {
+      const formData = new FormData();
+      formData.append("description", this.description);
+      formData.append("image", this.image);
+      formData.append("postId", this.userId);
+      this.$store.dispatch("updatePost", {
+        id: this.id,
+        data: formData,
+      });
 
+      this.$router.push("/posts");
+    },
+  },
 };
 </script>

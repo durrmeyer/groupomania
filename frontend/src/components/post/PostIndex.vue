@@ -13,21 +13,33 @@
             <th scope="col">Prénom</th>
             <th scope="col">ImageUrl</th>
             <th scope="col">Description</th>
-
-            <!--<th scope="col">Création</th>-->
+          
+            <th scope="col">Création</th>
             <th scope="col">actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="post in posts" :key="post.id">
+          <tr v-for="(post, index) in posts" :key="post.id">
             <td>{{ post.id }}</td>
-            <td>{{ post.User.image }}</td>
+            <td>
+              <img
+                :src="post.User.imageUrl"
+                alt="photo de profil"
+                class="avatar"
+              />
+            </td>
             <td>{{ post.User.lastName }}</td>
             <td>{{ post.User.firstName }}</td>
-            <td>{{ post.imageUrl }}</td>
+            <td>
+              <img :src="post.imageUrl" alt="photo du post" class="avatar" />
+            </td>
             <td>{{ post.description }}</td>
-            <!--<td>{{ dateFormat[index] }}</td>-->
+           
+            <td>{{ dateFormat[index] }}</td>
             <div class="add-to-action">
+              <button class="btn btn-primary my-1" @click="addPost(post.id)">
+                  <i class="fa fa-pen"></i>
+                </button>
               <button class="btn btn-danger my-1" @click="delPost(post.id)">
                 <i class="fa fa-trash"></i>
               </button>
@@ -48,7 +60,7 @@ export default {
       posts: {},
     };
   },
-  
+
   computed: {
     comptage() {
       return this.posts.length;
@@ -60,19 +72,20 @@ export default {
     },
   },
   methods: {
-    edit(id) {
-      this.$router.push({ name: "UserEdit", params: { id: id } });
+    
+     addPost(id) {
+      this.$router.push({ name: "PostAdd", params: { id: id } });
     },
+     
     delPost(id) {
-       let deletePost = confirm(
+      let deletePost = confirm(
         " la suppression du post et tous les commentaires sont irréversibles, voulez-vous vraiment le supprimer ?"
       );
       if (deletePost == true) {
-      this.$store.dispatch("deletePost", id);
-        
+        this.$store.dispatch("deletePost", id);
       }
-      
-       this.$router.push("/posts/");
+
+      this.$router.push("/posts");
     },
   },
   mounted() {

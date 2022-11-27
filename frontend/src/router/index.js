@@ -16,8 +16,7 @@ import CommentAdd from "../components/Comment/CommentAdd";
 import User from "../components/User/ProfilUser";
 
 
-import UserIndex from "../components/User/UserIndex";
-import UserEdit from "../components/User/UserEdit";
+
 import UserAdd from "../components/User/UserAdd";
 
 const routes = [
@@ -53,34 +52,21 @@ const routes = [
     props: true,
   },
  
+ 
   {
     path: "/profil/",
     name: "user",
     component: User,
   },
   {
-    path: "/profil/add",
+    path: "/profil/:id",
     name: "UserAdd",
     component: UserAdd,
 
   },
 
-  {
-    path: "/profil/:id",
-    name: "UserIndex",
-    component: UserIndex,
-    
-  },
 
-  {
-    path: "/profil/edit/:id",
-    name: "UserEdit",
-    component: UserEdit,
-    props: true
-  },
- 
-
-  {
+   {
     path: "/posts/comments/:id",
     name: "CommentAdd",
     component: CommentAdd,

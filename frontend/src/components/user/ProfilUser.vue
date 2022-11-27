@@ -1,5 +1,5 @@
 <template>
-  <div class="card" v-bind="user">
+  <div class="card">
     <div class="title">
       <p class="h3 text-success fw-bold">Profil</p>
       <p class="fst_italic">
@@ -11,22 +11,24 @@
 
     <div class="card-body text-center">
       <div class="dropdown text-center">
-        <div v-if="user.image === null" class="dropdown text-center">
-          <img
-            src="../../assets/images/avatar.png"
-            alt="photo de profil"
-            class="avatar"
-          />
-        </div>
-        <div v-else class="dropdown text-center">
-          <img :src="user.image" alt="photo de profil" class="avatar" />
-        </div>
+        <img
+          v-if="user.imageUrl !== null"
+          src="../../assets/images/avatar.png"
+          alt="photo de profil "
+          class="avatar"
+        />
+        <img
+          v-else
+          :src="user.imageUrl"
+          alt="photo profil de l'utilisateur"
+          class="avatar"
+        />
       </div>
 
       <h1>{{ user.firstName }} {{ user.lastName }}</h1>
-     
+
       <p>{{ user.email }}</p>
-      <button @click="addUser" class="btn btn-primary my-1">
+      <button @click="addUser()" class="btn btn-primary my-1">
         <i class="fa fa-pen"></i>
       </button>
       <div class="button">
@@ -54,16 +56,10 @@ export default {
     return {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
-      image: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      roleName: "",
+      imageUrl: "",
     };
   },
-  /* beforemounted() {
-    this.$store.dispatch("getUserById");
-  },*/
+
   computed: {
     ...mapState({
       user: (state) => state.user,

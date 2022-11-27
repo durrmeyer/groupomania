@@ -11,17 +11,16 @@
             >Admin</router-link
           >
         </li>
-         <li class="nav-item" v-if="isModerateur || isAdmin === true">
+        <li class="nav-item" v-if="isModerateur === true">
           <router-link to="/dashboard/moderateur" class="nav-link"
             >Moderateur</router-link
           >
         </li>
-      </ul>
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item" v-if="isUserLogged === true">
           <router-link to="/posts" class="nav-link">Posts</router-link>
         </li>
       </ul>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
 
       <div class="d-flex align-items-center">
         <ul class="navbar-nav ml-auto" v-if="isUserLogged === false">
@@ -36,13 +35,7 @@
         </ul>
 
         <div class="navprofil" v-if="isUserLogged === true">
-          <img
-            src=""
-            class="rounded-circle"
-            height="90"
-            alt="Black and White Portrait of a Man"
-            loading="lazy"
-          />
+          
 
           <ul class="navAvatar-end" aria-labelledby="navbarMenuAvatar">
             <li class="nav-item" v-if="$store.state.isLoggedIn">
@@ -51,7 +44,9 @@
               >
             </li>
             <li class="nav-item" v-if="$store.state.isLoggedIn">
-              <router-link to="/" @click="logOut()"><i class="fa-solid fa-right-from-bracket"></i></router-link>
+              <router-link to="/" @click="logOut()"
+                ><i class="fa-solid fa-right-from-bracket"></i
+              ></router-link>
             </li>
           </ul>
         </div>
@@ -61,17 +56,21 @@
 </template>
 
 <script>
+
 export default {
   name: "Navigation",
   data() {
     return {};
   },
- 
+
   computed: {
-    isAdmin(){
+    user() {
+      return this.$store.getters.user;
+    },
+    isAdmin() {
       return this.$store.getters.isAdmin;
     },
-    isModerateur(){
+    isModerateur() {
       return this.$store.getters.isModerateur;
     },
     isUserLogged() {
@@ -81,6 +80,7 @@ export default {
   methods: {
     logOut() {
       this.$store.dispatch("logout");
+      this.$router.push("/");
     },
   },
 };
@@ -100,6 +100,4 @@ a {
   text-decoration: none;
   color: black;
 }
-
 </style>
-

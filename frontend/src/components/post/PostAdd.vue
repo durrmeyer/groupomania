@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import postService from "../../_services/postService";
 export default {
   name: "PostAdd",
   data() {
@@ -36,7 +35,6 @@ export default {
       imageUrl: "",
     };
   },
-
   methods: {
     select() {
       this.image = this.$refs.image.files[0];
@@ -47,13 +45,9 @@ export default {
       formData.append("description", this.description);
       formData.append("image", this.image);
       formData.append("userId", this.userId);
-  
-        postService
-        .createPost(formData)
-        .then(() => {
-          this.$router.push("/posts");
-        })
-        .catch((err) => console.log(err, "erreur de connexion"));
+
+      this.$store.dispatch("createPost", formData);
+       this.$router.push("/posts");
     },
   },
 };
@@ -91,4 +85,3 @@ button {
   margin-top: 20px;
 }
 </style>
-

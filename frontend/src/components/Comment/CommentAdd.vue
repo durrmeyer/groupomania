@@ -1,16 +1,15 @@
 <template>
   <div id="add-blog">
     <h2>Nouveau commentaire</h2>
-    <form @submit.prevent="addPost()" enctype="multipart/form-data">
+    <form @submit.prevent="addComment" enctype="multipart/form-data">
       <label>Votre commentaire:</label>
-
       <textarea
         v-model="content"
         label="content"
         name="content"
         required
       ></textarea>
-      <button type="submit" class="button" @click.prevent="addPost">
+      <button type="submit" class="button" @click.prevent="addComment()">
         Poster
       </button>
     </form>
@@ -23,27 +22,26 @@ export default {
   name: "CommentAdd",
   data() {
     return {
-      userId: localStorage.getItem("UserId"),
-      id: localStorage.getItem("postId"),
-
+      UserId: localStorage.getItem("UserId"),
       content: "",
     };
-  
   },
-
   methods: {
-    addPost() {
+    addComment() {
       const formData = new FormData();
       formData.append("content", this.content);
-      formData.append("UserId", this.userId);
-      formData.append("PostId", this.$route.id);
+      console.log(this.content);
+      formData.append("UserId", this.UserId);
+      console.log(this.UserId);
+      formData.append("id", this.$route.params.id);
+      console.log(this.$route.params.id);
           
-      postService
+      /*postService
         .createComment(this.$route.params.id, formData)
         .then(() => {
           this.$router.push("/posts");
         })
-        .catch((err) => console.log(err, "erreur de connexion"));
+        .catch((err) => console.log(err, "erreur de connexion"));*/
     },
   },
 };

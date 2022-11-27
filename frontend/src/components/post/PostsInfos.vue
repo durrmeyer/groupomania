@@ -4,21 +4,21 @@
 
     <button @click="PostAdd()">Ajouter un nouveau post</button>
 
-    <div v-for="post in posts" :key="post.id" id="post.id">
+    <div v-for="post in posts" :key="post.id">
       <div class="container">
         <div class="card">
           <div class="card-header">
             <div class="card-image">
               <div class="card-avatar">
                 <img
-                  v-if="post.User.image === null"
+                  v-if="post.User.imageUrl === null"
                   src="../../assets/images/avatar.png"
                   alt="photo de profil "
                   class="avatar"
                 />
                 <img
                   v-else
-                  :src="post.User.image"
+                  :src="post.User.imageUrl"
                   alt="photo profil de l'utilisateur"
                   class="avatar"
                 />
@@ -41,8 +41,14 @@
           <div class="card-body">
             <div class="img-container">
               <img
+                v-if="post.imageUrl !== null"
                 :src="post.imageUrl"
-                v-if="post.imageUrl"
+                alt="image du post"
+                class="img"
+              />
+              <img
+                v-else
+                src="../../assets/images/avatar.png"
                 alt="image du post"
                 class="img"
               />
@@ -67,33 +73,20 @@
                 <button
                   class="btn btn"
                   title="commentaire"
-                  aria-label="bouton pour écrire un commentaire"
+                  aria-label="bouton  commentaire"
                   @click="CommentAdd(post.id)"
                 >
                   <i class="fas fa-comment">Ajouter un commentaire</i>
                 </button>
               </div>
-
               <div class="card-footer">
-                <p>commentaires:{{ post.Comments.length }}</p>
+               
                 <div
                   class="card-list"
                   v-for="comment in post.Comments"
                   :key="comment.id"
                 >
-                  <img
-                    v-if="comment.User.image !== null"
-                    src="../../assets/images/avatar.png"
-                    alt="photo de profil "
-                    class="avatar"
-                  />
-                  <img
-                    v-else
-                    :src="comment.User.image"
-                    alt="photo profil de l'utilisateur"
-                    class="avatar"
-                  />
-
+                 <p>commentaires:{{ post.Comments.length }}</p>
                   <span
                     >{{ comment.User.firstName }} {{ comment.User.lastName }}
                   </span>
@@ -119,7 +112,6 @@
   </div>
 </template>
 
-
 <script>
 import postLayout from "../../assets/layouts/post.vue";
 import postService from "../../_services/postService";
@@ -139,19 +131,7 @@ export default {
       content: "",
     };
   },
-
   computed: {
-    userLike() {
-      const userId = this.$store.state.user.UserId;
-      let like = this.post.Likes.map((id) => id.UserId.toString());
-      console.log(typeof userId);
-      console.log(typeof userLike);
-      if (like.includes(userId)) {
-        return "green";
-      } else {
-        return "";
-      }
-    },
     user() {
       return this.$store.getters.user;
     },
@@ -169,13 +149,13 @@ export default {
     CommentAdd(id) {
       this.$router.push({ name: "CommentAdd", params: { id } });
     },
-     delPost(id) {
+    delPost(id) {
       console.log(id, "krhgicpezrg");
       let deletePost = confirm(
         " la suppression de votre commentaire est irréversible, voulez-vous vraiment le supprimer ?"
       );
       if (deletePost == true) {
-        this.$store.dispatch("deletePost", id)
+        this.$store.dispatch("deletePost", id);
       }
       console.log(id, "ok");
     },
@@ -185,15 +165,13 @@ export default {
         " la suppression de votre commentaire est irréversible, voulez-vous vraiment le supprimer ?"
       );
       if (deleteComment == true) {
-        this.$store.dispatch("deleteComment", id)
+        this.$store.dispatch("deleteComment", id);
       }
       console.log(id, "ok");
     },
     likeUser(id) {
-    this.$store.dispatch("likeUser", id);
+      this.$store.dispatch("likeUser", id);
+    },
   },
-  },
-
-  
 };
 </script>

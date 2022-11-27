@@ -60,7 +60,7 @@
                 </button>
                 <p class="small fw-bold mt-2 pt-1 mb-0">
                   Vous n'avez pas encore de compte?
-                 <a href="/Register" class="text-reset"> S'inscrire</a>
+                  <a href="/Register" class="text-reset"> S'inscrire</a>
                 </p>
               </div>
             </form>
@@ -69,7 +69,6 @@
       </div>
     </section>
   </div>
- 
 </template>
 <script>
 import PageLogin from "../assets/layouts/pageLogin.vue";
@@ -93,7 +92,6 @@ export default {
         .then((res) => {
           accountService.setToken(res.data.token);
           userService.saveUserId(res.data.userId);
-        
 
           this.$store.dispatch("token", res.data.token);
           this.$store.dispatch("getUserById", res.data.user.id);

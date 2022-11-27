@@ -21,11 +21,12 @@
           <form @submit.prevent="updateUser" enctype="multipart/form-data">
             <label for="file" class="form-label">Image</label>
             <input
-              for="image"
-              accepts="image/*"
+              id="image"
+              accept="image/png, image/jpeg,
+                    image/bmp, image/gif"
               class="form-control"
               type="file"
-              ref="file"
+              ref="image"
               name="image"
               @change="selectImage()"
             />télécharger une photo de profil
@@ -33,7 +34,7 @@
             <div class="mb-2">
               <label for="user_firstName">Prénom</label>
               <input
-                :value="user.firstName"
+                v-model="firstName"
                 type="text"
                 class="form-control"
                 placeholder="Prénom"
@@ -43,7 +44,7 @@
             <div class="mb-2">
               <label for="user_lastName">Nom</label>
               <input
-               :value="user.lastName"
+                v-model="lastName"
                 type="text"
                 class="form-control"
                 placeholder="Nom"
@@ -53,7 +54,7 @@
             <div class="mb-2">
               <label for="user_email">Email</label>
               <input
-               :value="user.email"
+                v-model="email"
                 type="text"
                 class="form-control"
                 placeholder="Email"
@@ -72,7 +73,7 @@
 </template>
 <script>
 import layoutUser from "../../assets/layouts/cardUser.vue";
-import { mapState } from "vuex";
+
 export default {
   name: "UserAdd",
   components: {
@@ -82,50 +83,47 @@ export default {
     return {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
-      file: null,
-      image: "",
-      firstName:"",
+      imageUrl: "",
+      firstName: "",
+      lastName: "",
+      email: "",
     };
   },
-  computed: {
-    ...mapState({
-     user: (state) => state.user,
-     
-    }),
-  },
-
+ 
+  
   methods: {
     selectImage() {
-      const file = this.$refs.file.files[0];
-      this.image = file;
-      console.log(this.image, "unthseruoth,o");
+      this.image = this.$refs.image.files[0];
+      this.imageUrl = URL.createObjectURL(this.image);
     },
     addUser() {
-      const formData = new FormData();
-   
-      formData.append("image", this.image);
-       if(this.firstName !==""){
-      formData.append("firstName", this.firstName)};
-      if(this.lastName !==""){
-      formData.append("lastName", this.lastName)};
-      
-      formData.append("email", this.email);
-      formData.append("userId", this.userId);
-
       let id = this.$store.state.user.id;
-      this.$store
-      
-        .dispatch("updateUser", { id: id, data: formData })
-        .then(() => {
-          this.$router.push("/profil");
-        })
-        .catch((err) => console.log(err, "erreur de connexion"));
+      const formData = new FormData();
+
+      if (this.imageUrl !== "") {
+        formData.append("imageUrl", this.imageUrl);
+      }
+      if (this.firstName !== "") {
+        formData.append("firstName", this.firstName);
+      }
+      if (this.lastName !== "") {
+        formData.append("lastName", this.lastName);
+      }
+      if (this.email !== "") {
+        formData.append("email", this.email);
+      }
+      formData.append("UserId", this.UserId);
+
+      this.$store.dispatch("updateUser", {
+        id: id,
+        data: formData,
+      });
+
+      this.$router.push("/profil");
     },
   },
 };
 </script>
-
-
 
 <style>
 #add-blog* {

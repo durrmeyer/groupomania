@@ -36,8 +36,8 @@
         </thead>
         <tbody>
           <tr v-for="(user, index) in users" :key="user.id">
-            <td>{{ user.id }}</td>
-            <td>{{ user.image }}</td>
+            <td> <router-link to="/profil/:id" class="text.decoration.none"></router-link>  {{ user.id }}</td>
+            <td> <img :src="user.imageUrl" alt="photo de profil" class="avatar" /></td>
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
             <td>{{ user.email }}</td>
@@ -90,8 +90,7 @@ export default {
     addUser(uid) {
       this.$router.push({ name: "UserAdd", params: { id: uid } });
     },
-    /*addUser(id) {
-      this.$router.push("/profil/add", id);*/
+   
     delUser(id) {
       let deleteUser = confirm(
         " la suppression de votre compte est irréversible, voulez-vous vraiment supprimer le compte ?"
