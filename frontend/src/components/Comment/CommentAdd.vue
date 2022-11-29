@@ -4,7 +4,7 @@
     <form @submit.prevent="addComment" enctype="multipart/form-data">
       <label>Votre commentaire:</label>
       <textarea
-        v-model="content"
+        v-model="data.content"
         label="content"
         name="content"
         required
@@ -17,31 +17,25 @@
 </template>
 
 <script>
-import postService from "../../_services/postService";
 export default {
   name: "CommentAdd",
+
   data() {
     return {
+      token: localStorage.getItem("token"),
       UserId: localStorage.getItem("UserId"),
-      content: "",
+      data: { content: "", UserId: localStorage.getItem("UserId") },
     };
   },
   methods: {
     addComment() {
-      const formData = new FormData();
-      formData.append("content", this.content);
-      console.log(this.content);
-      formData.append("UserId", this.UserId);
-      console.log(this.UserId);
-      formData.append("id", this.$route.params.id);
-      console.log(this.$route.params.id);
-          
-      /*postService
-        .createComment(this.$route.params.id, formData)
-        .then(() => {
-          this.$router.push("/posts");
-        })
-        .catch((err) => console.log(err, "erreur de connexion"));*/
+      this.$store.dispatch("getAllPosts");
+      this.$store.dispatch("getPostById", this.$route.params.id);
+      this.$store.dispatch("createComment", {
+        id: this.$route.params.id,
+        data: this.data,
+      });
+      this.$router.push("/posts");
     },
   },
 };

@@ -44,14 +44,12 @@ const store = createStore({
     USER(state, user) {
       state.user = user;
     },
-    ADMIN(state, user) {
-      state.user = user;
-    },
+
     GET_USER_BY_ID(state, user) {
       state.user = user;
       state.isAdmin = user.RoleId === 1;
       state.isModerateur = user.RoleId === 2 || user.RoleId === 1;
-      console.log(state.user); 
+      console.log(state.user);
     },
     GET_USERS(state, users) {
       state.users = users;
@@ -67,7 +65,6 @@ const store = createStore({
 
       if (token) {
         state.isLoggedIn = true;
-        
       } else {
         state.isLoggedIn = false;
         state.isAdmin = false;
@@ -217,9 +214,11 @@ const store = createStore({
     },
     createComment({ commit }, data) {
       postService
-        .createComment(data.id, data.data)
+        .createComment(data.id, data.data, {
+          headers: { Authorization: this.state.token },
+        })
         .then((res) => {
-          const comment = res.data;
+          const comment = res.data.comment;
           commit("ADD_COMMENT", comment);
         })
         .then(() => {

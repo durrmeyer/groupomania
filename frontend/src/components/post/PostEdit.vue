@@ -42,17 +42,25 @@ export default {
       this.imageUrl = URL.createObjectURL(this.image);
     },
     addEdit() {
+          let id = this.$route.params.id;
       const formData = new FormData();
-      formData.append("description", this.description);
-      formData.append("image", this.image);
-      formData.append("postId", this.userId);
+      if (this.description !== null) {
+        formData.append("description", this.description);
+      }
+    
+      if (this.imageUrl !== null) {
+        formData.append("imageUrl", this.imageUrl);
+      }
       this.$store.dispatch("updatePost", {
-        id: this.id,
+        id: id,
         data: formData,
       });
-
+      
       this.$router.push("/posts");
+  
     },
+
   },
+
 };
 </script>

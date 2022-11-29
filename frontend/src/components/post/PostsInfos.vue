@@ -11,7 +11,7 @@
             <div class="card-image">
               <div class="card-avatar">
                 <img
-                  v-if="post.User.imageUrl === null"
+                  v-if="post.User.imageUrl !== null"
                   src="../../assets/images/avatar.png"
                   alt="photo de profil "
                   class="avatar"
@@ -28,7 +28,10 @@
 
             <p>a partagé une publication</p>
             <button
-              v-if="post.User.id === user.id"
+                  v-if="
+            $store.state.user.userId == post.User.id ||
+              $store.state.user.isAdmin == true
+          "
               class="btn btn-danger"
               title="supprimer"
               aria-label="bouton supprimer"
@@ -36,6 +39,9 @@
             >
               <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
+            <button class="btn btn-primary my-1" @click="modifyPost(post.id)">
+                <i class="fa fa-pen"></i>
+              </button>
           </div>
 
           <div class="card-body">
@@ -60,49 +66,56 @@
           </div>
           <div class="card-footer">
             <div class="flex items-center my-2 px-4">
-              <div class="flex justify-between items-center mr-2">
+              <div class="action--button--container text-right mt-10">
                 <button
-                  class="btn btn-primary"
-                  type="button"
-                  title="like"
-                  @click="likeUser(post.id)"
+                  @click="increment(index)"
+                  :id="post.id"
+                  class="btn-sm btn-success"
                 >
-                  <i class="far fa-heart" style="font-size: 26px"></i>
+                  Like ({{ post.User.likes }})
                 </button>
-                <div class="d-flex flex-column align-end pr-3"></div>
+
                 <button
-                  class="btn btn"
-                  title="commentaire"
-                  aria-label="bouton  commentaire"
-                  @click="CommentAdd(post.id)"
+                  @click="decrement(index)"
+                  :id="post.id"
+                  class="btn-sm btn-danger"
                 >
-                  <i class="fas fa-comment">Ajouter un commentaire</i>
+                  Dislike ({{ post.User.dislikes }})
                 </button>
               </div>
-              <div class="card-footer">
-               
-                <div
-                  class="card-list"
-                  v-for="comment in post.Comments"
-                  :key="comment.id"
-                >
-                 <p>commentaires:{{ post.Comments.length }}</p>
-                  <span
-                    >{{ comment.User.firstName }} {{ comment.User.lastName }}
-                  </span>
-                  <div>
-                    <span>{{ comment.content }}</span>
-                  </div>
-                  <button
-                    v-if="comment.User.id == user.id"
-                    class="btn btn-danger"
-                    title="supprimer"
-                    aria-label="bouton supprimer"
-                    @click="delComment(comment.id)"
-                  >
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                  </button>
+              <div class="d-flex flex-column align-end pr-3"></div>
+              <button
+                class="btn btn"
+                title="commentaire"
+                aria-label="bouton  commentaire"
+                @click="CommentAdd(post.id)"
+              >
+                <i class="fas fa-comment">Ajouter un commentaire</i>
+              </button>
+            </div>
+            <p>commentaires:{{ post.Comments.length }}</p>
+            <div class="card-footer">
+              <div
+                class="card-list"
+                v-for="comment in post.Comments"
+                :key="comment.id"
+              >
+                
+                <!--<span
+                  >{{ comment.user.firstName }} {{ comment.user.lastName }}
+                </span>-->
+                <div>
+                  <span>{{ comment.content }}</span>
                 </div>
+                <button
+                 
+                  class="btn btn-danger"
+                  title="supprimer"
+                  aria-label="bouton supprimer"
+                  @click="delComment(comment.id)"
+                >
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -132,6 +145,7 @@ export default {
     };
   },
   computed: {
+
     user() {
       return this.$store.getters.user;
     },
@@ -147,31 +161,32 @@ export default {
       this.$router.push({ name: "PostAdd" });
     },
     CommentAdd(id) {
-      this.$router.push({ name: "CommentAdd", params: { id } });
+      this.$router.push({name:"CommentAdd",  params: { id: id }});
     },
     delPost(id) {
       console.log(id, "krhgicpezrg");
       let deletePost = confirm(
         " la suppression de votre commentaire est irréversible, voulez-vous vraiment le supprimer ?"
       );
-      if (deletePost == true) {
+      if (deletePost === true) {
         this.$store.dispatch("deletePost", id);
+         alert("votre post a été supprimé")
       }
       console.log(id, "ok");
     },
     delComment(id) {
-      console.log(id, "krhgicpezrg");
+      console.log(id, "commentaire supprimé");
       let deleteComment = confirm(
         " la suppression de votre commentaire est irréversible, voulez-vous vraiment le supprimer ?"
       );
-      if (deleteComment == true) {
+      if (deleteComment === true) {
         this.$store.dispatch("deleteComment", id);
+          alert("votre commentaire a été supprimé")
       }
       console.log(id, "ok");
     },
-    likeUser(id) {
-      this.$store.dispatch("likeUser", id);
-    },
+  
+     
   },
 };
 </script>

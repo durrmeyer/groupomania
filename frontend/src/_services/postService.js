@@ -11,12 +11,12 @@ export default {
     return Axios.get("posts");
   },
 
-  updatePost(id, data) {
-    return Axios.patch("posts/" + id, data);
+  updatePost(id) {
+    return Axios.patch("posts/edit" + id);
   },
 
   deletePost(id) {
-    return Axios.delete("/posts/" + id);
+    return Axios.delete("posts/" + id);
   },
 
   createComment(id, data) {
@@ -30,6 +30,6 @@ export default {
   },
 
   like(id) {
-    return Axios.post("posts/" + id + "/likes");
+    return Axios.post("/posts/likes/" + id); 
   },
 };

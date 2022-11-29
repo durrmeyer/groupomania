@@ -30,6 +30,7 @@ export default {
   name: "PostAdd",
   data() {
     return {
+
       userId: localStorage.getItem("UserId"),
       description: "",
       imageUrl: "",
@@ -44,7 +45,7 @@ export default {
       const formData = new FormData();
       formData.append("description", this.description);
       formData.append("image", this.image);
-      formData.append("userId", this.userId);
+      formData.append("UserId", this.userId);
 
       this.$store.dispatch("createPost", formData);
        this.$router.push("/posts");

@@ -12,7 +12,7 @@
     <div class="card-body text-center">
       <div class="dropdown text-center">
         <img
-          v-if="user.imageUrl !== null"
+          v-if="user.imageUrl == null"
           src="../../assets/images/avatar.png"
           alt="photo de profil "
           class="avatar"

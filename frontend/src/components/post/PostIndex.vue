@@ -13,7 +13,7 @@
             <th scope="col">Prénom</th>
             <th scope="col">ImageUrl</th>
             <th scope="col">Description</th>
-          
+
             <th scope="col">Création</th>
             <th scope="col">actions</th>
           </tr>
@@ -34,12 +34,12 @@
               <img :src="post.imageUrl" alt="photo du post" class="avatar" />
             </td>
             <td>{{ post.description }}</td>
-           
+
             <td>{{ dateFormat[index] }}</td>
             <div class="add-to-action">
-              <button class="btn btn-primary my-1" @click="addPost(post.id)">
-                  <i class="fa fa-pen"></i>
-                </button>
+              <button class="btn btn-primary my-1" @click="modifyPost(post.id)">
+                <i class="fa fa-pen"></i>
+              </button>
               <button class="btn btn-danger my-1" @click="delPost(post.id)">
                 <i class="fa fa-trash"></i>
               </button>
@@ -52,16 +52,22 @@
 </template>
 <script>
 import postService from "../../_services/postService";
+import {mapState} from "vuex";
 export default {
   name: "PostsIndex",
   data() {
     return {
       posts: [],
       posts: {},
+      
     };
   },
 
   computed: {
+     ...mapState({
+     
+      post: (state) => state.post,
+    }),
     comptage() {
       return this.posts.length;
     },
@@ -72,11 +78,12 @@ export default {
     },
   },
   methods: {
-    
-     addPost(id) {
-      this.$router.push({ name: "PostAdd", params: { id: id } });
+    modifyPost(id) {
+      this.$router.push({name:"postEdit", id})
+         
+      console.log(id )
     },
-     
+
     delPost(id) {
       let deletePost = confirm(
         " la suppression du post et tous les commentaires sont irréversibles, voulez-vous vraiment le supprimer ?"
@@ -85,7 +92,7 @@ export default {
         this.$store.dispatch("deletePost", id);
       }
 
-      this.$router.push("/posts");
+      this.$router.push("/dashboard/moderateur");
     },
   },
   mounted() {
