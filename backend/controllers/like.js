@@ -1,39 +1,31 @@
-const db = require("../db/models")
-const authUser = require("../middleware/authUser");
+const db = require("../db/models");
+const fs = require("fs");
 
 exports.likeUser = (req, res) => {
-  const UserId = authUser;
- 
- db.Like.findOne({
-  attributes: [ "PostId", "UserId"],
+  db.Like.findOne({
     where: {
-      UserId: UserId,
-      PostId: PostId,
+      UserId: req.body.userId,
+      PostId: req.params.id,
     },
   });
-  if (userLike) {
-    db.Like.destroy(
-      { where: { UserId: UserId, PostId: postId } },
-      { truncate: true }
-    )
-      .then(() => {
-        res.status(200).json({
-          message: "vous n'aimez plus ce post"
+  console.log(req.body.userId, "tdvhyujftyuftyu");
+  console.log(req.body, "LIKEUSER");
 
-        });
-      });
-  } else {
-    db.Like.create({
-      UserId: UserId,
-      PostId: req.params.postId,
-    })
-      .then(() => {
-        res.status(201).json({
-          message: "like ce post"
-        })
-      })
-      .catch((error) => res.status(400).json({
-        error
-      }))
-  };
+  // Si oui on le supprime de la BDD
+  db.Like.destroy(
+    {
+      where: {
+        UserId: req.body.userId,
+        PostId: req.params.id,
+      },
+    },
+    { truncate: true }
+  );
+  res.status(200).json({ message: "Post disliké" });
+
+  // Sinon le rajoute
+  db.Like.create({
+    PostId: req.params.id,
+  });
+  res.status(201).json({ messageRetour: "Post liké" });
 };

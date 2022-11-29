@@ -37,13 +37,16 @@ db.User = require("./user")(sequelize, Sequelize);
 db.Post = require("./post")(sequelize, Sequelize);
 db.Role = require("./role")(sequelize, Sequelize);
 db.Comment = require("./comment")(sequelize, Sequelize);
-
+db.Like = require("./like")(sequelize, Sequelize);
 
 
 db.User.hasMany(db.Post,{
   onDelete: "CASCADE",
 });
 db.User.hasMany(db.Comment,{
+  onDelete: "CASCADE",
+});
+db.User.hasMany(db.Like, {
   onDelete: "CASCADE",
 });
 db.Post.hasMany(db.Comment,
@@ -53,16 +56,16 @@ db.Post.hasMany(db.Comment,
 db.Role.hasMany(db.User, {
   onDelete: "CASCADE",
 });
-db.User.hasMany(db.Like, {
+db.Post.hasMany(db.Like, {
   onDelete: "CASCADE",
 });
+
+
 db.Post.belongsTo(db.User, {
   foreignKey: {
     allowNull: false
   }, onDelete: "CASCADE",
 });
-
-
 
 db.Comment.belongsTo(db.Post,
   {
@@ -84,6 +87,12 @@ db.Comment.belongsTo(db.User,
         allowNull: false
   
       }, onDelete: "CASCADE",
+    });
+    db.Like.belongsTo(db.User, {
+      foreignKey: {
+        allowNull: false,
+      },
+      onDelete: "CASCADE",
     });
     db.Like.belongsTo(db.Post, {
       foreignKey: {

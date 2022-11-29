@@ -1,10 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const multer = require('../middleware/multer');
-const auth = require('../middleware/auth')
-const postCtrl = require('../controllers/post');
-const commentCtrl = require('../controllers/comment');
-const likeCtrl = require('../controllers/like');
+const multer = require("../middleware/multer");
+const auth = require("../middleware/auth");
+const postCtrl = require("../controllers/post");
+const commentCtrl = require("../controllers/comment");
+const likeCtrl = require("../controllers/like");
 
 /***************récupération du routeur express***************** */
 
@@ -19,9 +19,10 @@ router.patch("/:id", auth, multer, postCtrl.updatePost);
 // Supprimer le post avec l'id
 router.delete("/:id", auth, multer, postCtrl.deletePost);
 
+router.post("/:id/comments", auth, commentCtrl.createComment);
+router.get("/comments/:id", auth, commentCtrl.getAllComments);
 
-router.post("/:id/comments", auth, multer, commentCtrl.createComment);
 router.delete("/comments/:id", auth, commentCtrl.deleteComment);
-router.post("/:id/likes", auth, likeCtrl.likeUser);
+router.post("posts/likes/{id}", auth, likeCtrl.likeUser);
 
 module.exports = router;
