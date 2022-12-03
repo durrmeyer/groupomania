@@ -1,7 +1,7 @@
 <template>
   <div id="add-blog">
     <h2>Modifier son post</h2>
-    <form @submit.prevent="addEdit" enctype="multipart/form-data">
+    <form @submit.prevent="updatePost" enctype="multipart/form-data">
       <label for="file" class="form-label">Image</label>
       <input
         id="image"
@@ -9,16 +9,16 @@
         type="file"
         ref="image"
         name="image"
+        accept="image/png, image/jpeg, image/gif"
         @change="select()"
       />
       <label>Description:</label>
       <textarea
-        v-model="description"
+        v-model="post.description"
         label="description"
         name="description"
-        required
       ></textarea>
-      <button type="submit" class="button" @click.prevent="addEdit()">
+      <button type="button" class="button" @click.prevent="addEdit()">
         Poster
       </button>
     </form>
@@ -26,41 +26,44 @@
 </template>
 
 <script>
+import postService from '../../_services/postService';
 export default {
   name: "PostEdit",
-  data() {
+  data: function () {
     return {
       userId: localStorage.getItem("UserId"),
-      description: "",
+      token: localStorage.getItem("token"),
       imageUrl: "",
+      post: { description: "" },
     };
   },
-
+mounted() {
+   this.$store.dispatch("getPostById",   this.$route.params.id,); 
+},
   methods: {
     select() {
       this.image = this.$refs.image.files[0];
       this.imageUrl = URL.createObjectURL(this.image);
     },
-    addEdit() {
-          let id = this.$route.params.id;
+    addEdit() {  
       const formData = new FormData();
-      if (this.description !== null) {
-        formData.append("description", this.description);
+
+      if (this.post.description !== "") {
+        formData.append("description", this.post.description);
       }
-    
+      console.log(this.post.description);
       if (this.imageUrl !== null) {
         formData.append("imageUrl", this.imageUrl);
       }
-      this.$store.dispatch("updatePost", {
-        id: id,
+      console.log(this.imageUrl);
+
+
+     this.$store.dispatch("updatePost", {
+        id: this.$route.params.id,
         data: formData,
       });
-      
-      this.$router.push("/posts");
-  
+       this.$router.push("/posts");
     },
-
   },
-
 };
 </script>

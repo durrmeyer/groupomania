@@ -49,7 +49,7 @@ const routes = [
     props: true,
   },
   {
-    path: "/posts/edit",
+    path: "/posts/:id",
     requiresAuth: true,
     name: "PostEdit",
     component: PostEdit,

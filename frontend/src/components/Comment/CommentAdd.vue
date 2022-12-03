@@ -29,8 +29,8 @@ export default {
   },
   methods: {
     addComment() {
-      this.$store.dispatch("getAllPosts");
-      this.$store.dispatch("getPostById", this.$route.params.id);
+      /*this.$store.dispatch("getAllPosts");*/
+     this.$store.dispatch("getPostById", this.$route.params.id);
       this.$store.dispatch("createComment", {
         id: this.$route.params.id,
         data: this.data,

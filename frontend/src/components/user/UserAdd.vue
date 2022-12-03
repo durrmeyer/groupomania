@@ -94,7 +94,6 @@ mounted() {
    this.$store.dispatch("getUserById"); 
 },
    
-
   methods: {
     selectImage() {
       this.image = this.$refs.image.files[0];

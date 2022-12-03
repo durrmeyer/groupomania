@@ -49,7 +49,6 @@ const store = createStore({
       state.user = user;
       state.isAdmin = user.RoleId === 1;
       state.isModerateur = user.RoleId === 2 || user.RoleId === 1;
-      console.log(state.user);
     },
     GET_USERS(state, users) {
       state.users = users;
@@ -194,12 +193,21 @@ const store = createStore({
     },
     updatePost({ commit }, data) {
       postService
-        .updatePost(data.id, data.data, {
-          headers: { Authorization: this.state.token },
-        })
+        .updatePost(data.id, data.data)
         .then((res) => {
-          const post = res.data.post;
+          const post = res.data;
+
           commit("UPDATE_POST", post);
+          console.log(res.data);
+        })
+        .then(() => {
+          postService.getAllPosts().then((res) => {
+            const posts = res.data;
+            commit("GET_POSTS", posts);
+          });
+        })
+        .catch((err) => {
+          err;
         });
     },
     deletePost({ commit }, id) {
@@ -240,9 +248,9 @@ const store = createStore({
         commit("DELETE_COMMENT", id);
       });
     },
-    likeUser({ commit }, id) {
+    likeUser({ commit }, id, userId) {
       postService
-        .like(id)
+        .userlike(id, userId)
         .then((res) => {
           const like = res.data;
           commit("ADD_LIKE", like);
@@ -250,6 +258,7 @@ const store = createStore({
         .then(() => {
           postService.getAllPosts().then((res) => {
             const posts = res.data;
+         
             commit("GET_POSTS", posts);
           });
         })

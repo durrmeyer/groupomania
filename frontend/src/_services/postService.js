@@ -11,8 +11,8 @@ export default {
     return Axios.get("posts");
   },
 
-  updatePost(id) {
-    return Axios.patch("posts/edit" + id);
+  updatePost(id, data) {
+    return Axios.patch("posts/" + id, data);
   },
 
   deletePost(id) {
@@ -29,7 +29,7 @@ export default {
     return Axios.delete("posts/comments/" + id);
   },
 
-  like(id) {
-    return Axios.post("/posts/likes/" + id); 
+  userlike(id) {
+    return Axios.post("posts/" + id + "/likes");
   },
 };

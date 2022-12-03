@@ -23,6 +23,7 @@
             <td>{{ post.id }}</td>
             <td>
               <img
+              v-if="post.User.imageUrl"
                 :src="post.User.imageUrl"
                 alt="photo de profil"
                 class="avatar"
@@ -52,20 +53,18 @@
 </template>
 <script>
 import postService from "../../_services/postService";
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 export default {
   name: "PostsIndex",
   data() {
     return {
       posts: [],
       posts: {},
-      
     };
   },
 
   computed: {
-     ...mapState({
-     
+    ...mapState({
       post: (state) => state.post,
     }),
     comptage() {
@@ -79,9 +78,9 @@ export default {
   },
   methods: {
     modifyPost(id) {
-      this.$router.push({name:"postEdit", id})
-         
-      console.log(id )
+      this.$router.push({ name: "PostEdit", params: { id: id }});
+
+      console.log(id);
     },
 
     delPost(id) {
