@@ -1,5 +1,4 @@
 const db = require("../db/models");
-const fs = require("fs");
 const authUser = require("../middleware/authUser");
 //---------------------------------création d'un comment----------------------------//
 exports.createComment = async (req, res) => {
@@ -9,7 +8,7 @@ exports.createComment = async (req, res) => {
       UserId: authUser,
     },
   });
-  console.log(req.params.id, "CONTROLLER USERID");
+
   db.Comment.create({
     content: req.body.content,
     UserId: req.body.UserId,
@@ -18,14 +17,10 @@ exports.createComment = async (req, res) => {
 
     .then(() =>
       res.status(201).json({
-        content: req.body.content,
-        PostId: req.params.postId,
-        UserId: req.body.userId,
         message: "Commentaire ajouté !",
       })
     )
     .catch((error) => res.status(400).json({ error }));
-  console.log(req.body.content, "CONTROLLER COMMENT");
 };
 
 exports.getAllComments = (req, res) => {
@@ -56,8 +51,6 @@ exports.deleteComment = (req, res) => {
       id: req.params.id,
     },
   });
-  console.log(req.params.id, "SUPPRESSION COMMENTAIRE");
-
   db.Comment.destroy({ where: { id: req.params.id } }, { truncate: true })
     .then(() =>
       res.status(200).json({ message: "le commentaire est supprimé !" })

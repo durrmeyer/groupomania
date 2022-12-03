@@ -1,31 +1,38 @@
 const db = require("../db/models");
-const fs = require("fs");
 
-exports.likeUser = (req, res) => {
-  db.Like.findOne({
+
+
+exports.likeUser = async (req, res) => {
+ const userId = req.body.userId;
+  await db.Like.findOne({
     where: {
-      UserId: req.body.userId,
       PostId: req.params.id,
+      UserId: userId,
     },
-  });
-  console.log(req.body.userId, "tdvhyujftyuftyu");
-  console.log(req.body, "LIKEUSER");
-
-  // Si oui on le supprime de la BDD
-  db.Like.destroy(
-    {
-      where: {
-        UserId: req.body.userId,
+  }).then((like) => {
+    if (!like) {
+      console.log("pas trouvé");
+      db.Like.create({
+        UserId: userId,
         PostId: req.params.id,
-      },
-    },
-    { truncate: true }
-  );
-  res.status(200).json({ message: "Post disliké" });
-
-  // Sinon le rajoute
-  db.Like.create({
-    PostId: req.params.id,
+      })
+      .then(() => res.status(200).json({ message: "Post liké" }));
+    } else {
+      console.log(like, "like trouvé")
+     db.Like.destroy(
+        {
+          where: {
+            UserId: userId,
+            PostId: req.params.id,
+          },
+        },
+        { truncate: true }
+      ).then(() => res.status(200).json({ message: "Post disliké" }));
+    }
   });
-  res.status(201).json({ messageRetour: "Post liké" });
-};
+}; // => res.status(200).json({ message: "ok!" }));
+
+/* if (userLike) {
+   
+  } else {
+    await */
