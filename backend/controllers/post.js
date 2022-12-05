@@ -3,7 +3,6 @@ const db = require("../db/models");
 //Récupération du module 'file system' de Node permettant de gérer ici les téléchargements et modifications d'images
 const fs = require("fs"); //package qui permet de modification
 
-
 //---------------------------------création d'un post----------------------------//
 
 exports.createPost = async (req, res) => {
@@ -46,14 +45,11 @@ exports.createPost = async (req, res) => {
 
 // -----------------------modification du post-----------------------//
 exports.updatePost = (req, res) => {
-  
   let post = db.Post.findOne({ where: { id: req.params.id } });
 
   imageUrl = req.file
-  ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-  : "null";
-
-
+    ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+    : "null";
 
   db.Post.findOne({
     where: {
@@ -64,21 +60,28 @@ exports.updatePost = (req, res) => {
       db.Post.update(
         {
           description: req.body.description,
-          imageUrl: req.body.imageUrl, 
+          imageUrl: req.body.imageUrl,
         },
 
         {
           where: { id: req.params.id },
         }
       )
-        .then(() => res.status(200).json({ description: post.description,
-          imageUrl: post.imageUrl,message: "Post mis à jour !" }))
+        .then(() =>
+          res
+            .status(200)
+            .json({
+              description: post.description,
+              imageUrl: post.imageUrl,
+              message: "Post mis à jour !",
+            })
+        )
         .catch((err) => res.status(400).json({ err }));
     })
-   .catch((err) => res.status(500).json({ err }));
+    .catch((err) => res.status(500).json({ err }));
 };
 // -----------------------trouver tous les posts--------------------------//
-exports.getAllPosts = async(req, res) => {
+exports.getAllPosts = async (req, res) => {
   db.Post.findAll({
     attributes: ["id", "description", "imageUrl", "UserId", "createdAt"],
     order: [["createdAt", "DESC"]],
@@ -89,7 +92,7 @@ exports.getAllPosts = async(req, res) => {
       },
       {
         model: db.Like,
-        attributes: ["PostId","UserId"],
+        attributes: ["UserId"],
         include: [
           {
             model: db.User,
@@ -129,7 +132,7 @@ exports.getPostById = async (req, res) => {
       },
       {
         model: db.Like,
-        attributes: ["PostId", "UserId"],
+        attributes: ["UserId"],
         include: [
           {
             model: db.User,

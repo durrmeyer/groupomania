@@ -1,38 +1,32 @@
 const db = require("../db/models");
-
-
+const authUser = require("../middleware/authUser");
 
 exports.likeUser = async (req, res) => {
- const userId = req.body.userId;
   await db.Like.findOne({
     where: {
       PostId: req.params.id,
-      UserId: userId,
+      UserId: authUser,
     },
   }).then((like) => {
     if (!like) {
-      console.log("pas trouvé");
+      console.log( req.body.userId);
       db.Like.create({
-        UserId: userId,
+        UserId: req.body.userId,
         PostId: req.params.id,
-      })
-      .then(() => res.status(200).json({ message: "Post liké" }));
+      }).then(() => res.status(200).json({ message: "Post liké" }));
     } else {
-      console.log(like, "like trouvé")
-     db.Like.destroy(
+      db.Like.destroy(
         {
           where: {
-            UserId: userId,
+            UserId: req.body.userId,
             PostId: req.params.id,
           },
         },
-        { truncate: true }
-      ).then(() => res.status(200).json({ message: "Post disliké" }));
+       )
+        .then(() => res.status(200).json({ message: "Post disliké" }))
+        .catch((err) => {
+          err;
+        });
     }
   });
-}; // => res.status(200).json({ message: "ok!" }));
-
-/* if (userLike) {
-   
-  } else {
-    await */
+};

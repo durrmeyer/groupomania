@@ -19,8 +19,7 @@ app.use((req, res, next) => {
   //l'autorisation sera donnée quand la vérification sera faite //
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Origin*, X-Requested-With, Content, Accept, Content-Type, Authorization",
-	
+    "Origin*, X-Requested-With, Content, Accept, Content-Type, Authorization"
   );
   // les requêtes autorisées pour le http //
   res.setHeader(
@@ -43,12 +42,30 @@ db.sequelize
   .sync({ force: false })
   .then(() => console.log("Base de données à jours !"))
   .catch((error) => console.log(" il y a eu un petit soucis!", error));
+function initial() {
+  Role.create({
+    id: 3,
+    name: "user",
+  });
 
-app.use(helmet({
-  crossOriginResourcePolicy: false,
-})); // Utilisation du package Helmet pour sécuriser davantage nos headers
+  Role.create({
+    id: 2,
+    name: "moderator",
+  });
+
+  Role.create({
+    id: 1,
+    name: "admin",
+  });
+}
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+); // Utilisation du package Helmet pour sécuriser davantage nos headers
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(express.json());
+
 //---------------------déclaration des routes----------------------------------//
 app.get("/", (req, res) => res.send("ok tout va bien"));
 app.use("/api/users", userRoutes);
