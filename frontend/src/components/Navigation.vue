@@ -35,8 +35,6 @@
         </ul>
 
         <div class="navprofil" v-if="isUserLogged === true">
-          
-
           <ul class="navAvatar-end" aria-labelledby="navbarMenuAvatar">
             <li class="nav-item" v-if="$store.state.isLoggedIn">
               <router-link to="/profil" class="nav-link"
@@ -56,11 +54,13 @@
 </template>
 
 <script>
-
 export default {
   name: "Navigation",
   data() {
-    return {};
+    return {
+      userId: localStorage.getItem("UserId"),
+      token: localStorage.getItem("token"),
+    };
   },
 
   computed: {
@@ -78,6 +78,13 @@ export default {
     },
   },
   methods: {
+    getUserSession() {
+      console.log("cool");
+      accountService.setToken(res.data.token);
+      userService.saveUserId(res.data.userId);
+    },
+    
+
     logOut() {
       this.$store.dispatch("logout");
       this.$router.push("/");

@@ -91,7 +91,7 @@ export default {
   },
  
 mounted() {
-   this.$store.dispatch("getUserById"); 
+   this.$store.dispatch("getUserById",); 
 },
    
   methods: {
@@ -103,7 +103,7 @@ mounted() {
       let id = this.$store.state.user.id;
       const formData = new FormData();
 
-      if (this.imageUrl !== "") {
+      if (this.imageUrl !== null ) {
         formData.append("imageUrl", this.imageUrl);
       }
       if (this.firstName !== "") {
@@ -122,7 +122,7 @@ mounted() {
         data: formData,
       });
 
-      this.$router.push("/profil");
+      this.$router.push("/posts");
     },
   },
 };

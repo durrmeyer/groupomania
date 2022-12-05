@@ -1,7 +1,7 @@
 <template>
   <div id="add-blog">
     <h2>Nouveau commentaire</h2>
-    <form @submit.prevent="addComment" enctype="multipart/form-data">
+    <form @submit.prevent="addComment">
       <label>Votre commentaire:</label>
       <textarea
         v-model="data.content"
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-export default {
+export default { 
   name: "CommentAdd",
 
   data() {
@@ -29,8 +29,8 @@ export default {
   },
   methods: {
     addComment() {
-      /*this.$store.dispatch("getAllPosts");*/
-     this.$store.dispatch("getPostById", this.$route.params.id);
+      
+      this.$store.dispatch("getPostById", this.$route.params.id);
       this.$store.dispatch("createComment", {
         id: this.$route.params.id,
         data: this.data,

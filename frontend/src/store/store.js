@@ -230,10 +230,15 @@ const store = createStore({
           commit("ADD_COMMENT", comment);
         })
         .then(() => {
-          postService.getAllPosts().then((res) => {
-            const posts = res.data;
-            commit("GET_POSTS", posts);
-          });
+          postService
+            .getAllPosts()
+            .then((res) => {
+              const posts = res.data;
+              commit("GET_POSTS", posts);
+            })
+            .catch((err) => {
+              err;
+            });
         });
     },
 
@@ -248,9 +253,11 @@ const store = createStore({
         commit("DELETE_COMMENT", id);
       });
     },
-    likeUser({ commit }, id, userId) {
+    likeUser({ commit }, id) {
       postService
-        .userlike(id, userId)
+        .userlike(id, {
+          headers: { Authorization: this.state.token },
+        })
         .then((res) => {
           const like = res.data;
           commit("ADD_LIKE", like);
@@ -258,12 +265,11 @@ const store = createStore({
         .then(() => {
           postService.getAllPosts().then((res) => {
             const posts = res.data;
-         
             commit("GET_POSTS", posts);
           });
         })
-        .catch(function (error) {
-          error;
+        .catch((err) => {
+          err;
         });
     },
   },

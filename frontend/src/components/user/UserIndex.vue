@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-      <h2>liste des utlisateurs il y en a {{ comptage }}</h2>
+      <h2>liste des utilisateurs il y en a {{ comptage }}</h2>
       <div class="title">
         <p class="h3 text-success fw-bold">DashBoard Administrateur</p>
         <p class="fst-italic">
@@ -36,8 +36,28 @@
         </thead>
         <tbody>
           <tr v-for="(user, index) in users" :key="user.id">
-            <td> <router-link to="/profil/:id" class="text.decoration.none"></router-link>  {{ user.id }}</td>
-            <td> <img :src="user.imageUrl" alt="photo de profil" class="avatar" /></td>
+            <td>
+              <router-link
+                to="/profil/:id"
+                class="text.decoration.none"
+              ></router-link>
+              {{ user.id }}
+            </td>
+            <td>
+              
+              <img
+                v-if="user.imageUrl !== null"
+                src="../../assets/images/avatar.png"
+                alt="photo de profil "
+                class="avatar"
+              />
+              <img
+                v-else
+                :src="user.imageUrl"
+                alt="photo profil de l'utilisateur"
+                class="avatar"
+              />
+            </td>
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
             <td>{{ user.email }}</td>
@@ -85,12 +105,20 @@ export default {
       );
     },
   },
-
+ mounted() {
+    userService
+      .getAllUsers()
+      .then((res) => {
+        this.users = res.data;
+        console.log(this.users, "liste des users");
+      })
+      .catch((err) => console.log(err));
+  },
   methods: {
     addUser(uid) {
       this.$router.push({ name: "UserAdd", params: { id: uid } });
     },
-   
+
     delUser(id) {
       let deleteUser = confirm(
         " la suppression de votre compte est irréversible, voulez-vous vraiment supprimer le compte ?"
@@ -101,14 +129,6 @@ export default {
     },
   },
 
-  mounted() {
-    userService
-      .getAllUsers()
-      .then((res) => {
-        this.users = res.data;
-        console.log(this.users, "liste des users");
-      })
-      .catch((err) => console.log(err));
-  },
+ 
 };
 </script>

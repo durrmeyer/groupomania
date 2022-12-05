@@ -13,7 +13,6 @@
             <th scope="col">Prénom</th>
             <th scope="col">ImageUrl</th>
             <th scope="col">Description</th>
-
             <th scope="col">Création</th>
             <th scope="col">actions</th>
           </tr>
@@ -22,12 +21,18 @@
           <tr v-for="(post, index) in posts" :key="post.id">
             <td>{{ post.id }}</td>
             <td>
-              <img
-              v-if="post.User.imageUrl"
-                :src="post.User.imageUrl"
-                alt="photo de profil"
-                class="avatar"
-              />
+               <img
+          v-if="post.User.imageUrl !== null"
+          src="../../assets/images/avatar.png"
+          alt="photo de profil "
+          class="avatar"
+        />
+        <img
+          v-else
+          :src="post.User.imageUrl"
+          alt="photo profil de l'utilisateur"
+          class="avatar"
+        />
             </td>
             <td>{{ post.User.lastName }}</td>
             <td>{{ post.User.firstName }}</td>
