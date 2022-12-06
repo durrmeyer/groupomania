@@ -253,9 +253,10 @@ const store = createStore({
         commit("DELETE_COMMENT", id);
       });
     },
-    likeUser({ commit }, id) {
+    likeUser({ commit }, data) {
+        
       postService
-        .userlike(id, {
+        .userlike(data.id, data.data, {
           headers: { Authorization: this.state.token },
         })
         .then((res) => {

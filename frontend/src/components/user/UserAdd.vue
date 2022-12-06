@@ -84,16 +84,14 @@ export default {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
       imageUrl: "",
-      firstName: "",
-      lastName: "",
-      email: "",
+      user: { firstName: "", lastName: "", email: "" },
     };
   },
- 
-mounted() {
-   this.$store.dispatch("getUserById",); 
-},
-   
+
+  mounted() {
+    this.$store.dispatch("getUserById");
+  },
+
   methods: {
     selectImage() {
       this.image = this.$refs.image.files[0];
@@ -103,16 +101,16 @@ mounted() {
       let id = this.$store.state.user.id;
       const formData = new FormData();
 
-      if (this.imageUrl !== null ) {
+      if (this.imageUrl !== null) {
         formData.append("imageUrl", this.imageUrl);
       }
-      if (this.firstName !== "") {
+      if (this.user.firstName !== "") {
         formData.append("firstName", this.firstName);
       }
-      if (this.lastName !== "") {
+      if (this.user.lastName !== "") {
         formData.append("lastName", this.lastName);
       }
-      if (this.email !== "") {
+      if (this.user.email !== "") {
         formData.append("email", this.email);
       }
       formData.append("UserId", this.UserId);

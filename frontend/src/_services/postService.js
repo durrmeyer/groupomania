@@ -29,7 +29,7 @@ export default {
     return Axios.delete("posts/comments/" + id);
   },
 
-  userlike(id) {
-    return Axios.post("posts/" + id + "/likes");
+  userlike(id, data) {
+    return Axios.post("posts/" + id + "/likes", data);
   },
 };

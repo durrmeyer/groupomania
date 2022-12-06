@@ -1,31 +1,38 @@
 <template>
   <div>
-    <h1>Bienvenue sur le Blog</h1>
+    <button
+      class="btn btn-secondary btn-lg"
+      style="margin-left: 26px"
+      @click="PostAdd()"
+    >
+      Ajouter un nouveau post
+    </button>
 
-    <button @click="PostAdd()">Ajouter un nouveau post</button>
-
-    <div v-for="post in posts" :key="post.id">
+    <div v-for="post in posts" :key="post.id" :post="post">
       <div class="container">
         <div class="card">
           <div class="card-header">
             <div class="card-image">
-              <div class="card-avatar">
-                <img
-                  v-if="post.User.imageUrl == null"
-                  :src="post.User.imageUrl"
-                  alt="photo  de l'utilisateur"
-                  class="image"
-                />
-                <img
-                  v-else
-                  src="../../assets/images/avatar.png"
-                  alt="image du profil"
-                  class="img"
-                />
-              </div>
-              <span>{{ post.User.firstName }} {{ post.User.lastName }} </span>
+              <img
+                v-if="post.User.imageUrl == null"
+                :src="post.User.imageUrl"
+                alt="photo  de l'utilisateur"
+                class="image"
+              />
+              <img
+                v-else
+                src="../../assets/images/avatar.png"
+                alt="image du profil"
+                class="img"
+              />
             </div>
-              <p>a partagé une publication {{ moment(post.createdAt).format("[le] DD MMMM YYYY") }}</p> 
+            <div class="text">
+              <span>{{ post.User.firstName }} {{ post.User.lastName }} </span>
+              <p>
+                a partagé une publication
+                {{ moment(post.createdAt).format("[le] DD MMMM YYYY") }}
+              </p>
+            </div>
             <div
               v-if="
                 $store.state.user.id == post.User.id ||
@@ -46,62 +53,63 @@
             </div>
           </div>
           <div class="card-body">
+            <div class="card-text">
+              <p>{{ post.description }}</p>
+            </div>
             <div class="img-container">
               <img
                 v-if="post.imageUrl !== null"
                 :src="post.imageUrl"
                 alt="image du post"
-                class="img"
+                class="img-post"
               />
             </div>
-            <div class="card-text">
-              <p>{{ post.description }}</p>
-            </div>
           </div>
-          <div class="card">
-            <div class="flex items-center my-2 px-4">
-              <div class="action--button--container text-right mt-10">
-                <button @click="likeUser(post.id)" >
-                  <i class="fa fa-thumbs-up" style="font-size: 24px" > Like</i>
-                </button>
-              </div>
-            </div>
-            <button class="btn btn-primary my-1" @click="CommentAdd(post.id)">
-              <i class="">commentaire</i>
+          <div class="card-info">
+            <button @click="likeUser(post.id)">
+              <i class="fa-regular fa-thumbs-up" style="font-size: 40px"></i>
             </button>
-            <p class="text-xs font-light text-center">
-              {{ post.Likes.length }}
-            </p>
+            <p>Like:{{ post.Likes.length }}</p>
+            <button @click="CommentAdd(post.id)">
+              <i class="fa-regular fa-comment-dots" style="font-size: 40px"></i>
+            </button>
             <p>commentaires:{{ post.Comments.length }}</p>
           </div>
+
           <div class="card-footer">
             <div
               class="card-list"
               v-for="comment in post.Comments"
               :key="comment.id"
             >
-              <span
-                >{{ comment.User.firstName }} {{ comment.User.lastName }}
-                <p> a commenté {{ moment(post.createdAt).format("[le] DD MMMM YYYY") }}</p> 
-              </span>
-              
-              <div>
-                <span>{{ comment.content }}</span>
-              </div>
-              <div
-                v-if="
-                  $store.state.user.id == post.User.id ||
-                  $store.state.user.isAdmin == true
-                "
-              >
-                <button
-                  class="btn btn-danger"
-                  title="supprimer"
-                  aria-label="bouton supprimer"
-                  @click="delComment(comment.id)"
-                >
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
+              <div class="card-comment">
+                <div class="text">
+                  <span
+                    >{{ comment.User.firstName }} {{ comment.User.lastName }}
+                    <p>
+                      a commenté
+                      {{ moment(post.createdAt).format("[le] DD MMMM YYYY") }}
+                    </p>
+                  </span>
+                </div>
+                <div class="card-text">
+                  <p>{{ comment.content }}</p>
+                  <div
+                    v-if="
+                      $store.state.user.id == post.User.id ||
+                      $store.state.user.isAdmin == true
+                    "
+                  >
+                    <button
+                      class="btn btn-danger"
+                      title="supprimer"
+                      aria-label="bouton supprimer"
+                      @click="delComment(comment.id)"
+                    >
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -130,9 +138,9 @@ export default {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
       content: "",
-      like:[],
-      dateFormat:"",
-      data: {PostId:"", UserId: localStorage.getItem("UserId") },
+      like: [],
+      dateFormat: "",
+      data: { PostId: "", UserId: localStorage.getItem("UserId") },
     };
   },
   computed: {
@@ -142,17 +150,12 @@ export default {
     posts() {
       return this.$store.getters.posts;
     },
- 
-  
-
-
   },
   created() {
     this.$store.dispatch("getAllPosts");
-   
-    this.moment = moment; 
+
+    this.moment = moment;
     moment.locale("fr");
-  
   },
   methods: {
     PostAdd() {
@@ -164,7 +167,7 @@ export default {
     PostEdit(id) {
       this.$router.push({ name: "PostEdit", params: { id: id } });
     },
-      dateTime(index) {
+    dateTime(index) {
       return moment(index).format("YYYY-MM-DD");
     },
     delPost(id) {
@@ -186,9 +189,12 @@ export default {
       }
     },
     likeUser(id) {
-      
-      this.$store.dispatch("likeUser", id);
+      console.log(localStorage.getItem("UserId"), "USER");
+      this.$store.dispatch("likeUser", {
+        id: id,
+        data: this.data,
+      });
     },
-  }
+  },
 };
 </script>

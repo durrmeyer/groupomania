@@ -44,17 +44,16 @@
               {{ user.id }}
             </td>
             <td>
-              
               <img
                 v-if="user.imageUrl !== null"
-                src="../../assets/images/avatar.png"
-                alt="photo de profil "
+                :src="user.imageUrl"
+                alt="photo profil de l'utilisateur"
                 class="avatar"
               />
               <img
                 v-else
-                :src="user.imageUrl"
-                alt="photo profil de l'utilisateur"
+                src="../../assets/images/avatar.png"
+                alt="photo de profil "
                 class="avatar"
               />
             </td>
@@ -105,7 +104,7 @@ export default {
       );
     },
   },
- mounted() {
+  mounted() {
     userService
       .getAllUsers()
       .then((res) => {
@@ -128,7 +127,5 @@ export default {
       }
     },
   },
-
- 
 };
 </script>
