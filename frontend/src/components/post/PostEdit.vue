@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import postService from '../../_services/postService';
+import postService from "../../_services/postService";
 export default {
   name: "PostEdit",
   data: function () {
@@ -37,32 +37,24 @@ export default {
       post: { description: "" },
     };
   },
-mounted() {
-   this.$store.dispatch("getPostById",   this.$route.params.id,); 
-},
+  mounted() {
+    this.$store.dispatch("getPostById", this.$route.params.id);
+  },
   methods: {
     select() {
       this.image = this.$refs.image.files[0];
       this.imageUrl = URL.createObjectURL(this.image);
     },
-    addEdit() {  
+    addEdit() {
       const formData = new FormData();
+      formData.append("description", this.post.description);
+      formData.append("image", this.image);
 
-      if (this.post.description !== "") {
-        formData.append("description", this.post.description);
-      }
-      console.log(this.post.description);
-      if (this.imageUrl !== null) {
-        formData.append("imageUrl", this.imageUrl);
-      }
-      console.log(this.imageUrl);
-
-
-     this.$store.dispatch("updatePost", {
+      this.$store.dispatch("updatePost", {
         id: this.$route.params.id,
         data: formData,
       });
-       this.$router.push("/posts");
+      this.$router.push("/posts");
     },
   },
 };

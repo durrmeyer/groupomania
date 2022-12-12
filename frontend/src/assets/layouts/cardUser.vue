@@ -1,6 +1,7 @@
 <style lang="css">
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: Lato;
+margin: 0;
 }
  #avatar{
     width: 90px;

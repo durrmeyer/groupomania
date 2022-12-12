@@ -18,12 +18,16 @@ class AuthService {
     localStorage.removeItem('user');
   }
   register() {
+    this.$store.dispatch("setToken", response.data.token);
+    this.$store.dispatch("setUser", response.data.user);
+    this.$store.dispatch("getUserById", response.data.user.id);
     return axios.post('/register', {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
       password: this.password,
     });
+  
   }
 }
 export default new AuthService();

@@ -78,13 +78,7 @@ export default {
     },
   },
   methods: {
-    getUserSession() {
-      console.log("cool");
-      accountService.setToken(res.data.token);
-      userService.saveUserId(res.data.userId);
-    },
-    
-
+   
     logOut() {
       this.$store.dispatch("logout");
       this.$router.push("/");

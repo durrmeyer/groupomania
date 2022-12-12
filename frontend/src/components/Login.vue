@@ -81,6 +81,8 @@ export default {
   },
   data() {
     return {
+      userId: localStorage.getItem("UserId"),
+      token: localStorage.getItem("token"),
       user: { email: "", password: "" },
     };
   },

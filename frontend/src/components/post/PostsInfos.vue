@@ -7,14 +7,13 @@
     >
       Ajouter un nouveau post
     </button>
-
-    <div v-for="post in posts" :key="post.id" :post="post">
-      <div class="container">
+    <div>
+      <div class="container" v-for="post in posts" :key="post.id" :post="post">
         <div class="card">
           <div class="card-header">
             <div class="card-image">
               <img
-                v-if="post.User.imageUrl == null"
+                v-if="post.User.imageUrl !== null"
                 :src="post.User.imageUrl"
                 alt="photo  de l'utilisateur"
                 class="image"
@@ -33,6 +32,8 @@
                 {{ moment(post.createdAt).format("[le] DD MMMM YYYY") }}
               </p>
             </div>
+          </div>
+          <div class="card-body">
             <div
               v-if="
                 $store.state.user.id == post.User.id ||
@@ -51,31 +52,27 @@
                 <i class="fa fa-pen"></i>
               </button>
             </div>
-          </div>
-          <div class="card-body">
             <div class="card-text">
               <p>{{ post.description }}</p>
             </div>
-            <div class="img-container">
-              <img
-                v-if="post.imageUrl !== null"
-                :src="post.imageUrl"
-                alt="image du post"
-                class="img-post"
-              />
+            <div v-if="post.imageUrl !== 'null'">
+              <img :src="post.imageUrl" alt="image du post" class="img-post" />
+            </div>
+
+            <div class="card-info">
+              <button @click="likeUser(post.id)">
+                <i class="fa-regular fa-thumbs-up" style="font-size: 40px"></i>
+              </button>
+              <p>Like:{{ post.Likes.length }}</p>
+              <button @click="CommentAdd(post.id)">
+                <i
+                  class="fa-regular fa-comment-dots"
+                  style="font-size: 40px"
+                ></i>
+              </button>
+              <p>commentaires:{{ post.Comments.length }}</p>
             </div>
           </div>
-          <div class="card-info">
-            <button @click="likeUser(post.id)">
-              <i class="fa-regular fa-thumbs-up" style="font-size: 40px"></i>
-            </button>
-            <p>Like:{{ post.Likes.length }}</p>
-            <button @click="CommentAdd(post.id)">
-              <i class="fa-regular fa-comment-dots" style="font-size: 40px"></i>
-            </button>
-            <p>commentaires:{{ post.Comments.length }}</p>
-          </div>
-
           <div class="card-footer">
             <div
               class="card-list"
@@ -88,7 +85,9 @@
                     >{{ comment.User.firstName }} {{ comment.User.lastName }}
                     <p>
                       a commenté
-                      {{ moment(post.createdAt).format("[le] DD MMMM YYYY") }}
+                      {{
+                        moment(comment.createdAt).format("[le] DD MMMM YYYY")
+                      }}
                     </p>
                   </span>
                 </div>
@@ -134,15 +133,18 @@ export default {
     PostEdit,
   },
   data() {
+    console.log(this.$store.getters.posts)
     return {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
       content: "",
+      visible: "false",
       like: [],
       dateFormat: "",
-      data: { PostId: "", UserId: localStorage.getItem("UserId") },
+      data: { UserId: localStorage.getItem("UserId") },
     };
   },
+
   computed: {
     user() {
       return this.$store.getters.user;

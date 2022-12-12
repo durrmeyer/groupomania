@@ -25,63 +25,77 @@
             />
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <form @submit.prevent="register">
+            <Form @submit="register()">
               <div class="form-outline mb-4">
-                <input
+                <label for="email" class="form-label"
+                  >Prénom
+                  <span class="form-required">*</span>
+                </label>
+                <Field
+                  name="firstName"
                   type="text"
                   class="form-control"
-                  placeholder="Léa"
+                  placeholder="Votre prénom"
                   v-model="user.firstName"
                   :rules="isRequired"
                   autocomplete="current-firstName"
                 />
-                <ErrorMessage class="form-required" name="firstName" />
-                <label for="email" class="form-label">Prénom
-                   <span class="form-required">*</span>
-                </label>
+                <ErrorMessage name="firstName" />
               </div>
 
               <div class="form-outline mb-4">
-                <input
+                <label for="email" class="form-label"
+                  >Nom
+                  <span class="form-required">*</span>
+                </label>
+                <Field
+                  name="lastName"
                   type="text"
                   class="form-control"
-                  placeholder="Léa"
+                  placeholder="votre Nom"
                   v-model="user.lastName"
                   :rules="isRequired"
                   autocomplete="current-firstName"
                 />
-                <ErrorMessage class="form-required" name="lastName" />
-                <label for="email" class="form-label">Nom
-                   <span class="form-required">*</span>
-                </label>
+                <ErrorMessage name="lastName" />
               </div>
 
               <!-- Email input -->
               <div class="form-outline mb-4">
-                <input
+                <label for="email" class="form-label"
+                  >Email
+                  <span class="form-required">*</span>
+                </label>
+                <Field
+                  name="email"
                   type="text"
                   class="form-control"
                   placeholder="name@example.com"
                   v-model="user.email"
+                  :rules="validateEmail"
+                  required
                   autocomplete="current-email"
                 />
-                <label for="email" class="form-label">Email
-                   <span class="form-required">*</span>
-                </label>
+                <ErrorMessage name="email" />
               </div>
 
               <!-- Password input -->
               <div class="form-outline mb-3">
-                <input
+                <label for="password" class="form-label"
+                  >Password
+                  <span class="form-required">*</span>
+                </label>
+                <Field
+                  name="password"
                   type="password"
                   class="form-control"
                   placeholder="**********"
                   v-model="user.password"
+                  required
+                  :rules="isRequired"
                   autocomplete="current-password"
                 />
-                <label for="password" class="form-label">Password
-                   <span class="form-required">*</span>
-                </label>
+                <ErrorMessage name="password" />
               </div>
 
               <div class="text-center text-lg-start mt-4 pt-2">
@@ -90,25 +104,25 @@
                   class="btn btn-primary btn-lg"
                   style="padding-left: 2.5rem; padding-right: 2.5rem"
                 >
-                 Inscription
+                  Inscription
                 </button>
                 <p class="small fw-bold mt-2 pt-1 mb-0">
                   Vous n'avez pas encore de compte?
                   <a href="/" class="text-reset"> Connexion</a>
                 </p>
               </div>
-            </form>
+            </Form>
           </div>
         </div>
       </div>
     </section>
   </div>
 </template>
- 
+
 <script>
 import PageLogin from "../assets/layouts/pageLogin.vue";
 import accountService from "../_services/accountService";
-import { Form, Field, ErrorMessage } from "vee-validate";
+import { Field, Form, ErrorMessage } from "vee-validate";
 export default {
   name: "Register",
   components: {
@@ -120,12 +134,11 @@ export default {
   data() {
     return {
       user: {
-        id: sessionStorage.getItem("userId"),
+        id: localStorage.getItem("userId"),
         firstName: "",
         lastName: "",
         email: "",
         password: "",
-       
       },
     };
   },
@@ -136,33 +149,21 @@ export default {
       }
       return "Champ requis";
     },
+
     validateEmail(value) {
       if (!value) {
-        return "email requis";
+        return "Champs requis";
       }
       const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
       if (!regex.test(value)) {
-        return "votre email n'est pas valide";
-      }
-      return true;
-    },
-    validatePassword(value) {
-      if (!value) {
-        return "password requis";
-      }
-      const regexPassword =
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/i;
-      if (!regexPassword.test(value)) {
-        return "votre mot de passe n'est pas valide";
+        return "adresse mail non valide";
       }
       return true;
     },
     register() {
       accountService
         .register(this.user)
-        .then((res) => {
-       
-          this.$store.dispatch("getUserById");
+        .then(() => {
           this.$router.push({ name: "login" });
           console.log(this.user, "console log data");
         })
@@ -171,4 +172,3 @@ export default {
   },
 };
 </script>
-

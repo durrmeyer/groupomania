@@ -12,7 +12,7 @@
     <div class="card-body text-center">
       <div class="dropdown text-center">
         <img
-          v-if="user.imageUrl == null"
+          v-if="user.imageUrl !== null"
           :src="user.imageUrl"
           alt="photo profil de l'utilisateur"
           class="avatar"

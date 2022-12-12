@@ -1,6 +1,9 @@
 <template>
   <div id="add-blog">
-    <h2>Nouveau post</h2>
+    <router-link to="/posts" class="btn btn-success"
+      ><i class="fa fa-eye"></i> Retour aux posts</router-link
+    >
+    <h2>Créer un nouveau post</h2>
     <form @submit.prevent="addPost" enctype="multipart/form-data">
       <label for="file" class="form-label">Image</label>
       <input
@@ -30,7 +33,6 @@ export default {
   name: "PostAdd",
   data() {
     return {
-
       userId: localStorage.getItem("UserId"),
       description: "",
       imageUrl: "",
@@ -48,7 +50,7 @@ export default {
       formData.append("UserId", this.userId);
 
       this.$store.dispatch("createPost", formData);
-       this.$router.push("/posts");
+      this.$router.push("/posts");
     },
   },
 };

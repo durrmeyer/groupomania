@@ -3,25 +3,25 @@ import Axios from "./axios";
 export default {
 
 /***************************************enregistrement et connexion *************************/
-register(user) {
+register(data) {
    
-    return Axios.post('/users/register', user);
+    return Axios.post("users/register", data);
   },
-  login(user) {
-    return Axios.post("/users/login/", user);
+  login(data) {
+    return Axios.post("users/login/", data);
   },
   logout() {
-    localStorage.removeItem('token')
+    localStorage.removeItem("token")
   },
   getToken() {
-   return localStorage.getItem('token')
+   return localStorage.getItem("token")
   },
   setToken(token) {
-    localStorage.setItem('token', token)
+    localStorage.setItem("token", token)
   },
   
  isLogged() {
-   const token = localStorage.getItem('token')
+   const token = localStorage.getItem("token")
     return !!token
   },
   

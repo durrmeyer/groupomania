@@ -15,8 +15,10 @@ export default {
   components: {
     Navigation,
   },
+  mounted() {
+    this.$store.dispatch("getUserById");
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
