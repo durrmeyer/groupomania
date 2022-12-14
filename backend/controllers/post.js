@@ -60,7 +60,7 @@ exports.updatePost = (req, res) => {
       db.Post.update(
         {
           description: req.body.description,
-          imageUrl: req.body.imageUrl,
+          imageUrl: imageUrl,
         },
 
         {
@@ -136,7 +136,7 @@ exports.getPostById = async (req, res) => {
         include: [
           {
             model: db.User,
-            attributes: ["id", "firstName", "lastName", "imageUrl"],
+            attributes: ["id", "firstName", "lastName"],
           },
         ],
       },

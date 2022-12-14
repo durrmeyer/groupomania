@@ -1,7 +1,6 @@
 const { Sequelize } = require("sequelize");
 const express = require("express");
 const db = require("./db/models"); //utilisations du modèle pour la BDD
-
 const cors = require("cors");
 const helmet = require("helmet");
 const path = require("path");
@@ -28,6 +27,7 @@ app.use((req, res, next) => {
   );
   next();
 });
+
 const database = async function () {
   try {
     await db.sequelize.authenticate();
@@ -42,22 +42,7 @@ db.sequelize
   .sync({ force: false })
   .then(() => console.log("Base de données à jours !"))
   .catch((error) => console.log(" il y a eu un petit soucis!", error));
-function initial() {
-  Role.create({
-    id: 3,
-    name: "user",
-  });
 
-  Role.create({
-    id: 2,
-    name: "moderator",
-  });
-
-  Role.create({
-    id: 1,
-    name: "admin",
-  });
-}
 app.use(
   helmet({
     crossOriginResourcePolicy: false,
@@ -65,9 +50,10 @@ app.use(
 ); // Utilisation du package Helmet pour sécuriser davantage nos headers
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 //---------------------déclaration des routes----------------------------------//
 app.get("/", (req, res) => res.send("ok tout va bien"));
+
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 

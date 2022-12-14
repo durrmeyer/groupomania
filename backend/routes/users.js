@@ -1,16 +1,15 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const userCtrl = require('../controllers/user');
-const multer = require('../middleware/multer');
-const auth = require('../middleware/auth');
-
-
-
+const userCtrl = require("../controllers/user");
+const multer = require("../middleware/multer");
+const auth = require("../middleware/auth");
+const verify = require("../middleware/verify");
+const limit = require("../middleware/limite");
 
 /**créer et enregistrer un nouvel utilisateur **/
-router.post('/login', userCtrl.login);
-router.post('/register', userCtrl.register);
 
+router.post("/login",limit.limiter, userCtrl.login);
+router.post("/register", verify.valid,  userCtrl.register);
 
 //-----récupérer tous les utilisateurs -----------//
 router.get("/", auth, userCtrl.getAllUsers);

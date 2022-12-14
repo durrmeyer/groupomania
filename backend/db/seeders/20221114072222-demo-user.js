@@ -3,9 +3,10 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('Users', [{
+    return queryInterface.bulkInsert("Users", [{
       firstName: 'Camille',
       lastName: 'Techer',
+      imageUrl:'',
       email: 'camille@groupomania.com',
       password:'Groupomaniatest974.',
       RoleId: 1,
@@ -24,6 +25,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('Users', null, {});
+    return queryInterface.bulkDelete("Users", null, {});
   }
 };

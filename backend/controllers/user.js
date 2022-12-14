@@ -1,62 +1,52 @@
 const bcrypt = require("bcrypt"); // Bcrypt permet de crypter le password et de le comparer
 const jwt = require("jsonwebtoken"); // Jwt necessaire pour la création d'un token
-const db = require("../db/models"); // Récupération des modèles Sequelize
-
+const db = require("../db/models"); // Récupération des moconst passwordValidator = require('password-validator');
+const fs = require("fs");
 require("dotenv").config();
 
 exports.register = (req, res) => {
-  try {
-    // vérifie  si le mot de passe fait plus de 8 caractères
-    if (req.body.password.length > 8) {
-      // Vérifie si l'utilisateur existe déjà
-      db.User.findOne({ where: { email: req.body.email } }).then((user) => {
-        if (!user) {
-          //  sécurise le mot de passe en le hachant
-          bcrypt
-            .hash(req.body.password, 10)
-            .then((hash) => {
-              // crée une instance du model User, y insert les données et les sauvegardes dans la base de données.
-              db.User.create({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                password: hash,
-                RoleId: 3,
-              })
-
-                .then(() => {
-                  // message retourné en cas de réussite
-                  res.status(201).json({
-                    userId: user.id,
-                    token: jwt.sign(
-                      {
-                        userId: user.id,
-                      },
-                      `${process.env.SECRET_KEY}`,
-                      {
-                        expiresIn: "24h",
-                      }
-                    ),
-                    message: "Utilisateur créé !",
-                  });
-                })
-                .catch((error) => {
-                  // message d'erreur retourné en cas d'échec de l'ajout des données dans la BDD
-                  res.status(500).json({ error });
-                });
+  // Vérifie si l'utilisateur existe déjà
+  db.User.findOne({ where: { email: req.body.email } }).then((user) => {
+    if (!user) {
+      //  sécurise le mot de passe en le hachant
+      bcrypt.hash(req.body.password, 10).then((hash) => {
+        // crée une instance du model User, y insert les données et les sauvegardes dans la base de données.
+        db.User.create({
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          email: req.body.email,
+          password: hash,
+          RoleId: 3,
+        }).then((user) => {
+          // message retourné en cas de réussite
+          res
+            .status(201)
+            .json({
+              userId: user.id,
+              token: jwt.sign(
+                {
+                  userId: user.id,
+                },
+                `${process.env.SECRET_KEY}`,
+                {
+                  expiresIn: "24h",
+                }
+              ),
+              message: "Utilisateur créé !",
             })
+            
+            })
+            .catch((err) => {
+              res.status(400).json({ err, message: "compte non créé" })
             // message d'erreur en cas d'échec de hachage du mot de passe
-            .catch((error) => res.status(500).json({ error }));
-        } else {
-          // message d'erreur si l'utilisateur à été trouvé dans la BDD
-          return res.status(401).json({ message: " déjà inscrit!" });
-        }
+            .catch((res) => {
+              // message d'erreur si l'utilisateur à été trouvé dans la BDD
+              res.status(400).json({ message: " déjà inscrit!" });
+            });
+        });
       });
     }
-  } catch (error) {
-    // message d'erreur si la présence de l'utilisateur dans la BDD n'a pu être vérifié
-    res.status(500).json({ error: "aïe erreur" });
-  }
+  });
 };
 
 exports.login = async (req, res) => {
@@ -151,7 +141,7 @@ exports.updateUser = (req, res) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
-      imageUrl: req.body.imageUrl,
+      imageUrl: imageUrl,
     },
     {
       where: {
@@ -164,7 +154,7 @@ exports.updateUser = (req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        imageUrl: req.body.imageUrl,
+        imageUrl: imageUrl,
         message: "User modifié !",
       })
     )
@@ -175,7 +165,37 @@ exports.deleteUser = (req, res) => {
   console.log(req.params.id, "user supression");
   db.User.findOne({ where: { id: req.params.id } })
 
-    .then((user) => {
+
+ .then((user) => {
+     if (req.file) {
+    const filename = user.imageUrl.split("/images/")[1];
+    fs.unlink(`images/${filename}`, () => {
+      user
+        .destroy({
+          where: {
+            id: req.params.id,
+          },
+        })
+        .then(() =>
+          res.status(200).json({
+            message: "le User est bien supprimé !",
+          })
+        )
+        .catch((error) =>
+          res.status(400).json({
+            error,
+          })
+        );
+    });
+    } else { // Sinon on supprime uniquement l'user
+      
+      db.User.destroy({ where: { id: req.params.id } });
+      res.status(200).json({ message: "Compte supprimé !" });
+    }
+  })
+
+  .catch((error) => res.status(500).json({ error }));
+    /*.then((user) => {
       if (req.file) {
         const filename = user.image.split("/images/")[1];
         fs.unlink(`images/${filename}`, () => {
@@ -221,5 +241,5 @@ exports.deleteUser = (req, res) => {
         error,
         message: "impossible de supprimer l utilisateur !",
       })
-    );
+    );*/
 };

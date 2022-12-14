@@ -1,10 +1,10 @@
-const rateLimit = require('express-rate-limit');
+const rateLimit = require("express-rate-limit");
 
-const limit = rateLimit({
-	window: 5 * 60 * 1000, // attente de 5 min
+const limiter = rateLimit({
+	window: 3 * 60 * 1000, // attente de 3 min
 	max: 5, //limite chaque IP à 5 requêtes
-	message: ' vous avez depassé les 3 demandes',
+	message:" vous avez depassé les 5 demandes. Veuillez attendre 3 min pour vous reconnecter",
 
 });
 
-module.exports = limit;
+module.exports = {limiter};
