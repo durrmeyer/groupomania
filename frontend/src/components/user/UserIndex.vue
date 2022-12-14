@@ -65,9 +65,10 @@
 
             <div class="add-to-action">
               <div class="button">
+                <!--
                 <button class="btn btn-primary my-1" @click="addUser(user.id)">
                   <i class="fa fa-pen"></i>
-                </button>
+                </button>-->
                 <button class="btn btn-danger my-1" @click="delUser(user.id)">
                   <i class="fa fa-trash" aria_hidden="true"></i>
                 </button>

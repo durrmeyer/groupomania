@@ -3,7 +3,7 @@
     <div class="container mt-3">
       <div class="row">
         <div class="col">
-          <p class="h3 text-success fw-bold">Add contact</p>
+          <p class="h3 text-success fw-bold">contact</p>
           <p class="fst_italic">
             Vita est illis semper in fuga uxoresque mercenariae conductae ad
             tempus ex pacto atque, ut sit species matrimonii, dotis nomine
@@ -34,7 +34,7 @@
             <div class="mb-2">
               <label for="user_firstName">Prénom</label>
               <input
-                v-model="firstName"
+                v-model="user.firstName"
                 type="text"
                 class="form-control"
                 placeholder="Prénom"
@@ -44,7 +44,7 @@
             <div class="mb-2">
               <label for="user_lastName">Nom</label>
               <input
-                v-model="lastName"
+                v-model="user.lastName"
                 type="text"
                 class="form-control"
                 placeholder="Nom"
@@ -54,7 +54,7 @@
             <div class="mb-2">
               <label for="user_email">Email</label>
               <input
-                v-model="email"
+                v-model="user.email"
                 type="text"
                 class="form-control"
                 placeholder="Email"
@@ -73,7 +73,7 @@
 </template>
 <script>
 import layoutUser from "../../assets/layouts/cardUser.vue";
-
+import { mapState } from "vuex";
 export default {
   name: "UserAdd",
   components: {
@@ -86,14 +86,19 @@ export default {
       imageUrl: "",
       firstName: "",
       lastName: "",
-      email: "",
+      email: "",      
     };
   },
 
-  mounted() {
-    this.$store.dispatch("getUserById");
+  beforeMount() {
+    this.$store.dispatch("getUserById",this.$route.params.id);
   },
-
+  
+  computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
+  },
   methods: {
     selectImage() {
       this.image = this.$refs.image.files[0];
@@ -101,27 +106,29 @@ export default {
     },
     addUser() {
       let id = this.$store.state.user.id;
+      
       const formData = new FormData();
-    
+      if (this.image) {
+        console.log("IMAGE");
         formData.append("image", this.image);
-  
-      if (this.firstName !== "") {
-        formData.append("firstName", this.firstName);
       }
-      if (this.lastName !== "") {
-        formData.append("lastName", this.lastName);
+      if (this.user.firstName !== "") {
+        formData.append("firstName", this.user.firstName);
       }
-      if (this.email !== "") {
-        formData.append("email", this.email);
+      if (this.user.lastName !== "") {
+        formData.append("lastName", this.user.lastName);
+      }
+      if (this.user.email !== "") {
+        formData.append("email", this.user.email);
       }
       formData.append("UserId", this.UserId);
-
+      console.log(formData.get("image"));
       this.$store.dispatch("updateUser", {
         id: id,
         data: formData,
       });
 
-      this.$router.push("/posts");
+      this.$router.push("/profil");
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg ">
     <div class="container-fluid">
       <a class="navbar-brand mt-8 mt-lg-0" href="#">
         <img src="../assets/images/1.png" height="200" alt="Groupomania Logo" />
@@ -80,19 +80,34 @@ export default {
   methods: {
    
     logOut() {
+       this.$router.push("/");
       this.$store.dispatch("logout");
-      this.$router.push("/");
+     
     },
   },
 };
 </script>
 
 <style scoped>
+.navbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .nav-item {
   font-size: 25px;
 }
 .navprofil {
   display: flex;
+}
+container-fluid{
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+img{
+  max-width: 100%;
 }
 ul {
   list-style-type: none;

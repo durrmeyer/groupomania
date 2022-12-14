@@ -9,7 +9,6 @@
 
 <script>
 import Navigation from "./components/Navigation.vue";
-
 export default {
   name: "App",
   components: {
@@ -21,4 +20,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+

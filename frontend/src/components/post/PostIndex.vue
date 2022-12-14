@@ -38,7 +38,7 @@
             <td>{{ post.id }}</td>
             <td>
               <img
-                v-if="post.User.imageUrl == null"
+                v-if="post.User.imageUrl !== 'null'"
                 src="../../assets/images/avatar.png"
                 alt="photo de profil "
                 class="avatar"

@@ -14,7 +14,7 @@
             <div class="card-image">
               <img
                 v-if="post.User.imageUrl !== null"
-                :src="post.User.imageUrl"
+                :src="post.User.imageUrl "
                 alt="photo  de l'utilisateur"
                 class="image"
               />
@@ -25,7 +25,7 @@
                 class="img"
               />
             </div>
-            <div class="text">
+           <div class="text">
               <span>{{ post.User.firstName }} {{ post.User.lastName }} </span>
               <p>
                 a partagé une publication
@@ -95,7 +95,7 @@
                   <p>{{ comment.content }}</p>
                   <div
                     v-if="
-                      $store.state.user.id == post.User.id ||
+                      $store.state.user.id == comment.User.id ||
                       $store.state.user.isAdmin == true
                     "
                   >
@@ -133,7 +133,6 @@ export default {
     PostEdit,
   },
   data() {
-    console.log(this.$store.getters.posts)
     return {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
@@ -145,6 +144,16 @@ export default {
     };
   },
 
+
+  
+    beforeMount() {
+    this.$store.dispatch("getUserById");
+    this.$store.dispatch("getAllPosts");
+  },
+  created() {
+    this.moment = moment;
+    moment.locale("fr");
+  },
   computed: {
     user() {
       return this.$store.getters.user;
@@ -153,12 +162,7 @@ export default {
       return this.$store.getters.posts;
     },
   },
-  created() {
-    this.$store.dispatch("getAllPosts");
 
-    this.moment = moment;
-    moment.locale("fr");
-  },
   methods: {
     PostAdd() {
       this.$router.push({ name: "PostAdd" });

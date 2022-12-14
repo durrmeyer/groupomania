@@ -38,7 +38,7 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("getPostById", this.$route.params.id);
+    this.$store.dispatch("getPostById");
   },
   methods: {
     select() {

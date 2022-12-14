@@ -15,7 +15,7 @@
           </div>
         </div>
       </div>
-      <div class="container-fluid h-custom">
+      <div class="container h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-md-9 col-lg-6 col-xl-5">
             <img
@@ -92,7 +92,7 @@
                   placeholder="**********"
                   v-model="user.password"
                   required
-                  :rules="isRequired"
+                 :rules="validatePassword"
                   autocomplete="current-password"
                 />
                 <ErrorMessage name="password" />
@@ -102,7 +102,7 @@
                 <button
                   type="submit"
                   class="btn btn-primary btn-lg"
-                  style="padding-left: 2.5rem; padding-right: 2.5rem"
+                  
                 >
                   Inscription
                 </button>
@@ -120,12 +120,14 @@
 </template>
 
 <script>
-import PageLogin from "../assets/layouts/pageLogin.vue";
+
+import PageLogin from "../assets/layouts/body.vue";
 import accountService from "../_services/accountService";
 import { Field, Form, ErrorMessage } from "vee-validate";
 export default {
   name: "Register",
   components: {
+ 
     PageLogin,
     Form,
     Field,
@@ -156,18 +158,40 @@ export default {
       }
       const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
       if (!regex.test(value)) {
-        return "adresse mail non valide";
+        return "champ non valide";
       }
       return true;
+      
     },
+      validatePassword(value) {
+      if (!value) {
+        return "Champs requis";
+      }
+      const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,20}$/;
+      if (!regex.test(value)) {
+        return "Votre mot de passe doit contenir au minimum 8 caractéres avec au moins 1 minuscule ,1 majuscule et 1 chiffre";
+      }
+      return true;
+      
+    },
+
     register() {
+      console.log(this, "REGISTER")
+      if (
+        this.user.firstName !== "" ||
+        this.user.lastName !== "" ||
+        this.user.email !== "" ||
+        this.user.password !== ""
+      )
       accountService
         .register(this.user)
-        .then(() => {
-          this.$router.push({ name: "login" });
+        .then((res) => {
+          
+          
+         this.$router.push({ name: "login" });
           console.log(this.user, "console log data");
         })
-        .catch((err) => console.log(err, "erreur de connexion"));
+        .catch((err) => console.log(err, "erreur de données"));
     },
   },
 };

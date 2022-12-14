@@ -1,4 +1,6 @@
-<style lang="css">
+<style scoped>
+  
+
 body {
   font-family: "Lato";
 }
@@ -14,8 +16,11 @@ body {
   display: flex;
   justify-content: space-between;
   height: 120px;
-  
  
+}
+.card-info button{
+   background-color: #ffd7d7fd;
+  color: black;
 }
 .card-image img {
   width: 103px;
@@ -62,15 +67,6 @@ body {
   height: 150px;
 }
 
-btn-secondary btn-lg {
-  color: #4e5166;
-}
-button {
-  margin-left: 26px;
-  margin-right: 20px;
-  margin-top: 20px;
-}
-p {
-  font-size: 3vw;
-}
+
+
 </style>

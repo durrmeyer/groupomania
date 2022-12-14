@@ -8,33 +8,39 @@
         hastam et tabernaculum offert marito.
       </p>
     </div>
+    <div
+      v-if="
+        $store.state.user.id == user.id || $store.state.user.isAdmin == true
+      "
+    >
+      <div class="card-body text-center">
+        <div class="dropdown text-center">
+          <img
+            v-if="user.imageUrl !=='null'"
+            :src="user.imageUrl"
+            alt="photo profil de l'utilisateur"
+            class="avatar"
+          />
+          <img
+            v-else
+            src="../../assets/images/avatar.png"
+            alt="photo de profil "
+            class="avatar"
+          />
+        </div>
 
-    <div class="card-body text-center">
-      <div class="dropdown text-center">
-        <img
-          v-if="user.imageUrl !== null"
-          :src="user.imageUrl"
-          alt="photo profil de l'utilisateur"
-          class="avatar"
-        />
-        <img
-          v-else
-          src="../../assets/images/avatar.png"
-          alt="photo de profil "
-          class="avatar"
-        />
-      </div>
+        <h1>{{ user.firstName }} {{ user.lastName }}</h1>
 
-      <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+        <p>{{ user.email }}</p>
 
-      <p>{{ user.email }}</p>
-      <button @click="addUser()" class="btn btn-primary my-1">
-        <i class="fa fa-pen"></i>
-      </button>
-      <div class="button">
-        <button @click="deleteUser(user.id)">
-          <i class="fa fa-trash"></i>
+        <button @click="addUser()" class="btn btn-primary my-1">
+          <i class="fa fa-pen"></i>
         </button>
+        <div class="button">
+          <button @click="deleteUser(user.id)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
       </div>
       <router-link to="/posts" class="btn btn-success">
         <i class="fa fa-arrow-alt-circle-left"></i> Retour</router-link

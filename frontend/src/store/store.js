@@ -144,7 +144,8 @@ const store = createStore({
     updateUser({ commit }, data) {
       userService.updateUser(data.id, data.data, {
         headers: { Authorization: this.state.token }}).then((res) => {
-        const user = res.data;
+        
+         const user = res.data;
         commit("UPDATE_USER", user);
       });
     },
@@ -194,6 +195,7 @@ const store = createStore({
     },
     getAllPosts({ commit }) {
       postService.getAllPosts().then((res) => {
+        console.log(res.data)
         const posts = res.data;
         commit("GET_POSTS", posts);
       })
@@ -227,6 +229,12 @@ const store = createStore({
         .deletePost(id)
         .then(() => {
           commit("DELETE_POST", id);
+        })
+        .then(() => {
+          postService.getAllPosts().then((res) => {
+            const posts = res.data;
+            commit("GET_POSTS", posts);
+          });
         })
         .catch((err) => {
           err;
@@ -266,6 +274,11 @@ const store = createStore({
     deleteComment({ commit }, id) {
       postService.deleteComment(id).then(() => {
         commit("DELETE_COMMENT", id);
+      }) .then(() => {
+        postService.getAllPosts().then((res) => {
+          const posts = res.data;
+          commit("GET_POSTS", posts);
+        });
       })
       .catch((err) => {
         err;

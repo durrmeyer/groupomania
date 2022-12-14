@@ -25,9 +25,9 @@ margin: 0;
  }
  
  .avatar{
-  max-height: 150px;
+  max-height: 48px;
   border-radius: 150px;
-  margin-top: 44px;
+ 
  }
  .fw-bold{
   margin-left: 15px;
