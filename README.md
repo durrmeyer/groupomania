@@ -2,6 +2,7 @@
 
 **instruction pour mettre le projet en place**
 
+Cloner le code suivant: https://github.com/durrmeyer/-7-281032022.git
 Pour lancer le frontend :
 
 Placez vous dans le dossier frontend
