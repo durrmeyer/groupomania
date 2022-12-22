@@ -2,7 +2,6 @@
   <div>
     <button
       class="btn btn-secondary btn-lg"
-      style="margin-left: 26px"
       @click="PostAdd()"
     >
       Ajouter un nouveau post
@@ -14,9 +13,9 @@
             <div class="card-image">
               <img
                 v-if="post.User.imageUrl !== null"
-                :src="post.User.imageUrl "
+                :src="post.User.imageUrl"
                 alt="photo  de l'utilisateur"
-                class="image"
+                class="avatar"
               />
               <img
                 v-else
@@ -25,21 +24,20 @@
                 class="img"
               />
             </div>
-           <div class="text">
+            <div class="text">
               <span>{{ post.User.firstName }} {{ post.User.lastName }} </span>
-              <p>
-                a partagé une publication
-                {{ moment(post.createdAt).format("[le] DD MMMM YYYY") }}
-              </p>
+              <p>a partagé une publication</p>
+              <p>{{ moment(post.createdAt).format("[le] DD MMMM YYYY") }}</p>
             </div>
-          </div>
-          <div class="card-body">
             <div
               v-if="
                 $store.state.user.id == post.User.id ||
                 $store.state.user.isAdmin == true
               "
             >
+              <button class="btn btn-primary my-1" @click="PostEdit(post.id)">
+                <i class="fa fa-pen"></i>
+              </button>
               <button
                 class="btn btn-danger my-1"
                 title="supprimer"
@@ -48,14 +46,13 @@
               >
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
-              <button class="btn btn-primary my-1" @click="PostEdit(post.id)">
-                <i class="fa fa-pen"></i>
-              </button>
             </div>
+          </div>
+          <div class="card-body">
             <div class="card-text">
               <p>{{ post.description }}</p>
             </div>
-            <div v-if="post.imageUrl !== 'null'">
+            <div v-if="post.imageUrl !== null">
               <img :src="post.imageUrl" alt="image du post" class="img-post" />
             </div>
 
@@ -119,7 +116,7 @@
 </template>
 
 <script>
-import postLayout from "../../assets/layouts/post.vue";
+
 import PostAdd from "../Post/PostAdd";
 import CommentAdd from "../Comment/CommentAdd";
 import PostEdit from "../Post/PostEdit";
@@ -127,7 +124,7 @@ import moment from "moment";
 export default {
   name: "postsInfo",
   components: {
-    postLayout,
+   
     PostAdd,
     CommentAdd,
     PostEdit,
@@ -141,12 +138,11 @@ export default {
       like: [],
       dateFormat: "",
       data: { UserId: localStorage.getItem("UserId") },
+      imageUrl:"",
     };
   },
 
-
-  
-    beforeMount() {
+  beforeMount() {
     this.$store.dispatch("getUserById");
     this.$store.dispatch("getAllPosts");
   },
@@ -195,7 +191,6 @@ export default {
       }
     },
     likeUser(id) {
-      console.log(localStorage.getItem("UserId"), "USER");
       this.$store.dispatch("likeUser", {
         id: id,
         data: this.data,

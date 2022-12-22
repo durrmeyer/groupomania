@@ -2,7 +2,6 @@
   <div>
     <section class="vh-100">
       <div class="title">
-        <h1 class="card-title">Réseau social de l'entreprise</h1>
         <div class="card-body">
           <div class="card-description">
             <p class="card-text">
@@ -15,7 +14,7 @@
           </div>
         </div>
       </div>
-      <div class="container h-custom">
+      <div class="container_login h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-md-9 col-lg-6 col-xl-5">
             <img
@@ -26,8 +25,7 @@
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
             <form @submit.prevent="login">
-              <!-- Email input -->
-                <label for="email" class="form-label">Email</label>
+              <label for="email" class="form-label">Email</label>
               <div class="form-outline mb-4">
                 <input
                   type="text"
@@ -36,11 +34,8 @@
                   v-model="user.email"
                   autocomplete="current-email"
                 />
-              
               </div>
-
-              <!-- Password input -->
-               <label for="password" class="form-label">Password</label>
+              <label for="password" class="form-label">Password</label>
               <div class="form-outline mb-3">
                 <input
                   type="password"
@@ -49,20 +44,17 @@
                   v-model="user.password"
                   autocomplete="current-password"
                 />
-               
               </div>
 
               <div class="text-center text-lg-start mt-4 pt-2">
-                <button
-                  type="submit"
-                  class="btn btn-primary btn-lg"
-                
-                >
+                <button type="submit" class="btn btn-primary btn-lg">
                   Connexion
                 </button>
                 <p class="small fw-bold mt-2 pt-1 mb-0">
                   Vous n'avez pas encore de compte?
-                  <a href="/Register" class="text-reset"> S'inscrire</a>
+                  <router-link to="/Register" class="nav-link"
+                    >S'inscrire</router-link
+                  >
                 </p>
               </div>
             </form>
@@ -73,14 +65,13 @@
   </div>
 </template>
 <script>
-import PageLogin from "../assets/layouts/body.vue";
+
 import accountService from "../_services/accountService";
 import userService from "../_services/userService";
 export default {
   name: "Login",
   components: {
-    PageLogin,
-
+   
   },
   data() {
     return {

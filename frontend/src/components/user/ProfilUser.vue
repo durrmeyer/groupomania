@@ -49,13 +49,13 @@
   </div>
 </template>
 <script>
-import User from "../../assets/layouts/cardUser.vue";
+
 import AddUser from "../../components/User/UserAdd.vue";
 import { mapState } from "vuex";
 export default {
   name: " User",
   components: {
-    User,
+ 
     AddUser,
   },
   data() {

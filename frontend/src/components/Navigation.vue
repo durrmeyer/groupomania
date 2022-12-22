@@ -1,9 +1,9 @@
 <template>
-  <nav class="navbar navbar-expand-lg ">
+  <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand mt-8 mt-lg-0" href="#">
+      <!--<a class="navbar-brand mt-8 mt-lg-0" href="#">
         <img src="../assets/images/1.png" height="200" alt="Groupomania Logo" />
-      </a>
+      </a>-->
 
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item" v-if="isAdmin === true">
@@ -78,35 +78,36 @@ export default {
     },
   },
   methods: {
-   
     logOut() {
-       this.$router.push("/");
+      this.$router.push("/");
       this.$store.dispatch("logout");
-     
     },
   },
 };
 </script>
 
 <style scoped>
-.navbar{
+.navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+.container-fluid {
+  display: flex;
+  flex-wrap: nowrap;
+  border: 1px solid;
+  background-color: aquamarine;
+  height: 130px;
+}
+
 .nav-item {
-  font-size: 25px;
+  font-size: 40px;
 }
 .navprofil {
   display: flex;
 }
-container-fluid{
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-}
 
-img{
+img {
   max-width: 100%;
 }
 ul {
@@ -115,5 +116,27 @@ ul {
 a {
   text-decoration: none;
   color: black;
+}
+@media only screen and (max-width: 767px) {
+img{
+    margin-left: 80px;
+  }
+  .nav-item {
+    font-size: 30px;
+  }
+  .navbar-nav {
+
+    flex-direction: row-reverse;
+  }
+  .nav-item {
+    margin-left: 20px;
+  }
+  .nav-link {
+    font-size: 15px;
+    margin-right: 15px;
+  }
+  .img-fluid {
+    width: 49%;
+  }
 }
 </style>

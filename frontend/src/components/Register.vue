@@ -2,7 +2,6 @@
   <div>
     <section class="vh-100">
       <div class="title">
-        <h1 class="card-title">Réseau social de l'entreprise</h1>
         <div class="card-body">
           <div class="card-description">
             <p class="card-text">
@@ -15,7 +14,7 @@
           </div>
         </div>
       </div>
-      <div class="container h-custom">
+      <div class="container_login h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-md-9 col-lg-6 col-xl-5">
             <img
@@ -25,7 +24,7 @@
             />
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <Form @submit="register()">
+            <Form @submit="register">
               <div class="form-outline mb-4">
                 <label for="email" class="form-label"
                   >Prénom
@@ -92,23 +91,19 @@
                   placeholder="**********"
                   v-model="user.password"
                   required
-                 :rules="validatePassword"
+                  :rules="validatePassword"
                   autocomplete="current-password"
                 />
                 <ErrorMessage name="password" />
               </div>
 
               <div class="text-center text-lg-start mt-4 pt-2">
-                <button
-                  type="submit"
-                  class="btn btn-primary btn-lg"
-                  
-                >
+                <button type="submit" class="btn btn-primary btn-lg">
                   Inscription
                 </button>
                 <p class="small fw-bold mt-2 pt-1 mb-0">
                   Vous n'avez pas encore de compte?
-                  <a href="/" class="text-reset"> Connexion</a>
+                  <router-link to="/" class="nav-link">Connexion</router-link>
                 </p>
               </div>
             </Form>
@@ -121,14 +116,12 @@
 
 <script>
 
-import PageLogin from "../assets/layouts/body.vue";
 import accountService from "../_services/accountService";
 import { Field, Form, ErrorMessage } from "vee-validate";
 export default {
   name: "Register",
   components: {
- 
-    PageLogin,
+  
     Form,
     Field,
     ErrorMessage,
@@ -161,37 +154,31 @@ export default {
         return "champ non valide";
       }
       return true;
-      
     },
-      validatePassword(value) {
+    validatePassword(value) {
       if (!value) {
         return "Champs requis";
       }
       const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,20}$/;
       if (!regex.test(value)) {
-        return "Votre mot de passe doit contenir au minimum 8 caractéres avec au moins 1 minuscule ,1 majuscule et 1 chiffre";
+        return "Votre mot de passe doit contenir au minimum 8 caractères avec au moins 1 minuscule ,1 majuscule et 1 chiffre";
       }
       return true;
-      
     },
 
     register() {
-      console.log(this, "REGISTER")
       if (
         this.user.firstName !== "" ||
         this.user.lastName !== "" ||
         this.user.email !== "" ||
         this.user.password !== ""
       )
-      accountService
-        .register(this.user)
-        .then((res) => {
-          
-          
-         this.$router.push({ name: "login" });
-          console.log(this.user, "console log data");
-        })
-        .catch((err) => console.log(err, "erreur de données"));
+        accountService
+          .register(this.user)
+          .then((res) => {
+            this.$router.push({ name: "login" });
+          })
+          .catch((err) => console.log(err, "erreur de données"));
     },
   },
 };

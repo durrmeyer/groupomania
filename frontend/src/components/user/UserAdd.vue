@@ -72,12 +72,11 @@
   </div>
 </template>
 <script>
-import layoutUser from "../../assets/layouts/cardUser.vue";
 import { mapState } from "vuex";
 export default {
   name: "UserAdd",
   components: {
-    layoutUser,
+  
   },
   data() {
     return {
@@ -109,8 +108,7 @@ export default {
       
       const formData = new FormData();
       if (this.image) {
-        console.log("IMAGE");
-        formData.append("image", this.image);
+       formData.append("image", this.image);
       }
       if (this.user.firstName !== "") {
         formData.append("firstName", this.user.firstName);
@@ -122,7 +120,6 @@ export default {
         formData.append("email", this.user.email);
       }
       formData.append("UserId", this.UserId);
-      console.log(formData.get("image"));
       this.$store.dispatch("updateUser", {
         id: id,
         data: formData,

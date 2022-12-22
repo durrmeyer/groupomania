@@ -38,7 +38,7 @@
             <td>{{ post.id }}</td>
             <td>
               <img
-                v-if="post.User.imageUrl !== 'null'"
+                v-if="post.User.imageUrl == null"
                 src="../../assets/images/avatar.png"
                 alt="photo de profil "
                 class="avatar"
@@ -53,7 +53,9 @@
             <td>{{ post.User.lastName }}</td>
             <td>{{ post.User.firstName }}</td>
             <td>
-              <img :src="post.imageUrl" alt="photo du post" class="avatar" />
+             
+              <img :src="post.imageUrl" alt="image du post" class="img-post"  v-if="post.imageUrl !== 'null'"/>
+          
             </td>
             <td>{{ post.description }}</td>
 
@@ -102,8 +104,6 @@ export default {
   methods: {
     modifyPost(id) {
       this.$router.push({ name: "PostEdit", params: { id: id } });
-
-      console.log(id);
     },
 
     delPost(id) {

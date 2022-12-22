@@ -195,7 +195,7 @@ const store = createStore({
     },
     getAllPosts({ commit }) {
       postService.getAllPosts().then((res) => {
-        console.log(res.data)
+       
         const posts = res.data;
         commit("GET_POSTS", posts);
       })

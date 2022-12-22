@@ -110,8 +110,7 @@ export default {
       .getAllUsers()
       .then((res) => {
         this.users = res.data;
-        console.log(this.users, "liste des users");
-      })
+       })
       .catch((err) => console.log(err));
   },
   methods: {
