@@ -8,7 +8,7 @@ const fs = require("fs"); //package qui permet de modification
 exports.createPost = async (req, res) => {
   let imageUrl = req.file
     ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-    : "null";
+    : null;
 
   await db.User.findOne({
     attributes: ["id", "firstName", "lastName", "imageUrl"],
