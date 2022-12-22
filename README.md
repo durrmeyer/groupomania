@@ -1,38 +1,41 @@
-# groupomania
+# Groupomania
 
 **instruction pour mettre le projet en place**
 
 Cloner le code suivant: https://github.com/durrmeyer/-7-281032022.git
-Pour lancer le frontend :
 
-Placez vous dans le dossier frontend
+## Pour lancer le frontend :
 
-Dans le terminal exécutez la commande npm install
+ * Placez vous dans le dossier frontend
 
-Lancez ensuite la commande npm run serve
+ * Dans le terminal exécutez la commande `npm install`
 
-L'interface client est disponible à l'URL suivante : http://localhost:8080/
+ * Lancez ensuite la commande `npm run serve`
 
-Pour le backend suivez ces instructions :
+ * L'interface client est disponible à l'URL suivante : http://localhost:8080/
 
-Placez vous dans le dossier backend
+## Pour le backend suivez ces instructions :
 
-Initialisez les packages via la commande npm install
+  * Placez vous dans le dossier backend
 
-Lancez le backend en tapant ensuite nodemon server
+  * Initialisez les packages via la commande `npm install -g nodemon`
 
-Vérifiez bien que le backend communique via le port :3000
+  * Lancez le backend en tapant ensuite  `nodemon server`
 
-Mettez en place la base de données de cette manière :
+  * Vérifiez bien que le backend communique via le port :3000
 
-Connectez vous au serveur MySQL
+## Mettez en place la base de données de cette manière :
 
-Créer la base de données : groupomania
+  * Connectez vous au serveur MySQL
 
+  * Créer la base de données : groupomania
 
+  * Enfin vous pouvez accèder à l'application !
+  * Lancez la via http://localhost:8080/
 
+Un compte admin est déjà disponible, 
+connectez-vous avec 
 
+l'identifiant : `camille@groupomania.com`
 
-Enfin vous pouvez accèder à l'application !
-Lancez la via http://localhost:8080/
-Un compte admin est déjà disponible, connectez-vous avec l'identifiant....
+Mot de passe: `LeMotDePasse974.`
