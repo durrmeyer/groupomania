@@ -1,4 +1,5 @@
 # groupomania
+
 **instruction pour mettre le projet en place**
 
 Pour lancer le frontend :
@@ -17,7 +18,7 @@ Placez vous dans le dossier backend
 
 Initialisez les packages via la commande npm install
 
-Lancez le backend en tapant ensuite nodemon
+Lancez le backend en tapant ensuite nodemon server
 
 Vérifiez bien que le backend communique via le port :3000
 
@@ -25,11 +26,11 @@ Mettez en place la base de données de cette manière :
 
 Connectez vous au serveur MySQL
 
- Créer la base de données :  groupomania
- 
-Dans la table role inserer: 1 admin, 2 moderateur, 3user.
+Créer la base de données : groupomania
 
-Vérifiez que vos identifiants de base de données correspondent avec ceux renseignés dans le fichier .env disponible dans le dossier Backend. Dans le cas échéant modifiez les au sein du fichier
+
+
+
 
 Enfin vous pouvez accèder à l'application !
 Lancez la via http://localhost:8080/
