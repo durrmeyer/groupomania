@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="title">
-      <p class="h3 text-success fw-bold">DashBoard Moderateur</p>
+      <h2>liste des posts</h2>
+      <br />
+      <p>Nombre de posts : {{ comptage }}</p>
       <p class="fst-italic">
         The standard Lorem Ipsum passage, used since the 1500s "Lorem ipsum
         dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -13,13 +15,53 @@
         id est laborum."
       </p>
 
-      <h2>liste des posts il y en a {{ comptage }}</h2>
       <router-link to="/posts" class="btn btn-success btn-sm"
         ><i class="fa fa-eye"></i> Voir les posts</router-link
       >
     </div>
+    <div class="col-xl-12 mb-4">
+      <div class="card" v-for="post in posts" :key="post.id">
+        <a href="#" class="list-group-item list-group-item-action active">
+          <div class="d-flex w-100 justify-content-between">
+            <div class="mb-1">
+              <img
+                v-if="post.User.imageUrl == null"
+                src="../../assets/images/avatar.png"
+                alt="photo de profil "
+                class="avatar"
+              />
+              <img
+                v-else
+                :src="post.User.imageUrl"
+                alt="photo profil de l'utilisateur"
+                class="avatar"
+              />
+            </div>
+            
+            <p class="mb-1">{{ post.description }}</p>
 
-    <main>
+            <div class="add-to-action">
+              <button class="btn btn-primary my-1" @click="modifyPost(post.id)">
+                <i class="fa fa-pen"></i>
+              </button>
+              <button class="btn btn-danger my-1" @click="delPost(post.id)">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <div class="ms-3">
+              <p class="fw-bold mb-1">{{ post.User.lastName }} {{ post.User.firstName }}</p>
+           
+                           
+            </div>
+        </a>
+
+        <div
+          class="card-footer border-0 bg-light p-2 d-flex justify-content-around"
+        ></div>
+      </div>
+    </div>
+    <!-- <main>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -53,9 +95,12 @@
             <td>{{ post.User.lastName }}</td>
             <td>{{ post.User.firstName }}</td>
             <td>
-             
-              <img :src="post.imageUrl" alt="image du post" class="img-post"  v-if="post.imageUrl !== 'null'"/>
-          
+              <img
+                :src="post.imageUrl"
+                alt="image du post"
+                class="img-post"
+                v-if="post.imageUrl !== 'null'"
+              />
             </td>
             <td>{{ post.description }}</td>
 
@@ -71,14 +116,18 @@
           </tr>
         </tbody>
       </table>
-    </main>
+    </main>-->
   </div>
 </template>
 <script>
+import Layout from "../../assets/layouts/dashLayout.vue";
 import postService from "../../_services/postService";
 import { mapState } from "vuex";
 export default {
   name: "PostsIndex",
+  components: {
+    Layout,
+  },
   data() {
     return {
       userId: localStorage.getItem("UserId"),

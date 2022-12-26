@@ -1,9 +1,75 @@
 <template>
-  <nav class="navbar navbar-expand-lg">
+  <header>
+    <div class="px-3 py-2 text-bg-dark">
+      <div class="container">
+        <div
+          class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+        >
+          <ul
+            class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small"
+          >
+            <li v-if="isUserLogged === true">
+              <router-link to="/posts" class="nav-link text-white"
+                >Posts</router-link
+              >
+            </li>
+            <li v-if="isAdmin === true">
+              <router-link to="/dashboard/admin" class="nav-link text-white"
+                >Admin</router-link
+              >
+            </li>
+            <li v-if="isModerateur === true">
+              <router-link
+                to="/dashboard/moderateur"
+                class="nav-link text-white"
+                >Moderateur</router-link
+              >
+            </li>
+            <div class="nan-profil">
+              <li v-if="isUserLogged === true">
+                <router-link to="/profil" class="nav-link text-white"
+                  >Mon Profil</router-link
+                >
+              </li>
+              <li v-if="$store.state.isLoggedIn">
+                <router-link
+                  to="/"
+                  class="nav-link text-white"
+                  @click="logOut()"
+                  ><i class="fa-solid fa-right-from-bracket"></i
+                ></router-link>
+              </li>
+            </div>
+          </ul>
+        </div>
+      </div>
+      <div class="px-3 py-2 border-bottom mb-3">
+        <div class="container d-flex flex-wrap justify-content-center">
+          <div class="text-end" v-if="isUserLogged === false">
+            <ul class="nav">
+              <li class="nav-item">
+                <router-link to="/" class="nav-link text-white"
+                  >Connexion</router-link
+                >
+              </li>
+              <li class="nav-item">
+                <router-link to="/register" class="nav-link text-white"
+                  >Inscription</router-link
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <!--<a class="navbar-brand mt-8 mt-lg-0" href="#">
+
+
+      <a class="navbar-brand mt-8 mt-lg-0" href="#">
         <img src="../assets/images/1.png" height="200" alt="Groupomania Logo" />
-      </a>-->
+      </a>
 
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item" v-if="isAdmin === true">
@@ -50,12 +116,16 @@
         </div>
       </div>
     </div>
-  </nav>
+  </nav>-->
 </template>
 
 <script>
+import navLayout from "../assets/layouts/navLayout.vue";
 export default {
   name: "Navigation",
+  components: {
+    navLayout,
+  },
   data() {
     return {
       userId: localStorage.getItem("UserId"),
@@ -87,7 +157,7 @@ export default {
 </script>
 
 <style scoped>
-.navbar {
+/*.navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -99,9 +169,16 @@ export default {
   background-color: aquamarine;
   height: 130px;
 }
-
+.fa-solid{
+      margin-bottom: 12px;
+}
+.navAvatar-end{
+      display: flex;
+      align-items: flex-end;
+    
+}
 .nav-item {
-  font-size: 40px;
+  font-size: 23px;
 }
 .navprofil {
   display: flex;
@@ -138,5 +215,5 @@ img{
   .img-fluid {
     width: 49%;
   }
-}
+}*/
 </style>
