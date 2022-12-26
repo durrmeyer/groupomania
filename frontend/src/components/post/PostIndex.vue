@@ -37,23 +37,23 @@
                 class="avatar"
               />
             </div>
-            
+
             <p class="mb-1">{{ post.description }}</p>
 
             <div class="add-to-action">
-              <button class="btn btn-primary my-1" @click="modifyPost(post.id)">
+              <button class="btn btn-primary" @click="modifyPost(post.id)">
                 <i class="fa fa-pen"></i>
               </button>
-              <button class="btn btn-danger my-1" @click="delPost(post.id)">
+              <button class="btn btn-danger" @click="delPost(post.id)">
                 <i class="fa fa-trash"></i>
               </button>
             </div>
           </div>
-          <div class="ms-3">
-              <p class="fw-bold mb-1">{{ post.User.lastName }} {{ post.User.firstName }}</p>
-           
-                           
-            </div>
+          <div class="ms-1">
+            <p class="fw-bold ">
+              {{ post.User.lastName }} {{ post.User.firstName }}
+            </p>
+          </div>
         </a>
 
         <div

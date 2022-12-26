@@ -6,6 +6,7 @@ export default {};
 .nan-profil {
   display: flex;
   float: right;
+  font-family: Lato;
 }
 </style>
 
