@@ -1,9 +1,9 @@
 <template>
   <div id="add-blog">
-    <router-link to="/posts" class="btn btn-success"
-      ><i class="fa fa-eye"></i> Retour aux posts</router-link
-    >
     <h2>Créer un nouveau post</h2>
+    <router-link to="/posts" class="btn btn-success">
+      <i class="fa fa-arrow-alt-circle-left"></i> Retour</router-link
+    >
     <form @submit.prevent="addPost" enctype="multipart/form-data">
       <label for="file" class="form-label">Image</label>
       <input

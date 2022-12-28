@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import postService from "../../_services/postService";
+
 export default {
   name: "PostEdit",
   data: function () {

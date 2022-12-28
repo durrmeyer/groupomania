@@ -1,9 +1,6 @@
 <template>
   <div>
     <div class="title">
-      <h2>liste des utilisateurs 
-       </h2><br/>
-       <p>  Nombre d'utilisateurs : {{ comptage }}</p>
       <div class="title">
         <p class="h3 text-success fw-bold">DashBoard Administrateur</p>
         <p class="fst-italic">
@@ -16,17 +13,20 @@
           occaecat cupidatat non proident, sunt in culpa qui officia deserunt
           mollit anim id est laborum."
         </p>
-        <router-link to="/posts" class="btn btn-success btn-sm"
+        <h2>liste des utilisateurs</h2>
+        <br />
+        <p>Nombre d'utilisateurs : {{ comptage }}</p>
+        <router-link to="/posts" class="btn btn-outline-secondary"
           ><i class="fa fa-eye"></i> Voir les posts</router-link
         >
       </div>
     </div>
-     <div class="col-xl-12 mb-4">
-    <div class="card" v-for="user in users" :key="user.id">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center">
-             <img
+    <div class="col-xl-12 mb-4">
+      <div class="card" v-for="user in users" :key="user.id">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <img
                 v-if="user.imageUrl !== null"
                 :src="user.imageUrl"
                 alt="photo profil de l'utilisateur"
@@ -38,28 +38,28 @@
                 alt="photo de profil "
                 class="avatar"
               />
-          
-            <div class="ms-3">
-              <p class="fw-bold mb-1">{{ user.firstName }} {{ user.lastName }}</p>
-              <p class="text-muted mb-0">{{ user.email }}</p>
               <p>{{ user.Role.roleName }}</p>
-               
+              <div class="ms-2">
+                <p class="fw-bold mb-1">
+                  {{ user.firstName }} {{ user.lastName }}
+                </p>
+                <p class="text-muted mb-0">{{ user.email }}</p>
+              </div>
             </div>
-           
+            <button
+              class="btn btn-outline-danger my-1"
+              @click="delUser(user.id)"
+            >
+              <i class="fa fa-trash" aria_hidden="true"></i>
+            </button>
           </div>
-         <button class="btn btn-danger my-1" @click="delUser(user.id)">
-                  <i class="fa fa-trash" aria_hidden="true"></i>
-                </button>
         </div>
-      </div>
-      <div
-        class="card-footer border-0 bg-light p-2 d-flex justify-content-around"
-      >
-       
+        <div
+          class="card-footer border-0 bg-light p-2 d-flex justify-content-around"
+        ></div>
       </div>
     </div>
-  </div>
-   <!-- <main>
+    <!-- <main>
       <table class="table table-striped" v-bind="user">
         <thead>
           <tr>
@@ -121,15 +121,13 @@
   </div>
 </template>
 <script>
-
 import Layout from "../../assets/layouts/dashLayout.vue";
 import userService from "../../_services/userService";
 import AddUser from "../../components/User/UserAdd.vue";
 export default {
   name: "UserIndex",
   components: {
- 
-  Layout,
+    Layout,
     AddUser,
   },
   data() {
@@ -143,14 +141,13 @@ export default {
     comptage() {
       return this.users.length;
     },
-    
   },
   mounted() {
     userService
       .getAllUsers()
       .then((res) => {
         this.users = res.data;
-       })
+      })
       .catch((err) => console.log(err));
   },
   methods: {

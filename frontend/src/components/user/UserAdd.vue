@@ -132,35 +132,5 @@ export default {
 </script>
 
 <style>
-#add-blog* {
-  box-sizing: border-box;
-}
-#add-blog {
-  margin: 20px auto;
-  max-width: 500px;
-}
-label {
-  display: block;
-  margin: 20px 0 10px;
-}
-input[type="text"],
-textarea {
-  display: block;
-  width: 100%;
-  padding: 8px;
-}
-#preview {
-  margin: 30px 0;
-  padding: 10px 20px;
-  border: 1px dotted #ccc;
-}
-h3 {
-  margin-top: 10px;
-}
-p {
-  display: flex;
-}
-button {
-  margin-top: 20px;
-}
+
 </style>
