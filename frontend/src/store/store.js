@@ -123,6 +123,7 @@ const store = createStore({
   },
   //-------------------------------------- ACTIONS-----------------------------------------//
   actions: {
+     //--Actions Users-------------//
     user({ commit }, user) {
       commit("USER", user);
     },
@@ -177,7 +178,7 @@ const store = createStore({
       localStorage.removeItem("UserId");
       commit("LOGOUT");
     },
-    //----------------------Actions POSTS-------------//
+    //--Actions POSTS-------------//
     createPost({ commit }, post) {
       postService
         .createPost(post, {
@@ -257,7 +258,7 @@ const store = createStore({
           err;
         });
     },
-    //----------------------Actions COMMENTS-------------//
+    //--Actions COMMENTS-------------//
     createComment({ commit }, data) {
       postService
         .createComment(data.id, data.data, {
