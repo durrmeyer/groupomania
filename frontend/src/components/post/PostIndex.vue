@@ -39,7 +39,15 @@
             </div>
 
             <p class="mb-1">{{ post.description }}</p>
-
+ <div class="cardbox-item">
+                  <div v-if="post.imageUrl !== `null`">
+                    <img
+                      :src="post.imageUrl"
+                      alt="image du post"
+                      class="img-post"
+                    />
+                  </div>
+                </div>
             <div class="add-to-action">
               <button class="btn btn-outline-info " @click="modifyPost(post.id)">
                 <i class="fa fa-pen"></i>
@@ -49,6 +57,7 @@
               </button>
             </div>
           </div>
+          
           <div class="ms-1">
             <p class="fw-bold text ">
               {{ post.User.lastName }} {{ post.User.firstName }}
@@ -56,72 +65,14 @@
           </div>
         </a>
 
-        <div
-          class="card-footer border-0 bg-light p-2 d-flex justify-content-around"
-        ></div>
+       
       </div>
     </div>
-    <!-- <main>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Avatar</th>
-            <th scope="col">Nom</th>
-            <th scope="col">Prénom</th>
-            <th scope="col">ImageUrl</th>
-            <th scope="col">Description</th>
-            <th scope="col">Création</th>
-            <th scope="col">actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(post, index) in posts" :key="post.id">
-            <td>{{ post.id }}</td>
-            <td>
-              <img
-                v-if="post.User.imageUrl == null"
-                src="../../assets/images/avatar.png"
-                alt="photo de profil "
-                class="avatar"
-              />
-              <img
-                v-else
-                :src="post.User.imageUrl"
-                alt="photo profil de l'utilisateur"
-                class="avatar"
-              />
-            </td>
-            <td>{{ post.User.lastName }}</td>
-            <td>{{ post.User.firstName }}</td>
-            <td>
-              <img
-                :src="post.imageUrl"
-                alt="image du post"
-                class="img-post"
-                v-if="post.imageUrl !== 'null'"
-              />
-            </td>
-            <td>{{ post.description }}</td>
-
-            <td>{{ dateFormat[index] }}</td>
-            <div class="add-to-action">
-              <button class="btn btn-primary my-1" @click="modifyPost(post.id)">
-                <i class="fa fa-pen"></i>
-              </button>
-              <button class="btn btn-danger my-1" @click="delPost(post.id)">
-                <i class="fa fa-trash"></i>
-              </button>
-            </div>
-          </tr>
-        </tbody>
-      </table>
-    </main>-->
+    
   </div>
 </template>
 <script>
 import Layout from "../../assets/layouts/dashLayout.vue";
-import postService from "../../_services/postService";
 import { mapState } from "vuex";
 export default {
   name: "PostsIndex",
@@ -132,9 +83,7 @@ export default {
     return {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
-      posts: [],
-      posts: {},
-    };
+     };
   },
 
   computed: {
@@ -144,10 +93,9 @@ export default {
     comptage() {
       return this.posts.length;
     },
-    dateFormat() {
-      return this.posts.map((p) =>
-        p.createdAt.split("T")[0].split("-").reverse().join("/")
-      );
+  
+     posts() {
+      return this.$store.getters.posts;
     },
   },
   methods: {
@@ -162,17 +110,11 @@ export default {
       if (deletePost == true) {
         this.$store.dispatch("deletePost", id);
       }
-
       this.$router.push("/dashboard/moderateur");
     },
   },
   mounted() {
-    postService
-      .getAllPosts()
-      .then((res) => {
-        this.posts = res.data;
-      })
-      .catch((err) => console.log(err));
+    this.$store.dispatch("getAllPosts");
   },
 };
 </script>

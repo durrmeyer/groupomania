@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import ListPosts from "../../components/Post/PostIndex.vue";
+import ListPosts from "../../components/post/PostIndex";
 export default {
   name: "Posts",
   components: {

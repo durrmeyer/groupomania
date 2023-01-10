@@ -17,7 +17,7 @@
 </template>
 
 <script>
-export default { 
+export default {
   name: "CommentAdd",
 
   data() {
@@ -27,9 +27,9 @@ export default {
       data: { content: "", UserId: localStorage.getItem("UserId") },
     };
   },
+
   methods: {
     addComment() {
-      
       this.$store.dispatch("getPostById", this.$route.params.id);
       this.$store.dispatch("createComment", {
         id: this.$route.params.id,

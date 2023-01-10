@@ -13,7 +13,7 @@
         <div class="card-body text-center">
           <div class="card-text-center">
             <img
-              v-if="user.imageUrl !== 'null'"
+              v-if="user.imageUrl !== null"
               :src="user.imageUrl"
               alt="photo profil de l'utilisateur"
               class="avatar"
@@ -44,7 +44,7 @@
 </template>
 <script>
 import layout from "../../assets/layouts/profilLayout.vue";
-import AddUser from "../../components/User/UserAdd.vue";
+import AddUser from "../../components/user/UserAdd";
 import { mapState } from "vuex";
 export default {
   name: " User",
@@ -56,7 +56,7 @@ export default {
     return {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
-      imageUrl: "",
+      imageUrl:"",
     };
   },
 

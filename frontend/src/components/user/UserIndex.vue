@@ -59,71 +59,12 @@
         ></div>
       </div>
     </div>
-    <!-- <main>
-      <table class="table table-striped" v-bind="user">
-        <thead>
-          <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Image</th>
-            <th scope="col">Prénom</th>
-            <th scope="col">Nom</th>
-            <th scope="col">Email</th>
-            <th scope="col">Rôle</th>
-            <th scope="col">Date de Création</th>
-
-            <th scope="col">actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(user, index) in users" :key="user.id">
-            <td>
-              <router-link
-                to="/profil/:id"
-                class="text.decoration.none"
-              ></router-link>
-              {{ user.id }}
-            </td>
-            <td>
-              <img
-                v-if="user.imageUrl !== null"
-                :src="user.imageUrl"
-                alt="photo profil de l'utilisateur"
-                class="avatar"
-              />
-              <img
-                v-else
-                src="../../assets/images/avatar.png"
-                alt="photo de profil "
-                class="avatar"
-              />
-            </td>
-            <td>{{ user.firstName }}</td>
-            <td>{{ user.lastName }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.Role.roleName }}</td>
-            <td>{{ dateFormat[index] }}</td>
-
-            <div class="add-to-action">
-              <div class="button">
-                
-                <button class="btn btn-primary my-1" @click="addUser(user.id)">
-                  <i class="fa fa-pen"></i>
-                </button>
-                <button class="btn btn-danger my-1" @click="delUser(user.id)">
-                  <i class="fa fa-trash" aria_hidden="true"></i>
-                </button>
-              </div>
-            </div>
-          </tr>
-        </tbody>
-      </table>
-    </main>-->
   </div>
 </template>
 <script>
-import Layout from "../../assets/layouts/dashLayout.vue";
+import Layout from "../../assets/layouts/dashLayout";
 import userService from "../../_services/userService";
-import AddUser from "../../components/User/UserAdd.vue";
+import AddUser from "../../components/user/UserAdd";
 export default {
   name: "UserIndex",
   components: {

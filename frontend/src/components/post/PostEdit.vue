@@ -29,7 +29,7 @@
 
 export default {
   name: "PostEdit",
-  data: function () {
+  data() {
     return {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),

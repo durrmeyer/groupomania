@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import ListUsers from "../../components/User/UserIndex.vue";
+import ListUsers from "../../components/user/UserIndex";
 export default {
   name: "Users",
   components: {

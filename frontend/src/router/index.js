@@ -7,14 +7,14 @@ import Admin from "../views/Dashboard/admin";
 import Moderateur from "../views/Dashboard/moderateur";
 
 import Posts from "../views/Posts";
-import PostAdd from "../components/Post/PostAdd";
-import PostIndex from "../components/Post/PostIndex";
-import PostEdit from "../components/Post/PostEdit";
+import PostAdd from "../components/post/PostAdd";
+import PostIndex from "../components/post/PostIndex";
+import PostEdit from "../components/post/PostEdit";
 
-import CommentAdd from "../components/Comment/CommentAdd";
+import CommentAdd from "../components/comment/CommentAdd";
 
-import User from "../components/User/ProfilUser";
-import UserAdd from "../components/User/UserAdd";
+import User from "../components/user/ProfilUser";
+import UserAdd from "../components/user/UserAdd";
 
 const routes = [
   {

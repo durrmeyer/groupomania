@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import PostsInfo from "../components/Post/PostsInfos.vue";
+import PostsInfo from "../components/post/PostsInfos";
 export default {
   name: "Posts",
   components: {

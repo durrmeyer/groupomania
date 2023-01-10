@@ -119,8 +119,7 @@ export default {
       if (this.user.email !== "") {
         formData.append("email", this.user.email);
       }
-      formData.append("UserId", this.UserId);
-      this.$store.dispatch("updateUser", {
+            this.$store.dispatch("updateUser", {
         id: id,
         data: formData,
       });
