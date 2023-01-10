@@ -5,7 +5,6 @@ import postService from "@/_services/postService";
 const store = createStore({
   strict: true,
   state: {
-    title: "Groupomania",
     token: {},
     user: {},
     users: [],
@@ -15,7 +14,7 @@ const store = createStore({
     isAdmin: false,
     isModerateur: false,
   },
-//-------------------------------------- GETTERS-----------------------------------------//
+  //-------------------------------------- GETTERS-----------------------------------------//
   getters: {
     users(state) {
       return state.users;
@@ -23,6 +22,7 @@ const store = createStore({
     user(state) {
       return state.user;
     },
+
     isLoggedIn(state) {
       return state.isLoggedIn;
     },
@@ -84,9 +84,9 @@ const store = createStore({
     },
 
     LOGOUT(state) {
-      sessionStorage.clear();
-      state.token = null;
-      state.user = null;
+      localStorage.clear();
+      state.token = "";
+      state.user = "";
       state.isLoggedIn = false;
       state.isAdmin = false;
       state.isModerateur = false;
@@ -177,7 +177,7 @@ const store = createStore({
       localStorage.removeItem("UserId");
       commit("LOGOUT");
     },
-//----------------------Actions POSTS-------------//
+    //----------------------Actions POSTS-------------//
     createPost({ commit }, post) {
       postService
         .createPost(post, {
@@ -186,6 +186,13 @@ const store = createStore({
         .then((res) => {
           const post = res.data;
           commit("ADD_POST", post);
+          location.reload();
+        })
+        .then(() => {
+          postService.getAllPosts().then((res) => {
+            const posts = res.data;
+            commit("GET_POSTS", posts);
+          });
         })
         .catch((err) => {
           err;
@@ -210,6 +217,7 @@ const store = createStore({
         })
         .catch((err) => {
           err;
+        
         });
     },
     updatePost({ commit }, data) {

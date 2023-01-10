@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-       <p class="h3 text-dark fw-bold">DashBoard Modérateur</p>
+      <p class="h3 text-dark fw-bold">DashBoard Modérateur</p>
       <p class="fst-italic">
         The standard Lorem Ipsum passage, used since the 1500s "Lorem ipsum
         dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -12,7 +12,7 @@
         cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
         id est laborum."
       </p>
-<h2>liste des posts</h2>
+      <h2>liste des posts</h2>
       <br />
       <p>Nombre de posts : {{ comptage }}</p>
       <router-link to="/posts" class="btn btn-outline-secondary"
@@ -39,36 +39,36 @@
             </div>
 
             <p class="mb-1">{{ post.description }}</p>
- <div class="cardbox-item">
-                  <div v-if="post.imageUrl !== `null`">
-                    <img
-                      :src="post.imageUrl"
-                      alt="image du post"
-                      class="img-post"
-                    />
-                  </div>
-                </div>
+            <div class="cardbox-item">
+              <div v-if="post.imageUrl !== `null`">
+                <img
+                  :src="post.imageUrl"
+                  alt="image du post"
+                  class="img-post"
+                />
+              </div>
+            </div>
             <div class="add-to-action">
-              <button class="btn btn-outline-info " @click="modifyPost(post.id)">
+              <button class="btn btn-outline-info" @click="modifyPost(post.id)">
                 <i class="fa fa-pen"></i>
               </button>
-              <button class="btn btn-outline-danger my-1" @click="delPost(post.id)">
+              <button
+                class="btn btn-outline-danger my-1"
+                @click="delPost(post.id)"
+              >
                 <i class="fa fa-trash"></i>
               </button>
             </div>
           </div>
-          
+
           <div class="ms-1">
-            <p class="fw-bold text ">
+            <p class="fw-bold text">
               {{ post.User.lastName }} {{ post.User.firstName }}
             </p>
           </div>
         </a>
-
-       
       </div>
     </div>
-    
   </div>
 </template>
 <script>
@@ -83,7 +83,7 @@ export default {
     return {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
-     };
+    };
   },
 
   computed: {
@@ -93,8 +93,8 @@ export default {
     comptage() {
       return this.posts.length;
     },
-  
-     posts() {
+
+    posts() {
       return this.$store.getters.posts;
     },
   },

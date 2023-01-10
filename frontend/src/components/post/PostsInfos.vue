@@ -3,8 +3,8 @@
     <button class="btn btn-secondary btn-lg" @click="PostAdd()">
       Ajouter un nouveau post
     </button>
-    <div v-for="post in posts" :key="post.id">
-      <div class="container" >
+    <div>
+      <div class="container" v-for="post in posts" :key="post.id">
         <div class="row" v-if="post.User">
           <div class="card blog-card">
             <div class="card-header">
@@ -32,7 +32,7 @@
                     </div>
                   </div>
                 </div>
-                <!--  si nous sommes l'utilisateur ou l'admin alors on a l'autorisation de supprimer le post-->
+                <!--  si nous sommes l'utilisateur ou et l'admin alors on a l'autorisation de supprimer le post-->
                 <div
                   class="add-to-action"
                   v-if="
@@ -92,6 +92,7 @@
               </div>
             </div>
           </div>
+          <!----Commentaires---->
           <div class="card-footer-list">
             <div
               class="card-list"
@@ -156,15 +157,16 @@ export default {
       data: { UserId: localStorage.getItem("UserId") },
     };
   },
-  beforeMount() {
-    // On récupère les informations de l'user ainsi que des posts disponibles avant l'affichage
-    this.$store.dispatch("getUserById");
-    this.$store.dispatch("getAllPosts");
-  },
   created() {
     this.moment = moment; // formatage de la date
     moment.locale("fr");
   },
+  mounted() {
+    // On récupère les informations de l'user ainsi que des posts disponibles pour l'affichage
+    this.$store.dispatch("getUserById");
+    this.$store.dispatch("getAllPosts");
+  },
+
   computed: {
     user() {
       return this.$store.getters.user;

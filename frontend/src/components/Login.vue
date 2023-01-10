@@ -84,6 +84,7 @@ export default {
   methods: {
     login() {
       accountService
+      
         .login(this.user)
         .then((res) => {
           accountService.setToken(res.data.token);
@@ -92,6 +93,7 @@ export default {
           this.$store.dispatch("token", res.data.token);
           this.$store.dispatch("getUserById", res.data.user.id);
           this.$router.push("/posts");
+       
         })
         .catch((err) => console.log(err, "erreur de connexion"));
     },
