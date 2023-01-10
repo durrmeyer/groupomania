@@ -1,14 +1,14 @@
 const db = require("../db/models");
 
 //Récupération du module 'file system' de Node permettant de gérer ici les téléchargements et modifications d'images
-const fs = require("fs"); //package qui permet de modification
+const fs = require("fs"); //package qui permet la modification
 
 //---------------------------------création d'un post----------------------------//
 
 exports.createPost = async (req, res) => {
   let imageUrl = req.file
     ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-    : null;
+    :"null";
 
   await db.User.findOne({
     attributes: ["id", "firstName", "lastName", "imageUrl"],
@@ -96,7 +96,7 @@ exports.getAllPosts = async (req, res) => {
         include: [
           {
             model: db.User,
-            attributes: ["id", "firstName", "lastName", "imageUrl"],
+            attributes: ["id", "firstName", "lastName"],
           },
         ],
       },
@@ -107,7 +107,7 @@ exports.getAllPosts = async (req, res) => {
         include: [
           {
             model: db.User,
-            attributes: ["id", "firstName", "lastName", "imageUrl"],
+            attributes: ["id", "firstName", "lastName"],
           },
         ],
       },
@@ -147,7 +147,7 @@ exports.getPostById = async (req, res) => {
         include: [
           {
             model: db.User,
-            attributes: ["firstName", "lastName", "imageUrl"],
+            attributes: ["firstName", "lastName"],
           },
         ],
       },
