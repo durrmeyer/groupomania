@@ -37,9 +37,7 @@ export default {
       post: { description: "" },
     };
   },
-  mounted() {
-    this.$store.dispatch("getPostById");
-  },
+ 
   methods: {
     select() {
       this.image = this.$refs.image.files[0];
@@ -54,7 +52,7 @@ export default {
         id: this.$route.params.id,
         data: formData,
       });
-      this.$router.push("/posts");
+     this.$router.push("/dashboard/moderateur");
     },
   },
 };

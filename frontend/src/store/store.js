@@ -45,7 +45,6 @@ const store = createStore({
     USER(state, user) {
       state.user = user;
     },
-
     GET_USER_BY_ID(state, user) {
       state.user = user;
       state.isAdmin = user.RoleId === 1;

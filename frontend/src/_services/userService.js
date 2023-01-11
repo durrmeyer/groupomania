@@ -12,9 +12,9 @@ export default {
   updateUser(id, data) {
     return Axios.patch("/users/profil/" + id, data);
   },
-  getUser(id) {
+  /*getUser(id) {
     return Axios.get("/users/" + id);
-  },
+  },*/
 
   deleteUser(id) {
     return Axios.delete("/users/" + id);

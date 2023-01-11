@@ -110,7 +110,7 @@
                     </div>
                   </span>
                   <!--  si nous sommes l'utilisateur on a l'autorisation de supprimer le commentaire-->
-                  <div v-if="$store.state.userId == comment.User.id">
+                  <div v-if="$store.state.user.id == comment.User.id">
                     <button
                       class="btn btn-outline-danger my-1"
                       title="supprimer"
@@ -134,10 +134,10 @@
 </template>
 
 <script>
-import LayoutPage from "../../assets/layouts/pagePosts";
-import PostAdd from "../post/PostAdd";
-import CommentAdd from "../comment/CommentAdd";
-import PostEdit from "../post/PostEdit";
+import LayoutPage from "../../assets/layouts/pagePosts.vue";
+import PostAdd from "../post/PostAdd.vue";
+import CommentAdd from "../comment/CommentAdd.vue";
+import PostEdit from "../post/PostEdit.vue";
 import moment from "moment";
 export default {
   name: "postsInfo",

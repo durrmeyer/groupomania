@@ -85,7 +85,10 @@ export default {
       token: localStorage.getItem("token"),
     };
   },
-
+  // récupère tous les posts pour l'affichage dans le tableau
+  mounted() {
+    this.$store.dispatch("getAllPosts");
+  },
   computed: {
     ...mapState({
       post: (state) => state.post,
@@ -98,6 +101,7 @@ export default {
       return this.$store.getters.posts;
     },
   },
+
   methods: {
     modifyPost(id) {
       this.$router.push({ name: "PostEdit", params: { id: id } });
@@ -110,11 +114,8 @@ export default {
       if (deletePost == true) {
         this.$store.dispatch("deletePost", id);
       }
-      this.$router.push("/dashboard/moderateur");
+      this.$router.push("/posts");
     },
-  },
-  mounted() {
-    this.$store.dispatch("getAllPosts");
   },
 };
 </script>

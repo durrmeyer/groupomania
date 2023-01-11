@@ -65,14 +65,11 @@
   </div>
 </template>
 <script>
-
 import accountService from "../_services/accountService";
 import userService from "../_services/userService";
 export default {
   name: "Login",
-  components: {
-   
-  },
+  components: {},
   data() {
     return {
       userId: localStorage.getItem("UserId"),
@@ -84,7 +81,7 @@ export default {
   methods: {
     login() {
       accountService
-      
+
         .login(this.user)
         .then((res) => {
           accountService.setToken(res.data.token);
@@ -93,7 +90,6 @@ export default {
           this.$store.dispatch("token", res.data.token);
           this.$store.dispatch("getUserById", res.data.user.id);
           this.$router.push("/posts");
-       
         })
         .catch((err) => console.log(err, "erreur de connexion"));
     },
