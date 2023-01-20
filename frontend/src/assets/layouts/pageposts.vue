@@ -3,7 +3,7 @@ export default {};
 </script>
 
 <style>
-body{
+body {
   font-family: Lato;
 }
 p {
@@ -50,7 +50,7 @@ h1 {
   text-align: justify;
   justify-content: center;
   /*word-break: break-all;*/
-   overflow: hidden;
+  overflow: hidden;
   white-space: wrap;
   text-overflow: ellipsis;
   margin-left: 20px;
@@ -98,16 +98,15 @@ h1 {
   margin-right: 10px;
   font-size: 20px;
 }
-.btn  btn-lg{
+.btn btn-lg {
   width: 200px;
   height: 89px;
   font-size: 20px;
   display: flex;
   flex-direction: column;
- 
 }
-.btn-outline-danger2{
-  color:  #dc3545;
+.btn-outline-danger2 {
+  color: #dc3545;
 }
 .text .btn {
   margin-top: 0px;
@@ -124,8 +123,7 @@ h1 {
   max-width: 58px;
 }
 td {
- font-size:15px;
-     padding-top: 0px;
+  font-size: 15px;
+  padding-top: 0px;
 }
-
 </style>

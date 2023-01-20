@@ -14,7 +14,7 @@
                     <img
                       class="avatar"
                       width="45"
-                      v-if="post.User.imageUrl"
+                      v-if="post.User.imageUrl !==`null`"
                       :src="post.User.imageUrl"
                       alt="photo  de l'utilisateur"
                     />
@@ -22,7 +22,7 @@
                       v-else
                       class="avatar"
                       width="45"
-                      src="../../assets/images/avatar.png"
+                      src="../../assets/images/user.png"
                       alt="image du profil"
                     />
                   </div>

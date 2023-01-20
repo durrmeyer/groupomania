@@ -27,7 +27,7 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
               <img
-                v-if="user.imageUrl !== null"
+                v-if="user.imageUrl !== `null`"
                 :src="user.imageUrl"
                 alt="photo profil de l'utilisateur"
                 class="avatar"
