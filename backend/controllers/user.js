@@ -17,11 +17,10 @@ exports.register = (req, res) => {
           email: req.body.email,
           password: hash,
           RoleId: 3,
-        }).then((user) => {
-          // message retourné en cas de réussite
-          res
-            .status(201)
-            .json({
+        })
+          .then((user) => {
+            // message retourné en cas de réussite
+            res.status(201).json({
               userId: user.id,
               token: jwt.sign(
                 {
@@ -33,17 +32,18 @@ exports.register = (req, res) => {
                 }
               ),
               message: "Utilisateur créé !",
-            })
-            
-            })
-            .catch((err) => {
-              res.status(400).json({ err, message: "compte non créé" })
-            // message d'erreur en cas d'échec de hachage du mot de passe
-            .catch((res) => {
-              // message d'erreur si l'utilisateur à été trouvé dans la BDD
-              res.status(400).json({ message: " déjà inscrit!" });
             });
-        });
+          })
+          .catch((err) => {
+            res
+              .status(400)
+              .json({ err, message: "compte non créé" })
+              // message d'erreur en cas d'échec de hachage du mot de passe
+              .catch((res) => {
+                // message d'erreur si l'utilisateur à été trouvé dans la BDD
+                res.status(400).json({ err, message: " déjà inscrit!" });
+              });
+          });
       });
     }
   });
@@ -165,39 +165,9 @@ exports.deleteUser = (req, res) => {
   console.log(req.params.id, "user supression");
   db.User.findOne({ where: { id: req.params.id } })
 
-
- .then((user) => {
-     if (req.file) {
-    const filename = user.imageUrl.split("/images/")[1];
-    fs.unlink(`images/${filename}`, () => {
-      user
-        .destroy({
-          where: {
-            id: req.params.id,
-          },
-        })
-        .then(() =>
-          res.status(200).json({
-            message: "le User est bien supprimé !",
-          })
-        )
-        .catch((error) =>
-          res.status(400).json({
-            error,
-          })
-        );
-    });
-    } else { // Sinon on supprime uniquement l'user
-      
-      db.User.destroy({ where: { id: req.params.id } });
-      res.status(200).json({ message: "Compte supprimé !" });
-    }
-  })
-
-  .catch((error) => res.status(500).json({ error }));
-    /*.then((user) => {
+    .then((user) => {
       if (req.file) {
-        const filename = user.image.split("/images/")[1];
+        const filename = user.imageUrl.split("/images/")[1];
         fs.unlink(`images/${filename}`, () => {
           user
             .destroy({
@@ -207,39 +177,22 @@ exports.deleteUser = (req, res) => {
             })
             .then(() =>
               res.status(200).json({
-                message: "le user est bien supprimé !",
+                message: "le User est bien supprimé !",
               })
             )
-            .catch((err) =>
+            .catch((error) =>
               res.status(400).json({
-                message: "Database error",
-                error: err,
+                error,
               })
             );
         });
       } else {
-        user
-          .destroy({
-            where: {
-              id: req.params.id,
-            },
-          })
-          .then(() =>
-            res.status(200).json({
-              message: "le user est bien supprimé !",
-            })
-          )
-          .catch((error) =>
-            res.status(400).json({
-              error,
-            })
-          );
+        // Sinon on supprime uniquement l'user
+
+        db.User.destroy({ where: { id: req.params.id } });
+        res.status(200).json({ message: "Compte supprimé !" });
       }
     })
-    .catch((error) =>
-      res.status(500).json({
-        error,
-        message: "impossible de supprimer l utilisateur !",
-      })
-    );*/
+
+    .catch((error) => res.status(500).json({ error }));
 };

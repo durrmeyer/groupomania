@@ -8,7 +8,7 @@ const fs = require("fs"); //package qui permet la modification
 exports.createPost = async (req, res) => {
   let imageUrl = req.file
     ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-    :"null";
+    : "null";
 
   await db.User.findOne({
     attributes: ["id", "firstName", "lastName", "imageUrl"],
@@ -40,12 +40,11 @@ exports.createPost = async (req, res) => {
         error,
       })
     );
-  console.log(req.body, "user post");
 };
 
 // -----------------------modification du post-----------------------//
 exports.updatePost = (req, res) => {
-  let post = db.Post.findOne({ where: { id: req.params.id } });
+  db.Post.findOne({ where: { id: req.params.id } });
 
   imageUrl = req.file
     ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
@@ -56,7 +55,16 @@ exports.updatePost = (req, res) => {
       id: req.params.id,
     },
   })
-    .then(() => {
+    .then((post) => {
+      if (post.imageUrl) {
+        const filename = post.imageUrl.split("/images/")[1];
+        fs.unlink(`images/${filename}`, (err) => {
+          if (err);
+          else {
+            console.log(`Deleted file: images/${filename}`);
+          }
+        });
+      }
       db.Post.update(
         {
           description: req.body.description,
@@ -68,13 +76,11 @@ exports.updatePost = (req, res) => {
         }
       )
         .then(() =>
-          res
-            .status(200)
-            .json({
-              description: post.description,
-              imageUrl: post.imageUrl,
-              message: "Post mis à jour !",
-            })
+          res.status(200).json({
+            description: post.description,
+            imageUrl: post.imageUrl,
+            message: "Post mis à jour !",
+          })
         )
         .catch((err) => res.status(400).json({ err }));
     })
@@ -175,7 +181,7 @@ exports.deletePost = (req, res) => {
 
     //supprime l'ancienne image du server
     .then((post) => {
-      if (req.file) {
+      if (post.imageURL !== null) {
         const filename = post.imageUrl.split("/images/")[1];
         fs.unlink(`images/${filename}`, () => {
           post
