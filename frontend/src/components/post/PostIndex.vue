@@ -52,13 +52,13 @@
                   <td>
                     <div class="add-to-action">
                       <button
-                        class="btn btn-outline-info"
+                        class="btn btn-outline-info2"
                         @click="modifyPost(post.id)"
                       >
                         <i class="fa fa-pen"></i>
                       </button>
                       <button
-                        class="btn btn-outline-danger my-1"
+                        class="btn btn-outline-danger2 my-1"
                         @click="delPost(post.id)"
                       >
                         <i class="fa fa-trash"></i>
@@ -72,52 +72,7 @@
         </div>
       </div>
 
-      <!-- <a href="#" class="list-group-item list-group-item-action active">
-          <div class="d-flex w-100 justify-content-between">
-            <div class="mb-1">
-              <img
-                v-if="post.User.imageUrl == null"
-                src="../../assets/images/avatar.png"
-                alt="photo de profil "
-                class="avatar"
-              />
-              <img
-                v-else
-                :src="post.User.imageUrl"
-                alt="photo profil de l'utilisateur"
-                class="avatar"
-              />
-            </div>
-
-            <p class="mb-1">{{ post.description }}</p>
-            <div class="cardbox-image">
-              <div v-if="post.imageUrl !== `null`">
-                <img
-                  :src="post.imageUrl"
-                  alt="image du post"
-                  class="img-post"
-                />
-              </div>
-            </div>
-            <div class="add-to-action">
-              <button class="btn btn-outline-info" @click="modifyPost(post.id)">
-                <i class="fa fa-pen"></i>
-              </button>
-              <button
-                class="btn btn-outline-danger my-1"
-                @click="delPost(post.id)"
-              >
-                <i class="fa fa-trash"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="ms-1">
-            <p class="fw-bold text">
-              {{ post.User.lastName }} {{ post.User.firstName }}
-            </p>
-          </div>
-        </a>-->
+      
     </div>
   </div>
 </template>

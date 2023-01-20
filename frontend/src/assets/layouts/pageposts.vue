@@ -3,6 +3,9 @@ export default {};
 </script>
 
 <style>
+body{
+  font-family: Lato;
+}
 p {
   font-size: 20px;
 }
@@ -26,7 +29,6 @@ h1 {
 }
 .add-to-action {
   display: flex;
-
   align-items: baseline;
   flex-direction: column;
   align-content: flex-end;
@@ -113,9 +115,7 @@ h1 {
   margin-top: 10px;
   margin-right: 10px;
 }
-.table.table-image {
-  word-break: break-all;
-}
+
 .icon {
   color: #4e5166;
 }
@@ -123,7 +123,9 @@ h1 {
 .img {
   max-width: 58px;
 }
-.picture{
-  max-width: 40%;
+td {
+ font-size:15px;
+     padding-top: 0px;
 }
+
 </style>
