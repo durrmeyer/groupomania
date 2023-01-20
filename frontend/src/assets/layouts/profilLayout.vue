@@ -5,15 +5,24 @@
 .container {
   margin-top: 20px;
 }
-
-.btn-delete {
-  direction: rtl;
-  margin-right: 15px;
+.card {
+  margin-top: 12px;
 }
-h1 {
-  margin-bottom: 16px;
+.btn-success {
+  background-color: black;
+  margin-top: 50px;
+  width: 110px;
+  height: 37px;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+p .h3 {
+  margin-top: 45px;
 }
 p {
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 </style>

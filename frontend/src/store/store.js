@@ -122,7 +122,7 @@ const store = createStore({
   },
   //-------------------------------------- ACTIONS-----------------------------------------//
   actions: {
-     //--Actions Users-------------//
+    //--Actions Users-------------//
     user({ commit }, user) {
       commit("USER", user);
     },
@@ -158,6 +158,7 @@ const store = createStore({
         .deleteUser(id)
         .then(() => {
           commit("DELETE_USER", id);
+          location.reload();
         })
         .catch((err) => {
           err;
@@ -186,7 +187,6 @@ const store = createStore({
         .then((res) => {
           const post = res.data;
           commit("ADD_POST", post);
-          location.reload();
         })
         .then(() => {
           postService.getAllPosts().then((res) => {
@@ -217,7 +217,6 @@ const store = createStore({
         })
         .catch((err) => {
           err;
-        
         });
     },
     updatePost({ commit }, data) {

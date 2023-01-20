@@ -52,7 +52,7 @@ export default {
         id: this.$route.params.id,
         data: formData,
       });
-     this.$router.push("/dashboard/moderateur");
+     this.$router.push("/posts");
     },
   },
 };

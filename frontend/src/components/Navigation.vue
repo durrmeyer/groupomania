@@ -100,10 +100,13 @@ export default {
 </script>
 
 <style scoped>
+.container{
+font-family: Lato;
+}
 .nan-profil {
   display: flex;
   float: right;
-  font-family: Lato;
+  
 }
 .container {
   display: flex;

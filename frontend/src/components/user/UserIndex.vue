@@ -16,7 +16,7 @@
         <h2>liste des utilisateurs</h2>
         <br />
         <p>Nombre d'utilisateurs : {{ comptage }}</p>
-        <router-link to="/posts" class="btn btn-outline-secondary"
+        <router-link to="/posts" class="btn btn-outline-secondary btn-lg"
           ><i class="fa fa-eye"></i> Voir les posts</router-link
         >
       </div>
@@ -38,37 +38,41 @@
                 alt="photo de profil "
                 class="avatar"
               />
-              <p>{{ user.Role.roleName }}</p>
-              <div class="ms-2">
+              
+              <div class="ms-4">
                 <p class="fw-bold mb-1">
                   {{ user.firstName }} {{ user.lastName }}
+
                 </p>
+                <p>{{ user.Role.roleName }}</p>
                 <p class="text-muted mb-0">{{ user.email }}</p>
+                
               </div>
+              
             </div>
-            <button
-              class="btn btn-outline-danger my-1"
-              @click="delUser(user.id)"
-            >
-              <i class="fa fa-trash" aria_hidden="true"></i>
-            </button>
+            
           </div>
         </div>
         <div
           class="card-footer border-0 bg-light p-2 d-flex justify-content-around"
-        ></div>
+        ><button
+              class="btn btn-outline-danger2 my-1"
+              @click="delUser(user.id)"
+            >
+              <i class="fa fa-trash" aria_hidden="true"></i>
+            </button></div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import Layout from "../../assets/layouts/dashLayout";
+
 import userService from "../../_services/userService";
 import AddUser from "../../components/user/UserAdd";
 export default {
   name: "UserIndex",
   components: {
-    Layout,
+   
     AddUser,
   },
   data() {

@@ -1,26 +1,27 @@
 <template>
   <div>
-    <p class="h3 text-success fw-bold">Profil</p>
-
+    
+    
+ 
     <div
       class="card"
       v-if="
         $store.state.user.id == user.id || $store.state.user.isAdmin == true
       "
     >
-     
+     <p class="h3 text fw-bold">Profil</p>
       <div>
         <div class="card-body text-center">
           <div class="card-text-center">
             <img
-              v-if="user.imageUrl !== null"
+              v-if="user.imageUrl!== `null`"
               :src="user.imageUrl"
               alt="photo profil de l'utilisateur"
               class="avatar"
             />
             <img
               v-else
-              src="../../assets/images/avatar.png"
+              src="../../assets/images/user.png"
               alt="photo de profil "
               class="avatar"
             />

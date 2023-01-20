@@ -15,13 +15,64 @@
       <h2>liste des posts</h2>
       <br />
       <p>Nombre de posts : {{ comptage }}</p>
-      <router-link to="/posts" class="btn btn-outline-secondary"
+      <router-link to="/posts" class="btn btn-outline-secondary btn-lg"
         ><i class="fa fa-eye"></i> Voir les posts</router-link
       >
     </div>
-    <div class="col-xl-12 mb-4">
-      <div class="card" v-for="post in posts" :key="post.id">
-        <a href="#" class="list-group-item list-group-item-action active">
+    <div class="col-xl-12 mb-4" v-for="post in posts" :key="post.id">
+      <div class="container">
+        <div class="row">
+          <div class="col-12-table">
+            <table class="table table-image">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Auteur</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="w-25">
+                    <div v-if="post.imageUrl !== `null`">
+                      <img
+                        :src="post.imageUrl"
+                        alt="image du post"
+                        class="img-post picture"
+                      />
+                    </div>
+                  </td>
+
+                  <td>{{ post.description }}</td>
+                  <td>
+                    <p>{{ post.User.lastName }} {{ post.User.firstName }}</p>
+                  </td>
+
+                  <td>
+                    <div class="add-to-action">
+                      <button
+                        class="btn btn-outline-info"
+                        @click="modifyPost(post.id)"
+                      >
+                        <i class="fa fa-pen"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger my-1"
+                        @click="delPost(post.id)"
+                      >
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- <a href="#" class="list-group-item list-group-item-action active">
           <div class="d-flex w-100 justify-content-between">
             <div class="mb-1">
               <img
@@ -39,7 +90,7 @@
             </div>
 
             <p class="mb-1">{{ post.description }}</p>
-            <div class="cardbox-item">
+            <div class="cardbox-image">
               <div v-if="post.imageUrl !== `null`">
                 <img
                   :src="post.imageUrl"
@@ -66,13 +117,12 @@
               {{ post.User.lastName }} {{ post.User.firstName }}
             </p>
           </div>
-        </a>
-      </div>
+        </a>-->
     </div>
   </div>
 </template>
 <script>
-import Layout from "../../assets/layouts/dashLayout.vue";
+import Layout from "../../assets/layouts/pagePosts.vue";
 import { mapState } from "vuex";
 export default {
   name: "PostsIndex",
@@ -85,10 +135,7 @@ export default {
       token: localStorage.getItem("token"),
     };
   },
-  // récupère tous les posts pour l'affichage dans le tableau
-  mounted() {
-    this.$store.dispatch("getAllPosts");
-  },
+
   computed: {
     ...mapState({
       post: (state) => state.post,
@@ -101,7 +148,6 @@ export default {
       return this.$store.getters.posts;
     },
   },
-
   methods: {
     modifyPost(id) {
       this.$router.push({ name: "PostEdit", params: { id: id } });
@@ -114,8 +160,11 @@ export default {
       if (deletePost == true) {
         this.$store.dispatch("deletePost", id);
       }
-      this.$router.push("/posts");
+      this.$router.push("/dashboard/moderateur");
     },
+  },
+  mounted() {
+    this.$store.dispatch("getAllPosts");
   },
 };
 </script>

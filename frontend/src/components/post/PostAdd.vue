@@ -44,7 +44,7 @@ export default {
       this.imageUrl = URL.createObjectURL(this.image);
     },
     addPost() {
-      // transmission du formulaire au backend dan sun format adequat
+      // transmission du formulaire au backend dans un format adequat
       const formData = new FormData();
       formData.append("description", this.description);
       formData.append("image", this.image);
