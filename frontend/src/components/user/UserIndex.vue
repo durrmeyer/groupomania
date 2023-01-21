@@ -44,9 +44,10 @@
                   {{ user.firstName }} {{ user.lastName }}
                 </h4>
                 <p>{{ user.Role.roleName }}</p>
-                <p class="text-muted mb-0">{{ user.email }}</p>
-              </div>
+              
             </div>
+              <p class="text-muted mb-0">{{ user.email }}</p>
+              </div>
           </div>
         </div>
         <div

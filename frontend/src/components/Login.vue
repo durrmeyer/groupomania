@@ -2,6 +2,7 @@
   <div>
     <section class="vh-100">
       <div class="title">
+        <h1>Réseau Social Groupomania</h1>
         <div class="card-body">
           <div class="card-description">
             <p class="card-text">
@@ -19,7 +20,7 @@
             <img
               src="../assets/images/1.png"
               class="img-fluid"
-              alt="logo-image"
+              aria-label="logo-image"
               id="image"
               name="image"
             />

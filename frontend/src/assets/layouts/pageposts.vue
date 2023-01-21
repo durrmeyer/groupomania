@@ -88,9 +88,7 @@ h1 {
   margin-top: 4px;
   padding-top: 15px;
 }
-/*.text-muted {
-font-size:2vw;
-}*/
+
 .btn {
   margin-right: 10px;
   font-size: 20px;
@@ -111,11 +109,16 @@ font-size:2vw;
   margin-top: 10px;
   margin-right: 10px;
 }
-
+.d-flex {
+  flex-wrap: wrap;
+  flex-direction: column;
+}
 .icon {
   color: #4e5166;
 }
-
+.ms-4 p{
+      align-items: center;
+}
 .img {
   max-width: 58px;
 }
