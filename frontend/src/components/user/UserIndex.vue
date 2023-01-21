@@ -2,7 +2,7 @@
   <div>
     <div class="title">
       <div class="title">
-        <p class="h3 text-success fw-bold">DashBoard Administrateur</p>
+        <h2 class="text-dark fw-bold">DashBoard Administrateur</h2>
         <p class="fst-italic">
           The standard Lorem Ipsum passage, used since the 1500s "Lorem ipsum
           dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -13,7 +13,7 @@
           occaecat cupidatat non proident, sunt in culpa qui officia deserunt
           mollit anim id est laborum."
         </p>
-        <h2>liste des utilisateurs</h2>
+        <h3>liste des utilisateurs</h3>
         <br />
         <p>Nombre d'utilisateurs : {{ comptage }}</p>
         <router-link to="/posts" class="btn btn-outline-secondary btn-lg"
@@ -27,52 +27,49 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
               <img
-                v-if="user.imageUrl !== `null`"
+                v-if="user.imageUrl !==`null`"
                 :src="user.imageUrl"
-                alt="photo profil de l'utilisateur"
+                aria-label="photo profil"
                 class="avatar"
               />
               <img
                 v-else
                 src="../../assets/images/avatar.png"
-                alt="photo de profil "
+                aria-label="photo profil"
                 class="avatar"
               />
-              
-              <div class="ms-4">
-                <p class="fw-bold mb-1">
-                  {{ user.firstName }} {{ user.lastName }}
 
-                </p>
+              <div class="ms-4">
+                <h4 class="fw-bold mb-1">
+                  {{ user.firstName }} {{ user.lastName }}
+                </h4>
                 <p>{{ user.Role.roleName }}</p>
                 <p class="text-muted mb-0">{{ user.email }}</p>
-                
               </div>
-              
             </div>
-            
           </div>
         </div>
         <div
           class="card-footer border-0 bg-light p-2 d-flex justify-content-around"
-        ><button
-              class="btn btn-outline-danger2 my-1"
-              @click="delUser(user.id)"
-            >
-              <i class="fa fa-trash" aria_hidden="true"></i>
-            </button></div>
+        >
+          <button
+            class="btn btn-outline-danger2 my-1"
+            aria-label="supprimer"
+            @click="delUser(user.id)"
+          >
+            <i class="fa fa-trash" aria_hidden="true"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-
 import userService from "../../_services/userService";
 import AddUser from "../../components/user/UserAdd";
 export default {
   name: "UserIndex",
   components: {
-   
     AddUser,
   },
   data() {

@@ -1,41 +1,39 @@
 <template>
   <div>
-    
-    
- 
     <div
       class="card"
       v-if="
         $store.state.user.id == user.id || $store.state.user.isAdmin == true
       "
     >
-     <p class="h3 text fw-bold">Profil</p>
+      <h3 class="h3 text fw-bold">Profil</h3>
       <div>
         <div class="card-body text-center">
           <div class="card-text-center">
             <img
-              v-if="user.imageUrl !==`null`"
+              v-if="user.imageUrl !== `null`"
               :src="user.imageUrl"
               alt="photo profil de l'utilisateur"
               class="avatar"
             />
-           
           </div>
 
           <h1>{{ user.firstName }} {{ user.lastName }}</h1>
 
           <p>{{ user.email }}</p>
-          <button class="btn btn-outline-info" @click="addUser()">
+          <button
+            class="btn btn-outline-info"
+            aria-label="modifier"
+            @click="addUser()"
+          >
             <i class="fa fa-pen"></i>
           </button>
-          
-          </div>
+        </div>
       </div>
     </div>
     <router-link to="/posts" class="btn btn-success">
       <i class="fa fa-arrow-alt-circle-left"></i> Retour</router-link
     >
-    
   </div>
 </template>
 <script>
@@ -52,7 +50,7 @@ export default {
     return {
       userId: localStorage.getItem("UserId"),
       token: localStorage.getItem("token"),
-      imageUrl:"",
+      imageUrl: "",
     };
   },
 
@@ -65,7 +63,6 @@ export default {
     addUser() {
       this.$router.push("/profil/add");
     },
-   
   },
 };
 </script>

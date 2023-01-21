@@ -47,9 +47,7 @@ h1 {
   overflow: auto;
   font-size: 1.3rem;
   padding-bottom: 45px;
-  text-align: justify;
   justify-content: center;
-  /*word-break: break-all;*/
   overflow: hidden;
   white-space: wrap;
   text-overflow: ellipsis;
@@ -76,7 +74,6 @@ h1 {
   display: flex;
   justify-content: space-around;
   margin-left: 12px;
-
   background-color: FD2DO1;
   border-top: #4e5166;
 }
@@ -91,9 +88,9 @@ h1 {
   margin-top: 4px;
   padding-top: 15px;
 }
-.text-muted {
-  width: 100%;
-}
+/*.text-muted {
+font-size:2vw;
+}*/
 .btn {
   margin-right: 10px;
   font-size: 20px;

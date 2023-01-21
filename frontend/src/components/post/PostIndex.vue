@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-      <p class="h3 text-dark fw-bold">DashBoard Modérateur</p>
+      <h2 class=" text-dark fw-bold">DashBoard Modérateur</h2>
       <p class="fst-italic">
         The standard Lorem Ipsum passage, used since the 1500s "Lorem ipsum
         dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -12,7 +12,7 @@
         cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
         id est laborum."
       </p>
-      <h2>liste des posts</h2>
+      <h3>liste des posts</h3>
       <br />
       <p>Nombre de posts : {{ comptage }}</p>
       <router-link to="/posts" class="btn btn-outline-secondary btn-lg"
@@ -26,7 +26,7 @@
             <table class="table table-image">
               <thead>
                 <tr>
-                  <th scope="col"></th>
+                  <th scope="col">image</th>
                   <th scope="col">Description</th>
                   <th scope="col">Auteur</th>
                   <th scope="col">Actions</th>
@@ -38,8 +38,8 @@
                     <div v-if="post.imageUrl !== `null`">
                       <img
                         :src="post.imageUrl"
-                        alt="image du post"
                         class="img-post picture"
+                        aria-label="image du post"
                       />
                     </div>
                   </td>
@@ -53,12 +53,14 @@
                     <div class="add-to-action">
                       <button
                         class="btn btn-outline-info2"
+                        aria-label="modifier"
                         @click="modifyPost(post.id)"
                       >
                         <i class="fa fa-pen"></i>
                       </button>
                       <button
                         class="btn btn-outline-danger2 my-1"
+                        aria-label="supprimer"
                         @click="delPost(post.id)"
                       >
                         <i class="fa fa-trash"></i>
@@ -71,8 +73,6 @@
           </div>
         </div>
       </div>
-
-      
     </div>
   </div>
 </template>

@@ -5,11 +5,10 @@
         <div class="card-body">
           <div class="card-description">
             <p class="card-text">
-              Bienvenue sur le nouveau réseau social de Groupomania.<br />
+              Bienvenue sur le nouveau réseau social de Groupomania.
               Vous pouvez échanger entre collègues et suivre toutes les
               actualités de notre entreprise.
-              <br />
-              Et tout cela dans le respect et la bienveillance!<br />
+              Et tout cela dans le respect et la bienveillance!
             </p>
           </div>
         </div>
@@ -21,6 +20,8 @@
               src="../assets/images/1.png"
               class="img-fluid"
               alt="logo-image"
+              id="image"
+              name="image"
             />
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
@@ -29,6 +30,8 @@
               <div class="form-outline mb-4">
                 <input
                   type="text"
+                  id="email"
+                  name="email"
                   class="form-control"
                   placeholder="name@example.com"
                   v-model="user.email"
@@ -39,6 +42,8 @@
               <div class="form-outline mb-3">
                 <input
                   type="password"
+                  id="password"
+                  name="email"
                   class="form-control"
                   placeholder="**********"
                   v-model="user.password"

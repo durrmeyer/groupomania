@@ -13,17 +13,19 @@
                   <div class="mr-2">
                     <img
                       class="avatar"
+                    
                       width="45"
-                      v-if="post.User.imageUrl !==`null`"
+                      v-if="post.User.imageUrl !== `null`"
                       :src="post.User.imageUrl"
-                      alt="photo  de l'utilisateur"
+                      aria-label="avatar de l'utilisateur"
                     />
                     <img
                       v-else
                       class="avatar"
+                    
                       width="45"
                       src="../../assets/images/user.png"
-                      alt="image du profil"
+                      aria-label="avatar de l'utilisateur"
                     />
                   </div>
                   <div class="ml-2">
@@ -42,6 +44,7 @@
                 >
                   <button
                     class="btn btn-outline-info"
+                    aria-label="modifier"
                     @click="PostEdit(post.id)"
                   >
                     <i class="fa fa-pen"></i>
@@ -49,7 +52,7 @@
                   <button
                     class="btn btn-outline-danger my-1"
                     title="supprimer"
-                    aria-label="bouton supprimer"
+                    aria-label="supprimer"
                     @click="delPost(post.id)"
                   >
                     <i class="fa fa-trash" aria-hidden="true"></i>
@@ -65,7 +68,7 @@
                   <div v-if="post.imageUrl !== `null`">
                     <img
                       :src="post.imageUrl"
-                      alt="image du post"
+                      aria-label="image du post"
                       class="img-post"
                     />
                   </div>

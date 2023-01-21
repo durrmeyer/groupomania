@@ -36,6 +36,7 @@
                   to="/"
                   class="nav-link text-white"
                   @click="logOut()"
+                  aria-label="Déconnexion"
                   ><i class="fa-solid fa-right-from-bracket"></i
                 ></router-link>
               </li>
