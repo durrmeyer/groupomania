@@ -105,13 +105,11 @@ h1 {
 }
 .text .btn {
   margin-top: 0px;
-  font-size: 10px;
-  margin-top: 10px;
   margin-right: 10px;
 }
 .d-flex {
   flex-wrap: wrap;
-  flex-direction: column;
+  
 }
 .icon {
   color: #4e5166;

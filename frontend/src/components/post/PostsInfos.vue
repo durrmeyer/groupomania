@@ -43,14 +43,14 @@
                   "
                 >
                   <button
-                    class="btn btn-outline-info"
+                    class="btn btn-outline-info2"
                     aria-label="modifier"
                     @click="PostEdit(post.id)"
                   >
                     <i class="fa fa-pen"></i>
                   </button>
                   <button
-                    class="btn btn-outline-danger my-1"
+                    class="btn btn-outline-danger2 my-1"
                     title="supprimer"
                     aria-label="supprimer"
                     @click="delPost(post.id)"
@@ -115,7 +115,7 @@
                   <!--  si nous sommes l'utilisateur on a l'autorisation de supprimer le commentaire-->
                   <div v-if="$store.state.user.id == comment.User.id">
                     <button
-                      class="btn btn-outline-danger my-1"
+                      class="btn btn-outline-danger2 my-1"
                       title="supprimer"
                       aria-label="bouton supprimer"
                       @click="delComment(comment.id)"
