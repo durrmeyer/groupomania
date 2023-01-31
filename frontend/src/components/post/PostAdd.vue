@@ -1,5 +1,5 @@
 <template>
-  <div id="add-blog">
+  <div id="add-blog" style="margin-top: 226px">
     <h2>Créer un nouveau post</h2>
     <router-link to="/posts" class="btn btn-success">
       <i class="fa fa-arrow-alt-circle-left"></i> Retour</router-link

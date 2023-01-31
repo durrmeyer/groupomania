@@ -7,14 +7,21 @@
       "
     >
       <h3 class="h3 text fw-bold">Profil</h3>
-      <div>
+      <div style="margin-top: 154px">
         <div class="card-body text-center">
           <div class="card-text-center">
             <img
-              v-if="user.imageUrl !== `null`"
+              v-if="user.imageUrl !== null"
               :src="user.imageUrl"
               alt="photo profil de l'utilisateur"
               class="avatar"
+            />
+            <img
+              v-else
+              class="avatar"
+              width="45"
+              src="../../assets/images/user.png"
+              aria-label="avatar de l'utilisateur"
             />
           </div>
 

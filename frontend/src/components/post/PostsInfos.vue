@@ -13,16 +13,14 @@
                   <div class="mr-2">
                     <img
                       class="avatar"
-                    
                       width="45"
-                      v-if="post.User.imageUrl !== `null`"
+                      v-if="post.User.imageUrl !== null"
                       :src="post.User.imageUrl"
                       aria-label="avatar de l'utilisateur"
                     />
                     <img
                       v-else
                       class="avatar"
-                    
                       width="45"
                       src="../../assets/images/user.png"
                       aria-label="avatar de l'utilisateur"

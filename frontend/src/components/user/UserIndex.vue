@@ -27,14 +27,14 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
               <img
-                v-if="user.imageUrl !==`null`"
+                v-if="user.imageUrl !==null"
                 :src="user.imageUrl"
                 aria-label="photo profil"
                 class="avatar"
               />
               <img
                 v-else
-                src="../../assets/images/avatar.png"
+                src="../../assets/images/user.png"
                 aria-label="photo profil"
                 class="avatar"
               />
