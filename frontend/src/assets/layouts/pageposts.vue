@@ -8,7 +8,7 @@ body {
 p {
   font-size: 20px;
 }
-test
+
 .avatar {
   width: 50px;
   height: 50px;
