@@ -1,7 +1,6 @@
 <script>
 export default {};
 </script>
-
 <style>
 body {
   font-family: Lato;
@@ -9,6 +8,7 @@ body {
 p {
   font-size: 20px;
 }
+test
 .avatar {
   width: 50px;
   height: 50px;
