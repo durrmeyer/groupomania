@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import LayoutPage from "../../assets/layouts/pagePosts.vue";
+import LayoutPage from "../../assets/layouts/pagePost.vue";
 import PostAdd from "../post/PostAdd.vue";
 import CommentAdd from "../comment/CommentAdd.vue";
 import PostEdit from "../post/PostEdit.vue";
