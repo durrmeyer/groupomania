@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-      <h2 class=" text-dark fw-bold">DashBoard Modérateur</h2>
+      <h2 class="text-dark fw-bold">DashBoard Modérateur</h2>
       <p class="fst-italic">
         The standard Lorem Ipsum passage, used since the 1500s "Lorem ipsum
         dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -77,7 +77,7 @@
   </div>
 </template>
 <script>
-import Layout from "../../assets/layouts/pagePosts.vue";
+import Layout from "../../assets/layouts/pagePost.vue";
 import { mapState } from "vuex";
 export default {
   name: "PostsIndex",

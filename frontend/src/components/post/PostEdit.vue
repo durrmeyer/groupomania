@@ -26,7 +26,6 @@
 </template>
 
 <script>
-
 export default {
   name: "PostEdit",
   data() {
@@ -37,7 +36,7 @@ export default {
       post: { description: "" },
     };
   },
- 
+
   methods: {
     select() {
       this.image = this.$refs.image.files[0];
@@ -52,7 +51,7 @@ export default {
         id: this.$route.params.id,
         data: formData,
       });
-     this.$router.push("/posts");
+      this.$router.push("/posts");
     },
   },
 };
